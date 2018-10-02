@@ -1,0 +1,78 @@
+\chapter{Conjugate priors and posterior distributions}
+
+\section{Exercise 2.3}
+
+\subsection{Data}
+\begin{itemize}
+ \item $ p(x, y, z) \propto f(x, z) \; g(y, z) \; h(z) $
+\end{itemize}
+
+\subsection{Questions}
+Prove that:
+\begin{enumerate}
+ \item $ p(x | y, z) \propto f(x, z) $
+ \item $ p(y | x, z) \propto g(y, z) $
+ \item $ X $ and $ Y $ conditionally independent, given $ Z $.
+\end{enumerate}
+
+\subsection{Solutions}
+We know by definition that
+\[ p(x | y, z) = \dfrac{p(x, y, z)}{p(y, z)} \]
+and also that
+\[
+ p(y, z) = \int\limits_{S_X} p(x, y, z) \partial x \propto
+ \int\limits_{S_X} f(x, z) g(y, z) h(z) \partial x =
+ g(y, z) h(z) \int\limits_{S_X} f(x, z) \partial x
+\]
+Where $ S_X $ is the support of the r.v. $ X $. Then we can write
+\begin{align*}
+ p(x | y, z) & = \frac{f(x, z) g(y, z) h(z)}{g(y, z) h(z) \int_{S_X} f(x, z) \partial x} \\
+             & = \frac{f(x, z)}{\int_{S_X} f(x, z) \partial x}
+\end{align*}
+But $ \int_{S_X} f(x, z) \partial x $ is constant given $ z $, so we can say
+\[ p(x | y, z) \propto f(x, z) \]
+as we wanted to show. \\
+Similarly, we can write
+\begin{align*}
+ p(y | x, z) & = \frac{p(x, y, z)}{p(x, z)}                                              \\
+             & = \frac{f(x, z) g(y, z) h(z)}{f(x, z) h(z) \int_{S_Y} g(y, z) \partial y} \\
+             & = \frac{g(y, z)}{\int_{S_Y} g(y, z) \partial y}                           \\
+             & \propto g(y, z)
+\end{align*}
+To show that $ X \perp Y $ given $ Z $ we have to prove that $ p(y | z, x) = p(y | z) $, so:
+\begin{align*}
+ p(y|z) & = \frac{p(y, z)}{p(z)}                              \\
+        & = \frac{\int_{S_X} f(x, z) g(y, z) h(z) \partial x}
+ {\int_{S_X}\int_{S_Y} f(x, z) g(y, z) h(z) \partial y \partial x} \\
+        & = \frac{g(y, z) h(z)\int_{S_X} f(x, z) \partial x}
+ {h(z) \int_{S_X} f(x, z) \partial x \int_{S_Y} g(y, z) \partial y} \\
+        & = \frac{g(y, z)}{\int_{S_Y} g(y, z) \partial y}     \\
+        & = p(y | x, z)
+\end{align*}
+
+\section{Exercise 3.5}
+
+\subsection{Data}
+\begin{itemize}
+ \item $ p(y | \phi) = c(\phi) h(y) \exp(\phi t(y)) $
+ \item $ p_1(\theta) \ldots p_k(\theta) $ conjugate priors
+ \item $ \tilde{p}(\theta) = \sum_{k = 1}^{K} \omega_k p_k(\theta) $ where
+       $ \omega_k > 0 $ and $ \sum_k \omega_k = 1 $
+\end{itemize}
+
+\subsection{Questions}
+\begin{enumerate}
+ \item $ p(\theta | y) $ as a function of $ p(y | \theta) $ and $ \tilde{p} $
+ \item Previous question but in the case that $ \theta \sim \text{Pois} $ and
+       $ p_1 \ldots p_k \sim \Gamma $
+\end{enumerate}
+
+\subsection{Solution}
+For the Bayes rule:
+\[ p(\theta | y) \propto p(y | \theta) \cdot p(\theta) = p(y | \theta) \cdot \tilde{p}(\theta) \]
+In the particular case that it's the sample comes from a Poisson distribution and
+the prior is a mixture of Gamma distributions:
+\begin{align*}
+ p(\theta | y) & \propto p(y | \theta) \cdot \tilde{p}(\theta)                                          \\
+               & \propto \theta ^ k \exp(\theta) \sum_k w_k x ^ {\alpha_k - 1} \exp(-\frac{x}{\beta_k})
+\end{align*}

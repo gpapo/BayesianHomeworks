@@ -6,12 +6,12 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 
+\title{Homeworks of Bayesian Inference\\ {\large (B004652)}}
 \author{Giovanni Papini}
+\date{Last revision \today}
 
 % Custom chapter command
-\newcommand{\Chapter[3]}{
- \chapter[#2]{#2 \hspace{0.2cm} \vline \hspace{0.2cm} {\Large #3}}
-}
+\renewcommand{\chaptername}{Week}
 
 % Homework details
 \newcommand{\hmwkClass}{Bayesian Inference}
@@ -23,7 +23,7 @@
 \pagestyle{fancy}
 \lhead{\hmwkAuthorName}
 \chead{\hmwkClass}
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\rhead{Week \thechapter}
 
 % Probability commands: Expectation, Variance, Covariance, Bias
 \newcommand{\E}{\mathrm{E}}
@@ -32,176 +32,7 @@
 \newcommand{\Cov}{\mathrm{Cov}}
 
 \begin{document}
-%\chapter[Week 1]{Week 1, (Daboni, ch. 2)}
-\Chapter{Week 1}{Daboni, ch. 2}
-\section{Exercise 1}
-\subsection{Data}
-\begin{itemize}
- \item $ E_1, E_2, E_3, E_4, E_5 $, events of simple alternative, exchangeable
- \item $ P(E_2) = \omega_1 = \frac{1}{2} $
- \item $ P(E_3 \wedge E_5) = \omega_2 = \frac{1}{4} $
- \item $ \omega_5 = \frac{\omega^5_3}{\binom{5}{3}} =
-       \frac{\omega^5_1}{\binom{5}{1}} = \frac{1}{30} $
-\end{itemize}
-\subsection{Questions}
-Compute:
-\begin{enumerate}
- \item $ P(E_2 \wedge E_3 \wedge E_4) = \omega_3 $
- \item $ P(E_1 \wedge E_2 \wedge E_3 \wedge E_4) = \omega_4 $
- \item $ P(E_1 \wedge E_2 \wedge \bar E_3 \wedge
-       \bar E_4 \wedge \bar E_5) = \frac{\omega_2^5}{\binom{5}{2}} $
-\end{enumerate}
-\subsection{Solutions}
-First we find $ \omega_1^5 $ and $ \omega_3^5 $:
-\begin{align*}
- \omega_1^5 & = \frac{1}{30} \cdot \binom{5}{1} = \frac{1}{6} \\
- \omega_3^5 & = \frac{1}{30} \cdot \binom{5}{3} = \frac{1}{3}
-\end{align*}
-Knowing that \[ \omega_h = \frac{1}{\binom{n}{h}} \sum_{r = h}^{n} \omega_r^n \binom{r}{h} \]
-we can write that
-\begin{align*}
- \omega_1 & = \frac{\omega_1^5 \binom{1}{1} + \omega_2^5 \binom{2}{1} +
- \omega_3^5 \binom{3}{1} + \omega_4^5 \binom{4}{1} + \omega_5^5 \binom{5}{1}}{\binom{5}{1}} \\
-          & = \frac{1}{6} \cdot \frac{1}{5} + \frac{2}{5} \omega_2^5 +
- \frac{1}{5} \cdot \frac{1}{3} \cdot 3 + \frac{1}{5} \cdot 4 \omega_4^5 + \frac{1}{30} \\
-          & = \frac{8}{30} + \frac{2}{5} \omega_2^5 + \frac{4}{5} \omega_4^5      \\ \\
- \omega_2 & = \frac{\omega_2^5 \binom{2}{2} +
- \omega_3^5 \binom{3}{2} + \omega_4^5 \binom{4}{2} + \omega_5^5 \binom{5}{2}}{\binom{5}{2}} \\
-          & = \frac{1}{10} \omega_2^5 + \frac{1}{10} \cdot \frac{1}{10} \cdot 3 +
- \frac{1}{10} \cdot 6 \omega_4^5 + \frac{1}{30} \\
-          & = \frac{2}{15} + \frac{1}{10} \omega_2^5 + \frac{3}{5} \omega_4^5
-\end{align*}
-Combining them:
-\begin{align*}
-          & \begin{cases}
- \frac{2}{5} \omega_2^5 + \frac{4}{5} \omega_4^5 = \frac{1}{2} - \frac{8}{30} \\
- \frac{1}{10} \omega_2^5 + \frac{3}{5} \omega_4^5 = \frac{1}{4} - \frac{2}{15}
- \end{cases} \\
- \implies & \begin{cases}
- \omega_2^5 = \frac{7}{24} \\
- \omega_4^5 = \frac{7}{48}
- \end{cases}
-\end{align*}
-Now we can obtain
-\begin{align*}
- \omega_3 & = \frac{\omega_3^5 \binom{3}{3} + \omega_4^5 \binom{4}{3} +
- \omega_5^5 \binom{5}{3}}{\binom{5}{3}}
-          & = \frac{1}{3} \cdot \frac{1}{10} + \frac{7}{48} \cdot 4 \frac{1}{10} +
- \frac{1}{30} = \frac{1}{8} \\
- \omega_4 & = \frac{\omega_4^5 \binom{4}{4} + \omega_5^5 \binom{5}{4}}{\binom{5}{4}}
-          & = \frac{7}{48} \cdot \frac{1}{5} + \frac{1}{30} = \frac{1}{16}
-\end{align*}
-\section{Exercise 2}
-\subsection{Data}
-\begin{itemize}
- \item Process of simple alternative $ \{| E_n |\} $
- \item $ P(E_1) = \omega_1 = \frac{1}{2} $
- \item $ P(E_1 \wedge E_2) = \omega_2 = \frac{1}{4} $
- \item $ P(E_1 \wedge E_2 \wedge E_3) = \omega_3 = \frac{1}{7} $
- \item $ P(E_1 \wedge E_2 \wedge E_3 \wedge E_4) = \frac{3}{28} $
-\end{itemize}
-\subsection{Questions}
-\begin{enumerate}
- \item Could the 4 indicators $ |E_1| $, $ |E_2| $, $ |E_3| $ and $ |E_4| $ be
-       the starting path of an exchangeable process?
- \item Could it continue for at least one step?
-\end{enumerate}
-\subsection{Solutions}
-\begin{enumerate}
- \item An exchangeable process must satisfy the condition
-       \[ (-1)^{n-h} \Delta^{n-h} \omega_h \ge 0,\; \forall n, h \le n \]
-       Thus we compute
-       \begin{itemize}
-        \item $ (-1)^{4-1} \Delta^{4-1} \omega_1 =
-              (-1) \cdot \Delta^3 \omega_1 = \frac{1}{14} \ge 0 $
-        \item $ (-1)^{4-2} \Delta^{4-2} \omega_2 =
-              (\phantom{-}1) \cdot \Delta^{2} \omega_2 = \frac{1}{14} \ge 0 $
-        \item $ (-1)^{4-3} \Delta^{4-3} \omega_3 =
-              (-1) \cdot \Delta \; \omega_3 = \frac{1}{28} \ge 0 $
-        \item $ (-1)^{4-4} \Delta^{4-4} \omega_4 =
-              (\phantom{-}1) \cdot \phantom{\Delta \;} \omega_4 = \frac{3}{28} \ge 0 $
-       \end{itemize}
-       Thus we can affirm that the process is exchangeable.
- \item \texttt{\# TODO}
-\end{enumerate}
-
-\Chapter{Week 2}{Hoff, ch. 2-3}
-
-\section{Exercise 2.3}
-
-\subsection{Data}
-\begin{itemize}
- \item $ p(x, y, z) \propto f(x, z) \; g(y, z) \; h(z) $
-\end{itemize}
-
-\subsection{Questions}
-Prove that:
-\begin{enumerate}
- \item $ p(x | y, z) \propto f(x, z) $
- \item $ p(y | x, z) \propto g(y, z) $
- \item $ X $ and $ Y $ conditionally independent, given $ Z $.
-\end{enumerate}
-
-\subsection{Solutions}
-We know by definition that
-\[ p(x | y, z) = \dfrac{p(x, y, z)}{p(y, z)} \]
-and also that
-\[
- p(y, z) = \int\limits_{S_X} p(x, y, z) \partial x \propto
- \int\limits_{S_X} f(x, z) g(y, z) h(z) \partial x =
- g(y, z) h(z) \int\limits_{S_X} f(x, z) \partial x
-\]
-Where $ S_X $ is the support of the r.v. $ X $. Then we can write
-\begin{align*}
- p(x | y, z) & = \frac{f(x, z) g(y, z) h(z)}{g(y, z) h(z) \int_{S_X} f(x, z) \partial x} \\
-             & = \frac{f(x, z)}{\int_{S_X} f(x, z) \partial x}
-\end{align*}
-But $ \int_{S_X} f(x, z) \partial x $ is constant given $ z $, so we can say
-\[ p(x | y, z) \propto f(x, z) \]
-as we wanted to show. \\
-Similarly, we can write
-\begin{align*}
- p(y | x, z) & = \frac{p(x, y, z)}{p(x, z)}                                              \\
-             & = \frac{f(x, z) g(y, z) h(z)}{f(x, z) h(z) \int_{S_Y} g(y, z) \partial y} \\
-             & = \frac{g(y, z)}{\int_{S_Y} g(y, z) \partial y}                           \\
-             & \propto g(y, z)
-\end{align*}
-To show that $ X \perp Y $ given $ Z $ we have to prove that $ p(y | z, x) = p(y | z) $, so:
-\begin{align*}
- p(y|z) & = \frac{p(y, z)}{p(z)}                              \\
-        & = \frac{\int_{S_X} f(x, z) g(y, z) h(z) \partial x}
- {\int_{S_X}\int_{S_Y} f(x, z) g(y, z) h(z) \partial y \partial x} \\
-        & = \frac{g(y, z) h(z)\int_{S_X} f(x, z) \partial x}
- {h(z) \int_{S_X} f(x, z) \partial x \int_{S_Y} g(y, z) \partial y} \\
-        & = \frac{g(y, z)}{\int_{S_Y} g(y, z) \partial y}     \\
-        & = p(y | x, z)
-\end{align*}
-
-\section{Exercise 3.5}
-
-\subsection{Data}
-\begin{itemize}
- \item $ p(y | \phi) = c(\phi) h(y) \exp(\phi t(y)) $
- \item $ p_1(\theta) \ldots p_k(\theta) $ conjugate priors
- \item $ \tilde{p}(\theta) = \sum_{k = 1}^{K} \omega_k p_k(\theta) $ where
-       $ \omega_k > 0 $ and $ \sum_k \omega_k = 1 $
-\end{itemize}
-
-\subsection{Questions}
-\begin{enumerate}
- \item $ p(\theta | y) $ as a function of $ p(y | \theta) $ and $ \tilde{p} $
- \item Previous question but in the case that $ \theta \sim \text{Pois} $ and
-       $ p_1 \ldots p_k \sim \Gamma $
-\end{enumerate}
-
-\subsection{Solution}
-For the Bayes rule:
-\[ p(\theta | y) \propto p(y | \theta) \cdot p(\theta) = p(y | \theta) \cdot \tilde{p}(\theta) \]
-In the particular case that it's the sample comes from a Poisson distribution and 
-the prior is a mixture of Gamma distributions:
-\begin{align*}
- p(\theta | y) &\propto p(y | \theta) \cdot \tilde{p}(\theta) \\
-  &\propto \theta ^ k \exp(\theta) \sum_k w_k x ^ {\alpha_k - 1} \exp(-\frac{x}{\beta_k})
-\end{align*}
-
+\maketitle
+\include{weekly/week-01}
+\include{weekly/week-02}
 \end{document}
