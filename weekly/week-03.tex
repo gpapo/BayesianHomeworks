@@ -1,0 +1,43 @@
+\chapter{Non informative priors}
+
+\section{Exercise 3.10}
+
+\subsection{Data}
+\begin{itemize}
+ \item $ \psi = g(\theta) $ where $ g $ is a monotone function
+ \item $ h(\cdot) = g^{-1}(\cdot) $, that is $ \theta = h(\psi) $
+ \item $ p_\theta(\theta) = \text{pdf of } \theta \implies
+       p_\psi(\psi) = p_\theta(h(\psi)) \cdot \left|\frac{dh}{d\psi}\right|$
+\end{itemize}
+
+\subsection{Questions}
+\begin{enumerate}
+ \item Let $ \theta \sim Beta(a, b) $ and $ \psi = \logit(\theta) $. Obtain $ p_\psi $ and
+       plot it for the case $ a = b = 1 $.
+ \item Let $ \theta \sim Gamma(a, b) $ and $ \psi = \log(\theta) $. Obtain $ p_\psi $ and
+       plot it for the case $ a = b = 1 $.
+\end{enumerate}
+
+\subsection{Solutions}
+\begin{enumerate}
+ \item The inverse function of $ \logit(\cdot) $ is known to be
+       $ h(\psi) = \frac{\exp(\psi)}{1 + \exp(x\psi)} $, while the derivative w.r.t.
+       $\psi$ of $ h(\psi) $ is
+       \begin{align*}
+        \frac{\partial h(\psi)}{\psi} & = \frac{\exp(\psi)(1 + \exp(\psi) - \exp(2\psi)}{(1 + \exp(\psi))^2} \\
+                                      & = \frac{\exp(\psi)}{(1 + \exp(\psi))^2}
+       \end{align*}
+       So we can write the pdf of $\psi$ as
+       \begin{align*}
+        p_\psi(\psi) & = \frac{1}{B(a, b)} \left(\frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{a - 1}
+        \left(1 - \frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{b - 1}
+        \frac{\exp(\psi)}{(1 + \exp(\psi))^2} \\
+                     & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a - 1}}{(1 - \exp(\psi))^{a - 1}}
+        \frac{1}{(1 + \exp(\psi))^{b - 1}}
+        \frac{\exp(\psi)}{(1 + \exp(\psi))^2} \\
+                     & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a}}{(1 + \exp(\psi))^{a + b}}
+       \end{align*}
+       And in the case that $ a = b = 1 $ the shape would be: \\
+       \includegraphics[width=\linewidth]{julia-scripts/week-03_plot1.png} \\
+       % Note: it seems very similar to a Normal distribution.
+\end{enumerate}
