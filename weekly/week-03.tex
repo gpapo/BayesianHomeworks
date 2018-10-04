@@ -21,8 +21,8 @@
 \subsection{Solutions}
 \begin{enumerate}
  \item The inverse function of $ \logit(\cdot) $ is known to be
-       $ h(\psi) = \frac{\exp(\psi)}{1 + \exp(x\psi)} $, while the derivative w.r.t.
-       $\psi$ of $ h(\psi) $ is
+       $ h(\psi) = \frac{\exp(\psi)}{1 + \exp(x\psi)} $, and the derivative w.r.t. $\psi$ of 
+       $ h(\psi) $ is
        \begin{align*}
         \frac{\partial h(\psi)}{\psi} & = \frac{\exp(\psi)(1 + \exp(\psi) - \exp(2\psi)}{(1 + \exp(\psi))^2} \\
                                       & = \frac{\exp(\psi)}{(1 + \exp(\psi))^2}
@@ -37,7 +37,17 @@
         \frac{\exp(\psi)}{(1 + \exp(\psi))^2} \\
                      & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a}}{(1 + \exp(\psi))^{a + b}}
        \end{align*}
-       And in the case that $ a = b = 1 $ the shape would be: \\
-       \includegraphics[width=\linewidth]{julia-scripts/week-03_plot1.png} \\
+       And in the case that $ a = b = 1 $ the plot is: \\
+       \includegraphics[width=\textwidth]{julia-scripts/week-03_plot1.png}
        % Note: it seems very similar to a Normal distribution.
+ \item The inverse function of $ \log(\theta) $ is known to be $ h(\psi) = \exp(\psi) $, 
+       and the derivative w.r.t. $\psi$ of $ h(\psi) $ is
+       \[ \frac{\partial h(\psi)}{\partial \psi} = \exp(\psi) \]
+       So we can write the pdf of $ \psi $ as
+       \begin{align*}
+        p_\psi(\psi) & = \frac{b ^ a}{\Gamma(a)} \exp(\psi)^{a - 1} \exp(-b\exp(\psi)) \exp(\psi) \\
+                     & = \frac{b ^ a}{\Gamma(a)} \exp(a\psi - b\exp(\psi))
+       \end{align*}
+       And in the case that $ a = b = 1 $ the plot is: \\
+       \includegraphics[width=\textwidth]{julia-scripts/week-03_plot2.png}
 \end{enumerate}
