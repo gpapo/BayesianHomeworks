@@ -69,10 +69,31 @@ To show that $ X \perp Y $ given $ Z $ we have to prove that $ p(y | z, x) = p(y
 
 \subsection{Solution}
 For the Bayes rule:
-\[ p(\theta | y) \propto p(y | \theta) \cdot p(\theta) = p(y | \theta) \cdot \tilde{p}(\theta) \]
-In the particular case that it's the sample comes from a Poisson distribution and
-the prior is a mixture of Gamma distributions:
 \begin{align*}
- p(\theta | y) & \propto p(y | \theta) \cdot \tilde{p}(\theta)                                          \\
-               & \propto \theta ^ k \exp(\theta) \sum_k w_k x ^ {\alpha_k - 1} \exp(-\frac{x}{\beta_k})
+ p(\theta | y) &= \frac{p(y | \theta) \cdot p(\theta)}{p(y)} \\
+  &= \frac{p(y | \theta) \cdot \tilde{p}(\theta)}{p(y)} \\
+  &= \frac{\prod_i p(y_i | \theta) \tilde{p}(\theta)}{p(y)} \\
+  &= \frac{\prod_i c(\theta) h(y_i) \exp(\theta t(y_i)) \cdot \tilde{p}(\theta)}{p(y)} \\
+  &= \frac{\prod_i h(y_i) c(\phi)^n \exp(\phi \sum_i t(y_i)) \cdot \sum_k w_k p_k(\theta)}
+   {\int_{S_\theta} \prod_i h(y_i) c(\phi)^n \exp(\phi \sum_i t(y_i)) \sum_k w_k p_k(\theta) \partial \theta} \\
+  &= \frac{c(\phi)^n \exp(\phi \sum_i t(y_i)) \cdot \sum_k w_k p_k(\theta)}
+   {\int_{S_\theta} c(\phi)^n \exp(\phi \sum_i t(y_i)) \sum_k w_k p_k(\theta) \partial \theta}
+\end{align*}
+In the particular case that $ p(y | \theta) $ is a Poisson distribution and $ p_k $ are Gamma 
+distribution, we have that
+\begin{itemize}
+ \item $ t(y) = y $
+ \item $ \phi = \log(\theta) $
+ \item $ c(\phi) = \exp(e ^ {-\phi}) = \exp(\theta^{-1}) $
+ \item $ p_k(\theta) = \frac{\beta_k ^ {\alpha_k}}{\Gamma(\alpha_k)} 
+  \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta) = 
+  c_k \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta) $
+\end{itemize}
+So we can rewrite the posterior of the first part as
+\begin{align*}
+  p(\theta | y) &= \frac{\exp(\theta^{-1})^n \exp(\log \theta \sum_i y_i) \sum_k w_k c_k \theta^{\alpha_k - 1} \exp(-\beta_k \theta) }
+  {\int_{S_\theta} \exp(\theta^{-1})^n \exp(\log \theta \sum_i y_i) \sum_k w_k c_k \theta^{\alpha_k - 1} \exp(-\beta_k \theta) \partial \theta} \\
+ &= \frac{\exp(\theta^{-n}) \theta^{\sum_i y_i} \sum_k w_k c_k \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta)}
+  {\int_{S_\theta} \exp(\theta^{-n}) \theta^{\sum_i y_i} \sum_k w_k c_k \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta) \partial \theta} \\
+ &= \frac{\exp(\theta ^ {-n}) \sum_k w_k c_k \theta ^ {\alpha_k + \sum_i y_i - 1} \exp(-\beta_k \theta)}{} % TODO
 \end{align*}
