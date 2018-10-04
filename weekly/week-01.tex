@@ -95,6 +95,26 @@ Now we can obtain
               (\phantom{-}1) \cdot \phantom{\Delta \;} \omega_4 = \frac{3}{28} \ge 0 $
        \end{itemize}
        Thus we can affirm that the process is exchangeable.
- \item \begin{align*}
+ \item If we consider $ n = 5 $ we can rewrite
+ \begin{align*}
+ -&\Delta\phantom{1} \omega_4 = \omega_4 - \omega_5 \ge 0 \implies 
+   \omega_5 \le \omega_4 \\
+  &\Delta^2 \omega_3 = \omega_3 - 2 \omega_4 + \omega_5 \ge 0 \implies 
+   \omega_5 \ge 2 \omega_4 - \omega_3 \\
+ -&\Delta^3 \omega_2 = \omega_2 - 3 \omega_3 + 3 \omega_4 - \omega_5 \ge 0 \implies
+   \omega_5 \le 3 \omega_4 - 3 \omega_3 + \omega_2 \\
+  &\Delta^4 \omega_1 = \omega_1 - 4 \omega_2 + 6 \omega_3 - 4 \omega_4 + \omega_5 \ge 0 \implies
+   \omega_5 \ge 4 \omega_4 - 6 \omega_3 + 4 \omega_2 - \omega_1
  \end{align*}
+ And substituting $ \omega_k $ with their values we obtain a system:
+ \[ 
+  \begin{cases}
+   \omega_5 \le \frac{3}{28} \\
+   \omega_5 \ge \frac{2}{28} \\
+   \omega_5 \le \frac{3}{28} \\
+   \omega_5 \ge \frac{2}{28}
+  \end{cases} \implies
+  \frac{2}{28} \le \omega_5 \le \frac{3}{28}
+ \]
+ Thus we can affirm that the process could continue.
 \end{enumerate}
