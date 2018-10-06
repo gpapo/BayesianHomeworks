@@ -28,13 +28,15 @@
 \chead{\chaptername \space \thechapter}
 
 % Probability commands: Expectation, Variance, Covariance, Bias
-\newcommand{\E}{\mathrm{E}}
-\newcommand{\V}{\mathrm{V}}
-\newcommand{\Var}{\mathrm{Var}}
-\newcommand{\Cov}{\mathrm{Cov}}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\V}{V}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
 
 % Useful commands
-\newcommand{\logit}{\text{logit}}
+\DeclareMathOperator{\logit}{logit}
+\DeclareMathOperator*{\argmax}{arg \; max}
+\DeclareMathOperator*{\argmin}{arg \; min}
 
 \begin{document}
 \maketitle

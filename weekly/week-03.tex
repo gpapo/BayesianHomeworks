@@ -21,7 +21,7 @@
 \subsection{Solutions}
 \begin{enumerate}
  \item The inverse function of $ \logit(\cdot) $ is known to be
-       $ h(\psi) = \frac{\exp(\psi)}{1 + \exp(x\psi)} $, and the derivative w.r.t. $\psi$ of 
+       $ h(\psi) = \frac{\exp(\psi)}{1 + \exp(x\psi)} $, and the derivative w.r.t. $\psi$ of
        $ h(\psi) $ is
        \begin{align*}
         \frac{\partial h(\psi)}{\psi} & = \frac{\exp(\psi)(1 + \exp(\psi) - \exp(2\psi)}{(1 + \exp(\psi))^2} \\
@@ -40,7 +40,7 @@
        And in the case that $ a = b = 1 $ the plot is: \\
        \includegraphics[width=\textwidth]{julia-scripts/week-03_plot1.png}
        % Note: it seems very similar to a Normal distribution.
- \item The inverse function of $ \log(\theta) $ is known to be $ h(\psi) = \exp(\psi) $, 
+ \item The inverse function of $ \log(\theta) $ is known to be $ h(\psi) = \exp(\psi) $,
        and the derivative w.r.t. $\psi$ of $ h(\psi) $ is
        \[ \frac{\partial h(\psi)}{\partial \psi} = \exp(\psi) \]
        So we can write the pdf of $ \psi $ as
@@ -50,4 +50,49 @@
        \end{align*}
        And in the case that $ a = b = 1 $ the plot is: \\
        \includegraphics[width=\textwidth]{julia-scripts/week-03_plot2.png}
+\end{enumerate}
+
+\section{Exercise 3.14}
+
+\subsection{Data}
+
+\subsection{Questions}
+\begin{enumerate}
+ \item Given $ Y_1 \ldots Y_n \sim \text{Bernoulli}(\theta) $ find the MLE of $\theta$ and
+       $ \frac{J(\theta)}{n} $.
+ \item Find a pdf $ p_U(\theta) $ such that $ \log p_U(\theta) = l(\theta | \mathbf{y}) / n + c $
+       where $ c $ is a constant that does not depend on $\theta$. Compute $ -\partial^2 \log p_U(\theta) / \partial^2 \theta $.
+ \item Obtain a pdf for $\theta$ that is proportional to $ p_U(\theta) p(\mathbf{y} | \theta) $.
+       Can this be considered a posterior for $ \theta $?
+ \item Repeat previous points with $ Y_1 \ldots Y_n \sim \text{Poisson}(\theta) $.
+\end{enumerate}
+
+\subsection{Solutions}
+\begin{enumerate}
+ \item \begin{align*}
+       \hat{\theta}_{MLE} & = \argmin_\theta l(\theta | \mathbf{y}) \\
+       & = \argmin_\theta \log (\prod_i \theta ^ {y_i} (1 - \theta)^{1 - y_i}) \\
+       & = \argmin_\theta \sum_i \log (\theta ^ {y_i} (1 - \theta) ^ {1 - y_i}) \\
+       & = \argmin_\theta \log(\theta) \sum_i y_i + \log(1 - \theta) \sum_i (1 - y_i) \\
+       & = \argmin_\theta \log(\theta) \sum_i y_i + n \log(1 - \theta) - \log(1 - \theta) \sum_i (y_i)
+ \end{align*}
+ To find the minimum we compute the zeros of $ \partial l(\theta | \mathbf{y}) / \partial \theta $
+ \begin{align*}
+  0 & = \frac{\partial l(\theta | \mathbf{y})}{\partial \theta}                                   \\
+    & = \frac{\sum_i y_i}{\theta} - \frac{n}{1 - \theta} + \frac{\sum_i y_i}{1 - \theta}          \\
+    & = \frac{\sum_i y_i - \theta \sum_i y_i - \theta n + \theta \sum_i y_i}{\theta (1 - \theta)} \\
+    & = \frac{\sum_i y_i - \theta n}{\theta (1 - \theta)}
+ \end{align*}
+ Thus, if $ \theta \notin \left\{0, 1\right\} $, $ \hat \theta_{MLE} = \frac{\sum_i y_i}{n} $.
+ \begin{align*}
+  - \frac{\partial^2 l(\theta | \mathbf{y})}{n \partial^2 \theta}
+    & = - \frac{-n \theta (1 - \theta) - (\sum_i y_i - n \theta)(1 - 2\theta)}{n \theta^2 (1 - \theta)^2} \\
+    & = - \frac{n \theta^2 - n \theta - \sum_i y_i + 2\theta \sum_i y_i + n \theta - 2 n \theta^2}
+  {n \theta^2 (1 - \theta^2)} \\
+    & = \frac{n \theta ^ 2 - 2 \theta \sum_i y_i + \sum_i y_i}{n \theta^2 (1 - \theta)^2} \\
+    & = \frac{\theta ^ 2 - 2 \theta \hat \theta_{MLE} + \hat \theta_{MLE}}{\theta^2 (1 - \theta)^2}
+ \end{align*}
+ The constrains on $ p_U(\theta) $ imply that 
+ \[ p_U(\theta) = c \sqrt[n]{\prod_i \theta ^ y_i (1 - \theta) ^ {1 - y_i}} \]
+ where $ c $ is the normalization constant.
 \end{enumerate}
