@@ -91,9 +91,9 @@ distribution, we have that
 \end{itemize}
 So we can rewrite the posterior of the first part as
 \begin{align*}
- p(\theta | y) & = \frac{\exp(\theta^{-1})^n \exp(\log \theta \sum_i y_i) \sum_k w_k c_k \theta^{\alpha_k - 1} \exp(-\beta_k \theta) }
+	p(\theta | y) & = \frac{\exp(\theta^{-1})^n \exp(\log \theta \sum_i y_i) \sum_k w_k c_k \theta^{\alpha_k - 1} \exp(-\beta_k \theta) }
  {\int_{S_\theta} \exp(\theta^{-1})^n \exp(\log \theta \sum_i y_i) \sum_k w_k c_k \theta^{\alpha_k - 1} \exp(-\beta_k \theta) \partial \theta} \\
-               & = \frac{\exp(\theta^{-n}) \theta^{\sum_i y_i} \sum_k w_k c_k \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta)}
- {\int_{S_\theta} \exp(\theta^{-n}) \theta^{\sum_i y_i} \sum_k w_k c_k \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta) \partial \theta} \\
-               & = \frac{\exp(\theta ^ {-n}) \sum_k w_k c_k \theta ^ {\alpha_k + \sum_i y_i - 1} \exp(-\beta_k \theta)}{} % TODO
+	              & = \frac{\exp(n \theta^{-1}) \theta^{\sum_i y_i} \sum_k w_k c_k \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta)}
+ {\int_{S_\theta} \exp(n \theta^{-1}) \theta^{\sum_i y_i} \sum_k w_k c_k \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta) \partial \theta}                \\
+	              & = \frac{\exp(n \theta ^ {-1}) \sum_k w_k c_k \theta ^ {\alpha_k + \sum_i y_i} \exp(-\beta_k \theta)}{} % TODO
 \end{align*}
