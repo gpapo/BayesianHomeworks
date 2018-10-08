@@ -71,8 +71,8 @@
 \begin{enumerate}
  \item \begin{align*}
        \hat{\theta}_{MLE} & = \argmin_\theta l(\theta | \mathbf{y}) \\
-       & = \argmin_\theta \log (\prod_i \theta ^ {y_i} (1 - \theta)^{1 - y_i}) \\
-       & = \argmin_\theta \sum_i \log (\theta ^ {y_i} (1 - \theta) ^ {1 - y_i}) \\
+       & = \argmin_\theta \log \left( \prod_i \theta ^ {y_i} (1 - \theta)^{1 - y_i} \right) \\
+       & = \argmin_\theta \sum_i \log \left( \theta ^ {y_i} (1 - \theta) ^ {1 - y_i} \right) \\
        & = \argmin_\theta \log(\theta) \sum_i y_i + \log(1 - \theta) \sum_i (1 - y_i) \\
        & = \argmin_\theta \log(\theta) \sum_i y_i + n \log(1 - \theta) - \log(1 - \theta) \sum_i (y_i)
  \end{align*}
@@ -89,10 +89,43 @@
     & = - \frac{-n \theta (1 - \theta) - (\sum_i y_i - n \theta)(1 - 2\theta)}{n \theta^2 (1 - \theta)^2} \\
     & = - \frac{n \theta^2 - n \theta - \sum_i y_i + 2\theta \sum_i y_i + n \theta - 2 n \theta^2}
   {n \theta^2 (1 - \theta^2)} \\
-    & = \frac{n \theta ^ 2 - 2 \theta \sum_i y_i + \sum_i y_i}{n \theta^2 (1 - \theta)^2} \\
+    & = \frac{n \theta ^ 2 - 2 \theta \sum_i y_i + \sum_i y_i}{n \theta^2 (1 - \theta)^2}                 \\
     & = \frac{\theta ^ 2 - 2 \theta \hat \theta_{MLE} + \hat \theta_{MLE}}{\theta^2 (1 - \theta)^2}
  \end{align*}
- The constrains on $ p_U(\theta) $ imply that 
- \[ p_U(\theta) = c \sqrt[n]{\prod_i \theta ^ y_i (1 - \theta) ^ {1 - y_i}} \]
- where $ c $ is the normalization constant.
+ \item The constrains on $ p_U(\theta) $ imply that
+       \[ p_U(\theta) = c \cdot \sqrt[n]{\prod_i \theta ^ y_i (1 - \theta) ^ {1 - y_i}} \]
+       where $ c $ is the normalization constant.
+       \begin{align*}
+        - \frac{\partial^2 \log p_U(\theta)}{\partial^2 \theta}
+          & = - \frac{\partial^2 l(\theta | \mathbf{y}) / n + c}{\partial^2 \theta}                       \\
+          & = - \frac{\partial^2 l(\theta | \mathbf{y})}{\partial^2 \theta} / n                           \\
+          & = \frac{\theta ^ 2 - 2 \theta \hat \theta_{MLE} + \hat \theta_{MLE}}{\theta^2 (1 - \theta)^2}
+       \end{align*}
+ \item Such a pdf would have the form
+       \[ g(\theta) = c \cdot p_U(\theta) p(\mathbf{y} | \theta) \]
+       Where $ c = \int_{S_\theta} p(\theta, \mathbf{y}) \partial \theta $ to guarantee that 
+       $ g(\cdot) $ is proper.
+       That is by definition a posterior probability.
+ \item Same steps: simplify the log-likelihood, find the first derivative and constrain to zero.
+       \begin{align*}
+        \hat \theta_{MLE} & = \argmin_\theta l_\text{Poisson}(\theta | \mathbf{y})                               \\
+                          & = \argmin_\theta \log \left( \prod_i \frac{\exp(-\theta) \theta^{y_i}}{y_i!} \right) \\
+                          & = \argmin_\theta \sum_i \log \frac{\exp(-\theta) \theta^{y_i}}{y_i !}                \\
+                          & = \argmin_\theta -n \theta + \log \theta \sum y_i - \sum \log y_i !
+       \end{align*}
+       \begin{align*}
+        0 & = \frac{\partial l(\theta | \mathbf{y})}{\partial \theta} \\
+          & = -n + \frac{\sum_i y_i}{\theta}
+       \end{align*}
+       Thus $ \hat \theta_{MLE} = \sum_i y_i / n $.
+       \begin{align*}
+        -\frac{\partial^2 l(\theta | \mathbf{y})}{n \partial^2 \theta} 
+         & = \frac{\sum_i y_i}{n \theta^2} \\
+         & = \frac{\hat \theta_{MLE}}{\theta^2}
+       \end{align*}
+       In this case the pdf $ p_U $ would be
+       \[ p_U(\theta) \propto \sqrt[n]{\prod_i \exp(-\theta) \theta ^ {y_i}} \]
+       Thus \begin{align*}
+        - \frac{\partial^2 \log p_U(\theta)}{\partial^2 \theta} & = \frac{\sum_i y_i}{n \theta^2}
+       \end{align*}
 \end{enumerate}
