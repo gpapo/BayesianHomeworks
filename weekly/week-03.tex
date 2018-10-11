@@ -6,7 +6,7 @@
 \begin{itemize}
  \item $ \psi = g(\theta) $ where $ g $ is a monotone function
  \item $ h(\cdot) = g^{-1}(\cdot) $, that is $ \theta = h(\psi) $
- \item $ p_\theta(\theta) = \text{pdf of } \theta \implies
+ \item $ p_\theta(\theta) = \text{PDF of } \theta \implies
        p_\psi(\psi) = p_\theta(h(\psi)) \cdot \left|\frac{dh}{d\psi}\right|$
 \end{itemize}
 
@@ -27,7 +27,7 @@
         \frac{\partial h(\psi)}{\psi} & = \frac{\exp(\psi)(1 + \exp(\psi) - \exp(2\psi)}{(1 + \exp(\psi))^2} \\
                                       & = \frac{\exp(\psi)}{(1 + \exp(\psi))^2}
        \end{align*}
-       So we can write the pdf of $\psi$ as
+       So we can write the PDF of $\psi$ as
        \begin{align*}
         p_\psi(\psi) & = \frac{1}{B(a, b)} \left(\frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{a - 1}
         \left(1 - \frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{b - 1}
@@ -43,7 +43,7 @@
  \item The inverse function of $ \log(\theta) $ is known to be $ h(\psi) = \exp(\psi) $,
        and the derivative w.r.t. $\psi$ of $ h(\psi) $ is
        \[ \frac{\partial h(\psi)}{\partial \psi} = \exp(\psi) \]
-       So we can write the pdf of $ \psi $ as
+       So we can write the PDF of $ \psi $ as
        \begin{align*}
         p_\psi(\psi) & = \frac{b ^ a}{\Gamma(a)} \exp(\psi)^{a - 1} \exp(-b\exp(\psi)) \exp(\psi) \\
                      & = \frac{b ^ a}{\Gamma(a)} \exp(a\psi - b\exp(\psi))
@@ -60,9 +60,9 @@
 \begin{enumerate}
  \item Given $ Y_1 \ldots Y_n \sim \text{Bernoulli}(\theta) $ find the MLE of $\theta$ and
        $ \frac{J(\theta)}{n} $.
- \item Find a pdf $ p_U(\theta) $ such that $ \log p_U(\theta) = l(\theta | \mathbf{y}) / n + c $
+ \item Find a PDF $ p_U(\theta) $ such that $ \log p_U(\theta) = l(\theta | \mathbf{y}) / n + c $
        where $ c $ is a constant that does not depend on $\theta$. Compute $ -\partial^2 \log p_U(\theta) / \partial^2 \theta $.
- \item Obtain a pdf for $\theta$ that is proportional to $ p_U(\theta) p(\mathbf{y} | \theta) $.
+ \item Obtain a PDF for $\theta$ that is proportional to $ p_U(\theta) p(\mathbf{y} | \theta) $.
        Can this be considered a posterior for $ \theta $?
  \item Repeat previous points with $ Y_1 \ldots Y_n \sim \text{Poisson}(\theta) $.
 \end{enumerate}
@@ -93,7 +93,12 @@
     & = \frac{\theta ^ 2 - 2 \theta \hat \theta_{MLE} + \hat \theta_{MLE}}{\theta^2 (1 - \theta)^2}
  \end{align*}
  \item The constrains on $ p_U(\theta) $ imply that
-       \[ p_U(\theta) = c \cdot \sqrt[n]{\prod_i \theta ^ y_i (1 - \theta) ^ {1 - y_i}} \]
+       \begin{align*}
+        p_U(\theta) & = c \sqrt[n]{\prod_i \theta ^ {y_i} (1 - \theta) ^ {1 - y_i}}          \\
+                    & = c \prod_i \theta ^ {y_i / n} (1 - \theta) ^ {(1 - y_i) / n}          \\
+                    & = c \; \theta ^ {\sum_i y_i / n} (1 - \theta) ^ {\sum_i (1 - y_i) / n} \\
+                    & = c \; \theta ^ {\sum_i y_i / n} (1 - \theta) ^ {1 - \sum_i y_i / n}
+       \end{align*}
        where $ c $ is the normalization constant.
        \begin{align*}
         - \frac{\partial^2 \log p_U(\theta)}{\partial^2 \theta}
@@ -101,11 +106,19 @@
           & = - \frac{\partial^2 l(\theta | \mathbf{y})}{\partial^2 \theta} / n                           \\
           & = \frac{\theta ^ 2 - 2 \theta \hat \theta_{MLE} + \hat \theta_{MLE}}{\theta^2 (1 - \theta)^2}
        \end{align*}
- \item Such a pdf would have the form
-       \[ g(\theta) = c \cdot p_U(\theta) p(\mathbf{y} | \theta) \]
-       Where $ c = \int_{S_\theta} p(\theta, \mathbf{y}) \partial \theta $ to guarantee that 
-       $ g(\cdot) $ is proper.
-       That is by definition a posterior probability.
+ \item Such a PDF would have the form
+       \begin{align*}
+        p(\theta | \mathbf{y}) & = c \cdot p_U(\theta) p(\mathbf{y} | \theta)                                                       \\
+                               & = c \; \theta ^ {\sum_i y_i / n} ( 1 - \theta)^{1 - \sum_i y_i / n} \cdot
+        \theta ^ {\sum_i y_i} (1 - \theta) ^ {\sum_i (1 - y_i)} \\
+                               & = c \; \theta ^ {\sum_i y_i (1 + \frac{1}{n})} (1 - \theta) ^ {\sum_i (1 - y_i) (1 + \frac{1}{n})} \\
+                               & = c \; \theta ^ {\sum_i y_i (1 + \frac{1}{n})} (1 - \theta) ^ {(n - \sum_i y_i) (1 + \frac{1}{n})}
+       \end{align*}
+       Where $ c = \int_{S_\theta} p(\theta, \mathbf{y}) \partial \theta $ to guarantee that
+       the PDF is proper. We can observe that the obtained PDF is a Beta distribution with
+       parameters $ \sum_i y_i (1 + \frac{1}{n}) + 1 $ and $ (n - \sum_i y_i)(1 + \frac{1}{n}) + 1 $.
+       It is a posterior because it is the product of a prior and a conditioned probability. Moreover,
+       it is a case of conjugate prior.
  \item Same steps: simplify the log-likelihood, find the first derivative and constrain to zero.
        \begin{align*}
         \hat \theta_{MLE} & = \argmin_\theta l_\text{Poisson}(\theta | \mathbf{y})                               \\
@@ -119,13 +132,22 @@
        \end{align*}
        Thus $ \hat \theta_{MLE} = \sum_i y_i / n $.
        \begin{align*}
-        -\frac{\partial^2 l(\theta | \mathbf{y})}{n \partial^2 \theta} 
-         & = \frac{\sum_i y_i}{n \theta^2} \\
-         & = \frac{\hat \theta_{MLE}}{\theta^2}
+        -\frac{\partial^2 l(\theta | \mathbf{y})}{n \partial^2 \theta}
+          & = \frac{\sum_i y_i}{n \theta^2}      \\
+          & = \frac{\hat \theta_{MLE}}{\theta^2}
        \end{align*}
-       In this case the pdf $ p_U $ would be
-       \[ p_U(\theta) \propto \sqrt[n]{\prod_i \exp(-\theta) \theta ^ {y_i}} \]
+       In this case the PDF $ p_U $ would be
+       \begin{align*}
+        p_U(\theta) & \propto \sqrt[n]{\prod_i \exp(-\theta) \theta ^ {y_i}} \\
+                    & = \exp(-\theta) \theta ^ {\sum_i y_i / n}
+       \end{align*}
        Thus \begin{align*}
-        - \frac{\partial^2 \log p_U(\theta)}{\partial^2 \theta} & = \frac{\sum_i y_i}{n \theta^2}
-       \end{align*}
+       - \frac{\partial^2 \log p_U(\theta)}{\partial^2 \theta} & = \frac{\sum_i y_i}{n \theta^2}
+ \end{align*}
+ While the posterior is
+ \begin{align*}
+  p(\theta | \mathbf{y}) & \propto \exp(-\theta) \theta ^ {\sum_i y_i / n} \prod_i \exp(-\theta) \theta ^ {y_i} \\
+                         & = \exp(- (n + 1) \theta) \theta ^ {\sum_i y_i (1 + \frac{1}{n})}
+ \end{align*}
+ This time the posterior is a Gamma distribution with parameters $ \sum_i y_i (1 + \frac{1}{n}) $ and $ n + 1 $.
 \end{enumerate}
