@@ -1,12 +1,20 @@
-\documentclass[10pt,a4paper]{report}
-\usepackage[utf8]{inputenc}
+% !TeX TS-program = lualatex
 
-\usepackage[margin=1.5in]{geometry}
+\documentclass[10pt,a4paper]{report}
+%\usepackage[utf8]{inputenc}
+
+\usepackage{fontspec}
+\setmonofont{consolas}
+
+\usepackage[margin=1in]{geometry}
 
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+
+\usepackage{minted}
+\usepackage{enumitem}
 
 \title{Homeworks of Bayesian Inference\\ {\large (B004652) \\ Group 1}}
 \author{Giovanni Papini}
@@ -24,10 +32,11 @@
 
 \pagestyle{fancy}
 \lhead{\hmwkAuthorName}
-\rhead{\hmwkClass}
-\chead{\chaptername \space \thechapter}
+\chead{\hmwkClass}
+\rhead{\chaptername \space \thechapter}
 
 % Probability commands: Expectation, Variance, Covariance, Bias
+\DeclareMathOperator{\prob}{P}
 \DeclareMathOperator{\E}{E}
 \DeclareMathOperator{\V}{V}
 \DeclareMathOperator{\Var}{Var}
@@ -43,4 +52,5 @@
 \include{weekly/week-01}
 \include{weekly/week-02}
 \include{weekly/week-03}
+\include{weekly/week-04}
 \end{document}
