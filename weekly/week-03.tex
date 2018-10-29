@@ -29,13 +29,14 @@
        \end{align*}
        So we can write the PDF of $\psi$ as
        \begin{align*}
-        p_\psi(\psi) & = \frac{1}{B(a, b)} \left(\frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{a - 1}
+        p_\psi(\psi) 
+          & = \frac{1}{B(a, b)} \left(\frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{a - 1}
         \left(1 - \frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{b - 1}
         \frac{\exp(\psi)}{(1 + \exp(\psi))^2} \\
-                     & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a - 1}}{(1 - \exp(\psi))^{a - 1}}
+          & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a - 1}}{(1 - \exp(\psi))^{a - 1}}
         \frac{1}{(1 + \exp(\psi))^{b - 1}}
         \frac{\exp(\psi)}{(1 + \exp(\psi))^2} \\
-                     & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a}}{(1 + \exp(\psi))^{a + b}}
+          & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a}}{(1 + \exp(\psi))^{a + b}}
        \end{align*}
        And in the case that $ a = b = 1 $ the plot is: \\
        \includegraphics[width=\textwidth]{julia-scripts/week-03_plot1.png}

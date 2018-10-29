@@ -18,7 +18,7 @@ p-value and the number of switch as statistic test.
 
 Solution: $ 0.016 $ \\
 Code:
-\begin{minted}[fontsize=\footnotesize]{R}
+\begin{minted}[fontsize=\small]{R}
 set.seed(10)
 
 count_switch <- function(x) x %>% diff() %>% abs() %>% sum()
