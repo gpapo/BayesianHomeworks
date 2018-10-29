@@ -1,0 +1,285 @@
+\chapter{Gibbs sampler}
+
+\section{Exercise 6.1, Hoff}
+
+\subsection{Data}
+
+\begin{itemize}
+ \item Let's reconsider the number of children data in Exercise 4.8.
+ \item Assume Poisson sampling models for the two groups as before, but
+       parameterize $ \theta_A $ and $ \theta_B $ as $ \theta_A = \theta $
+       and $ \theta_B = \theta_\gamma $, where $ \gamma $ is the relative
+       rate $ \theta_B / \theta_A $. Let $ \theta \sim \text{Gamma}
+       (a_\theta, b_\theta) $ and $ \gamma \sim \text{Gamma}(a_\gamma, b_\gamma) $.
+\end{itemize}
+
+\subsection{Questions}
+
+\begin{enumerate}
+ \item Are $ \theta_A $ and $ \theta_B $ independent or dependent under this
+       prior distribution? In which situations is such a joint prior distribution
+       justified?
+ \item Obtain the form of the full conditional distribution of $ \theta $ given
+       $ \mathbf y_A $, $ \mathbf y_B $ and $ \gamma $.
+ \item Obtain the form of the full conditional distribution of $ \gamma $ given
+       $ \mathbf y_A $, $ \mathbf y_B $ and $ \theta $.
+ \item Set $ a_\theta = 2 $ and $ b_\theta = 1 $. Let $ a_\gamma = b_\gamma 
+       \in \left\{8, 16, 32, 64, 128\right\} $. For each of these five values,
+       run a Gibbs sampler of at least 5,000 iterations and obtain 
+       $ \E[\theta_B - \theta_A | \mathbf y_A, \mathbf y_B] $. Describe the effects
+       of the prior distribution for $ \gamma $ on the results.
+\end{enumerate}
+
+\subsection{Solutions}
+
+\begin{enumerate}
+ \item We evaluate the covariance expression of $ \theta_A $ and $ \theta_B $:
+       \begin{align*}
+        \Cov[\theta_A, \theta_B] 
+          &= \E[\theta_A \theta_B] - \E[\theta_A] \E[\theta_B] \\
+          &= \E[\theta ^ 2 \gamma] - \E[\theta] \E[\theta \gamma] \\
+          &= \E[\theta ^ 2] \E[\gamma] - \E[\theta] ^ 2 \E[\gamma] \tag*{(for the independence of $ \theta $ and $ \gamma $)} \\
+          &= \E[\gamma] (\E[\theta ^ 2] - \E[\theta] ^ 2) \\
+          &= \E[\gamma] \Var[\theta] = \frac{a_\gamma}{b_\gamma} \frac{a_\theta}{b_\theta^2} > 0
+       \end{align*}
+      Thus the two variables are not independent.
+      
+      This kind of prior joint distribution could be useful in situations where 
+      we are modeling the number of events in two different contests $ A $ and 
+      $ B $ in a certain time interval and the mean number of events is respectively
+      $ \theta_A $ and $ \theta_B $. The parameter $ \gamma $ can be interpreted as
+      an acceleration factor caused by a phenomenon that change in the contest 
+      $ B $, but that remains constant in the ``rest of the world'' $ A $.
+      In this way of thinking $ \theta $ represents the \textit{standard} and 
+      $ \gamma $ represents the element that, ceteris paribus, deviates from it.
+      So, this parameterization of the prior joint is justified when we want to
+      measure the intensity of the change caused to a starting population $ A $.
+      As a consequence it lends itself well in experimental rather than observational 
+      scopes.
+\item First of all we observe the DAG that represents the relational model of variables.
+      \begin{figure}[H]
+       \centering
+       \begin{tikzpicture}[node distance=1cm]
+        % styles %
+        \tikzstyle{param} = [circle,thick,fill=white,dashed,minimum size=1cm];
+        \tikzstyle{yobs} = [circle];
+        \tikzstyle{thetadep} = [->, draw=red, fill=red, >=stealth];
+        \tikzstyle{gammadep} = [->, draw=blue, fill=blue, >=stealth];
+        
+        % nodes %
+        \node [param,draw=red] (theta) {$\theta$};
+        \node [param,draw=blue] (gamma) [right of = theta, xshift = 1.5cm] {$\gamma$};
+        
+        \node [yobs] (ynA) [below of = theta, yshift=-1.5cm] {$ y_{n_AA} $};
+        \node [yobs] (dt1) [left of = ynA] {$ \ldots $};
+        \node [yobs] (yiA) [left of = dt1] {$ y_{iA} $};
+        \node [yobs] (dt2) [left of = yiA] {$ \ldots $};
+        \node [yobs] (y2A) [left of = dt2] {$ y_{2A} $};
+        \node [yobs] (y1A) [left of = y2A] {$ y_{1A} $};
+        
+        \node [yobs] (y1B) [below of = gamma, yshift=-1.5cm] {$ y_{1B} $};
+        \node [yobs] (y2B) [right of = y1B] {$ y_{2B} $};
+        \node [yobs] (dt3) [right of = y2B] {$ \ldots $};
+        \node [yobs] (yjB) [right of = dt3] {$ y_{jB} $};
+        \node [yobs] (dt4) [right of = yjB] {$ \ldots $};
+        \node [yobs] (ynB) [right of = dt4] {$ y_{n_BB} $};
+        
+        % edges %
+        \begin{pgfonlayer}{background}
+        \path[thetadep] (theta) 
+                      edge node {} (ynA)
+                      edge [bend right] node {} (yiA)
+                      edge [bend right] node {} (y2A)
+                      edge [bend right] node {} (y1A)
+                      edge [bend left]  node {} (y1B)
+                      edge [bend left]  node {} (y2B)
+                      edge [bend left]  node {} (yjB)
+                      edge [bend left]  node {} (ynB);
+        \path[gammadep] (gamma)
+                      edge node {} (y1B)
+                      edge node {} (y2B)
+                      edge [bend left] node {} (yjB)
+                      edge [bend left] node {} (ynB);
+        \end{pgfonlayer}
+       \end{tikzpicture}
+      \end{figure}
+      
+      \textbf{Full conditional of $\theta$} \quad The \textit{Markov blanket} of
+      $\theta$ is 
+      \[ \blanket(\theta) = \left\{ Y_{1A}, Y_{2A}, 
+        \ldots, Y_{n_AA}, Y_{1B}, \ldots, Y_{n_BB}, \gamma \right\} \]
+      in fact the $\theta$ node does not have parents and its children are all
+      the observations. Moreover, for the $ B $ sample, $\gamma$ is another
+      parent.
+      \begin{align*}
+       p(\theta\, |\, \blanket(\theta))
+        &\propto p(\theta | a_\theta, b_\theta)\, \prod_{i = 1}^{n_A} p(Y_{iA} | \theta) 
+         \prod_{j = 1}^{n_B} p(Y_{jB} | \theta, \gamma) \\
+        &= \frac{b_\theta ^ {a_\theta}}{\Gamma(a_\theta)} \theta ^ {a_\theta - 1} \exp(-b_\theta \theta)
+         \prod_{i = 1}^{n_A} \theta^{y_{iA}} \frac{\exp(-\theta)}{y_{iA}!}
+         \prod_{j = 1}^{n_B} (\theta \cdot \gamma)^{y_{jB}} \frac{\exp(-\theta \gamma)}{y_{jB}!} \\
+        &\propto \theta ^ {a_\theta - 1} \exp(-b_\theta \theta)
+         \theta ^ {\sum_i y_{iA}} \exp(-n_A \theta) 
+         (\theta \cdot \gamma) ^ {\sum_j y_{jB}} \exp(-n_B \theta) \\
+        &= \theta ^ {a_\theta + \sum_i y_{iA} + \sum_j y_{jB} - 1} \exp(-(b_\theta + n_A + n_B)\theta)
+      \end{align*}
+      We can note the kernel of a Gamma distribution, so
+      \[ \theta\, |\, \blanket(\theta) \sim \text{Gamma}(a_\theta + 
+       \textstyle \sum_i y_{iA} + \textstyle \sum_j y_{jB},\, b_\theta + n_A + n_B) \]
+\item \textbf{Full conditional of $\gamma$} \quad The \textit{Markov blanket} of 
+      this random variable is
+      \[ \blanket(\gamma) = \left\{ Y_{1B}, Y_{2B}, \ldots, Y_{n_BB}, \theta \right\} \]
+      \begin{align*}
+       p(\gamma\, |\, \blanket(\gamma))
+        &\propto p(\gamma | a_\gamma, b_\gamma) \prod_{j = 1}^{n_B} p(y_{jB} | \theta, \gamma) \\
+        &= \frac{b_\gamma ^ {a_\gamma}}{\Gamma(a_\gamma)} \gamma^{a_\gamma - 1} \exp(-b_\gamma \gamma)
+         \prod_{j = 1}^{n_B} (\theta \cdot \gamma) ^ {y_{iB}} \frac{\exp(-\theta \gamma)}{y_{jB}!} \\
+        &\propto \gamma ^ {a_\gamma - 1} \exp(-b_\gamma \gamma) 
+         (\theta \cdot \gamma) ^ {\sum_j y_{jB}} \exp(-n_B (\theta \cdot \gamma)) \\
+        &\propto \gamma ^ {a_\gamma + \sum_j y_{jB} - 1} \exp(-(b_\gamma + n_B\theta)\gamma)
+      \end{align*}
+      We can note the kernel of a Gamma distribution, so
+      \[ \gamma\, |\, \blanket(\gamma) \sim \text{Gamma}(a_\gamma + \textstyle \sum_j y_{jB},\, 
+       b_\gamma + n_B\theta) \]
+\item At this point we can proceed with a simulation through the Gibbs algorithm following the MCMC
+      approach.
+\begin{minted}[fontsize=\small]{r}
+library(tidyverse)
+
+# Load data
+yobs <- list(
+    A = scan("data/menchild30bach.dat"),
+    B = scan("data/menchild30nobach.dat")
+)
+
+# Hyperparameters
+a_theta <- 2
+b_theta <- 1
+gammapriors <- 2 ^ (3:7)
+
+# Sample statistics
+ytot <- map(yobs, sum)
+n <- map(yobs, length)
+
+# Simulation main function
+library(compiler) # to accelerate
+gibbs_sim <- function(a_gamma, b_gamma = a_gamma, 
+                      theta0 = 1, gamma0 = 1, nsim = 5000, seed = 10) {
+    set.seed(seed)
+    # Initialize
+    result <- matrix(NA, nsim, 2, dimnames = list(NULL, c("theta", "gamma")))
+    result[1, ] <- c(theta0, gamma0)
+    # Main loop
+    for (r in 2:nsim) {
+        result[r, "theta"] <- rgamma(1, a_theta + ytot$A + ytot$B, 
+                                     b_theta + n$A + n$B * result[r - 1, "gamma"])
+        result[r, "gamma"] <- rgamma(1, a_gamma + ytot$B, b_gamma + n$B * result[r, "theta"])
+    }
+    # Return
+    return(as_tibble(result))
+}
+
+# Simulation
+simulations <- map(gammapriors, gibbs_sim, nsim = 1E4)
+statistics <- map_dbl(simulations, ~ with(., mean(theta * gamma - theta)))
+# [1] 0.3720311 0.3344181 0.2713526 0.2000735 0.1327382
+\end{minted}
+      We have evidence of the fact that the two means converge when the parameters
+      of the prior distribution get higher. This imply that the difference gets lower
+      and that the mean number of children in the two groups tends to be the same when
+      we take higher hyper-parameters.
+      
+      We can see it even graphically comparing the posterior distributions of $ \theta_A $
+      and $ \theta_B $ in the 5 configurations:
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=\linewidth]{r-scripts/week-06_hist.pdf}
+\end{figure}
+Code:
+\begin{minted}[fontsize=\small]{R}
+opar <- par(mfrow = n2mfrow(6))
+
+for (j in seq_along(gammapriors)) {
+    theta <- pluck(simulations, j, "theta")
+    gamma <- pluck(simulations, j, "gamma")
+    hist(theta, prob = TRUE, col = "lightblue", ylim = c(0, 5), xlim = c(0, 2.5),
+         ylab = "posterior density", xlab = "mean number of children",
+         main = substitute(paste(a[gamma], " = ", b[gamma], " = " , prior),
+    list(prior = gammapriors[j])))
+    lines(density(theta), col = "blue")
+    hist(gamma * theta, prob = TRUE, col = "orange", add = TRUE)
+    lines(density(gamma * theta), col = "red")
+    legend("topleft", c(expression(theta[A]), expression(theta[B])),
+           col = c("blue", "red"), lty = 1, cex = 0.7)
+}
+
+par(opar)
+\end{minted}
+      It's apparent even graphically that when the hyper-parameters of $\gamma$ increase, the
+      posterior distributions get nearer, going even to overlap.
+      
+      This is due to the fact that the higher we sat the priors of $\gamma$, the more we
+      weight the information that we already have about the variable, and consequently
+      the observed information gain less importance.
+      
+      It's interesting even to observe how the Gamma distribution change when we set the
+      different $ a_\gamma $ and $ b_\gamma $.
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=0.65\linewidth]{r-scripts/week-06_prior.pdf}
+\end{figure}
+      Code:
+\begin{minted}[fontsize=\small]{r}
+plot(NULL, xlim = c(0, 3), ylim = c(0, 4.5),
+     xlab = expression(gamma), ylab = expression(p(gamma)),
+     main = "Gamma prior")
+for (i in seq_along(gammapriors)) {
+    curve(dgamma(x, gammapriors[i], gammapriors[i]), add = TRUE, col = i)
+}
+legend_txt <- parse(text = paste("a[gamma] ==", gammapriors))
+legend(x = 1.5, y = 3, legend_txt, col = seq_along(gammapriors), lty = 1)
+mtext(expression(b[gamma] == a[gamma]))
+\end{minted}
+      As we can see the in the plot, the higher the hyper parameters we set, the
+      more the distribution shrinks to 1, that is also the expected value of the
+      Gamma. Vice versa, the variance decreases proportionally.
+      
+      Going toward the limit case in which $ a_\gamma $ and $ b_\gamma $ go to
+      infinity we are implicitly affirming that we do not want to \textit{learn}
+      anything from the new observations, and we already have a strong opinion
+      about the Gamma that we don't want to change. However, if are talking from
+      a Bayesian perspective, this situation is not sane neither useful; it's
+      just a way to see how much the inference can change on the base of the
+      choice of a priori distribution of parameters.
+      
+      \textbf{Observation} \quad It would be appropriate to adequately assess
+      the convergence of the Gibbs algorithm, but in this case it was not done
+      because it was not explicitly requested by the exercise. We just calculate
+      the effective sample size and make sure it is high enough to make sure we
+      have reached the equilibrium distribution and have it very close to it.
+      
+\begin{minted}[fontsize=\small]{r}
+library(coda)
+map(simulations, effectiveSize)
+
+# [[1]]
+# theta    gamma
+# 1175.254 1198.183
+#
+# [[2]]
+# theta    gamma
+# 1471.870 1353.061
+#
+# [[3]]
+# theta    gamma
+# 1840.738 1695.119
+#
+# [[4]]
+# theta    gamma
+# 2424.931 2238.538
+#
+# [[5]]
+# theta    gamma
+# 3259.088 2942.661
+\end{minted}
+\end{enumerate}

@@ -9,7 +9,13 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+
+% Graphic stuff
 \usepackage{graphicx}
+\usepackage{pgf, tikz}
+\usetikzlibrary{automata, arrows}
+\pgfdeclarelayer{background} 
+\pgfsetlayers{background,main}
 
 \usepackage{minted}
 \usepackage{enumitem}
@@ -34,13 +40,14 @@
 \rhead{\chaptername \space \thechapter}
 
 % Probability commands: Expectation, Variance, Covariance, Bias
-\DeclareMathOperator{\prob}{P}
+\DeclareMathOperator{\prob}{\mathbb P}
 \DeclareMathOperator{\E}{E}
 \DeclareMathOperator{\V}{V}
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Cov}
 
 % Useful commands
+\DeclareMathOperator{\blanket}{bl} % Markov blanket
 \DeclareMathOperator{\logit}{logit}
 \DeclareMathOperator*{\argmax}{arg \; max \;}
 \DeclareMathOperator*{\argmin}{arg \; min \;}
@@ -51,4 +58,6 @@
 \include{weekly/week-02}
 \include{weekly/week-03}
 \include{weekly/week-04}
+\include{weekly/week-05}
+\include{weekly/week-06}
 \end{document}
