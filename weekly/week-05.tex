@@ -1,0 +1,28 @@
+\chapter{Unit information prior (again)}
+
+\section{Exercise 5.5, Hoff}
+
+\subsection{Questions}
+\begin{enumerate}
+ \item Reparametrize the normal model as $ p(y | \theta, \psi) $ where 
+       $ \psi = 1 / \sigma^2 $. Write the log-likelihood in terms of
+       $\theta$ and $\psi$.
+ \item Find a probability density $ p_U(\theta, \psi) $ so that $ \log(\theta, \psi) =
+       l(\theta, \psi | \mathbf y) / n + c $ where $ c $ is a constant and does not
+       depend on $\theta$ and $\psi$.
+\end{enumerate}
+
+\subsection{Solutions}
+\begin{enumerate}
+ \item \begin{align*}
+  l(\theta, \psi | \mathbf y) 
+   &= \sum_{i = 1}^{n} \log \left( \frac{\psi}{2\pi} \right) ^ {\frac{1}{2}} \exp \left(\frac{\psi(y_i - \theta)^2}{2} \right) \\
+   &= \frac{n}{2} \log \left( \frac{\psi}{2\pi} \right) + \frac{\psi}{2} \sum_{i=1}^n (y_i - \theta)^2 \\
+   &= \frac{n}{2} \log \left( \frac{\psi}{2\pi} \right) + \frac{\psi}{2} \sum_{i=1}^n (y_i - \bar y)^2 + 
+    \frac{\psi}{2} \sum_{i=1}^n (\bar y - \theta)^2
+ \end{align*}
+ \item \begin{align*}
+  l_U(\theta, \psi | \mathbf y)
+   &\propto \frac{1}{2} \log\left(\frac{\psi}{2\pi}\right) + 
+ \end{align*}
+\end{enumerate}
