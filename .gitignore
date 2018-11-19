@@ -4,5 +4,5 @@
 _*
 *.Rhistory
 
-r-scripts/*.pdf
 unifilogo\.png
+*.pdf
