@@ -20,9 +20,11 @@
 \usepackage{minted}
 \usepackage{enumitem}
 
-\title{Homeworks of Bayesian Inference\\ {\large (B004652) \\ Group 1}}
-\author{Giovanni Papini}
-\date{Last revision \today}
+\title{
+ \includegraphics[width=0.3\linewidth]{unifilogo.png} \\ \vspace{1cm}
+ \Huge Homeworks of Bayesian Inference\\ {\LARGE (B004652) \\ \vspace{1cm} Group 1}}
+\author{\LARGE Giovanni Papini}
+\date{\vspace{3cm} \raggedleft Last revision: \today}
 
 % Set `week`s instead of `chapter`s
 \renewcommand{\chaptername}{Week}
@@ -46,18 +48,31 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Cov}
 
+\newcommand{\Beta}{\text B}
+\newcommand{\parm}{\mathord{\color{black!33}\bullet}}%
+
 % Useful commands
 \DeclareMathOperator{\blanket}{bl} % Markov blanket
 \DeclareMathOperator{\logit}{logit}
 \DeclareMathOperator*{\argmax}{arg \; max \;}
 \DeclareMathOperator*{\argmin}{arg \; min \;}
 
+\DeclareMathOperator{\iid}{i.i.d.}
+
+% Hide subsection numeration
+\renewcommand{\thesubsection}{}
+
 \begin{document}
 \maketitle
+
+\part{}
 \include{weekly/week-01}
 \include{weekly/week-02}
 \include{weekly/week-03}
 \include{weekly/week-04}
 \include{weekly/week-05}
 \include{weekly/week-06}
+
+\part{}
+\include{weekly/week-07}
 \end{document}
