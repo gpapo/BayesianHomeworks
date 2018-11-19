@@ -10,6 +10,9 @@
  \item Find a probability density $ p_U(\theta, \psi) $ so that $ \log(\theta, \psi) =
        l(\theta, \psi | \mathbf y) / n + c $ where $ c $ is a constant and does not
        depend on $\theta$ and $\psi$.
+ \item Find a PDF $ p_U(\theta, \psi | \mathbf y) $, proportional to 
+       $ p_U(\theta, \psi) \cdot p(\mathbf y | \theta, \psi) $. Can this joint density considered
+       a posterior PDF?
 \end{enumerate}
 
 \subsection{Solutions}
@@ -22,7 +25,29 @@
     \frac{\psi}{2} \sum_{i=1}^n (\bar y - \theta)^2
  \end{align*}
  \item \begin{align*}
-  l_U(\theta, \psi | \mathbf y)
-   &\propto \frac{1}{2} \log\left(\frac{\psi}{2\pi}\right) + 
+  l_U(\theta, \psi) 
+   &= \frac{l(\theta, \psi | \mathbf y)}{n} + c \\
+   &= \frac{1}{n} \left[ \frac{n}{2} \log\left( \frac{\psi}{2\pi} \right) - \frac{\psi}{2} \sum_i (y_i - \theta)^2 \right] + c \\
+   &= \frac{1}{2} \log\left( \frac{\psi}{2\pi} \right) - 
+    \frac{\psi}{2n} \sum_i (y_i - \bar y)^2 - \frac{\psi}{2} (\bar y - \theta)^2 + c \\
+  \implies p_U(\theta, \psi)
+   &\propto \exp( l_U(\theta, \psi) ) \\
+   &\propto 
+    \underbrace{ \psi^\frac{1}{2} \cdot \exp\left( -\frac{\psi}{2n} \sum_i (y_i - \bar y)^2 \right) }_
+     {\text{kernel of a Gamma($ 3 / 2 $, $ \sum_i (y_i - \bar y)^2 / 2n $)}}
+    \overbrace{ \exp\left( -\frac{\psi}{2} (\bar y - \theta)^2 \right) }^
+     {\text{kernel of a Normal($\theta$, $\psi$)}}
  \end{align*}
+ \item \begin{align*}
+  p_U(\theta, \psi | \mathbf y) 
+   &\propto p_U(\theta, \psi) \cdot p(\mathbf y | \theta, \psi) \\
+   &\propto \psi^\frac{1}{2} \exp\left( -\frac{\psi}{2n} \sum_i (y_i - \bar y)^2 \right)
+    \exp\left( -\frac{\psi}{2} (\bar y - \theta)^2 \right)
+    \left( \frac{\psi}{2\pi} \right)^\frac{n}{2} \exp\left( -\frac{\psi}{2} \sum_i (y_i - \theta)^2 \right) \\
+   &\propto \underbrace{ \psi^\frac{n + 1}{2}  \exp\left( -\frac{\psi}{2n} \sum_i (y_i - \bar y)^2 \right) }_
+    {\text{kernel of a Gamma}}
+    \overbrace{ \exp\left( -\frac{\psi}{2} (\bar y - \theta)^2 -\frac{\psi}{2}\sum_i (y_i - \theta)^2 \right) }^
+    {\text{kernel of a Normal}}
+ \end{align*}
+ \texttt{DA RIGUARDARE.}
 \end{enumerate}
