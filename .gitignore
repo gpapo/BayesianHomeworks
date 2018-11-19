@@ -3,3 +3,6 @@
 *.synctex.gz
 _*
 *.Rhistory
+
+r-scripts/*.pdf
+unifilogo\.png
