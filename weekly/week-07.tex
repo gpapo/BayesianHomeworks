@@ -102,8 +102,8 @@
         \centering
         \begin{tikzpicture}[node distance=1cm,->,draw=black,>=stealth]
         % styles %
-        \tikzstyle{param} = [circle,thick,draw=black,fill=white,dashed,minimum size=1.3cm];
-        \tikzstyle{yobs} = [circle,draw=black,fill=white,minimum size=0.9cm];
+        \tikzstyle{param} = [circle,thick,draw=black,fill=white,dashed,minimum size=1cm];
+        \tikzstyle{yobs} = [circle,draw=black,fill=white,minimum size=1cm];
         
         % nodes %
         \node [param] (mu) {$\mu$};
@@ -119,7 +119,7 @@
         \node [yobs,below of=thetam,yshift=-1cm] (ym) {$\mathbf y_m$};
         
         % edges %
-        \begin{pgfonlayer}{background}
+
         \path (mu)
               edge [bend right] node {} (theta1)
               edge [bend right] node {} (theta2)
@@ -127,7 +127,6 @@
         \path (theta1) edge node {} (y1);
         \path (theta2) edge node {} (y2);
         \path (thetam) edge node {} (ym);
-        \end{pgfonlayer}
         \end{tikzpicture}
        \end{figure}
        Using this graph and its factorization one can calculate the conditioned probability as
@@ -136,21 +135,20 @@
          &= \frac{p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m)}
                  {p(\theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m)} \\
          &= \frac{p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m)}
-                 {\int p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m) \partial \mu} \\
+                 {\int p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m) \dd \mu} \\
          &= \frac{p(\mathbf y_1, \ldots, \mathbf y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
                   p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu)}
                  {\int p(\mathbf y_1, \ldots, \mathbf y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
-                  p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu) \partial \mu} \\
+                  p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu) \dd \mu} \\
          &= \frac{p(\mathbf y_1, \ldots, \mathbf y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
                   p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu)}
                  {p(\mathbf y_1, \ldots, \mathbf y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
-                  \int p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu) \partial \mu} \\
+                  \int p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu) \dd \mu} \\
          &= \frac{p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu)}
-                 {\int p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu) \partial \mu} \\
+                 {\int p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu) \dd \mu} \\
          &= \frac{p(\theta_1, \ldots, \theta_m, \mu, \tau^2)}{p(\theta_1, \ldots, \theta_m, \tau^2)} \\
-         &= p(\mu | \theta_1, \ldots, \theta_m, \tau^2)
+         &= p(\mu | \theta_1, \ldots, \theta_m, \tau^2) \tag*{$ \square $}
        \end{align*}
-       Like we wanted to show.
        
        This result implies that the information obtained from the samples in a
        certain sense does not refer \textit{directly} on the grand mean, but it
@@ -184,8 +182,30 @@
 
 \subsection{Solutions}
 \begin{enumerate}[label=\alph*)]
- \item \textbf{Premise} \quad In this case we use the following parameterization:
+ \item We can leverage on the property of the expected value that, given two variables
+       $ X $ and $ Y $ 
+       \begin{equation}\label{week7:eq_condexpectation}
+       \E_X[X] = \E_Y[\E_X[X | Y]]
+       \end{equation}
+       Thus,
+       \begin{align*}
+        \E_y[y] &= \E_\theta[\E_y[y | \theta]] \\
+                &= \E_\theta[\theta] \\
+                &= \frac{\alpha}{\beta}
+       \end{align*}
+       
+       For the variance, we can refer to \ref{week7:eq_totalvariance} and consider
+       $ X = y $ and $ Y = \theta $
+       \begin{align*}
+        \Var[y] &= \E[\Var[y | \theta]] + \Var[\E[y | \theta]] \\
+                &= \E[\theta] + \Var[\theta] \\
+                &= \frac{\alpha}{\beta} + \frac{\alpha}{\beta^2} \\
+                &= \frac{(1 + \beta) \alpha}{\beta^2}
+       \end{align*}
+
+       \textbf{Formal alternative} \quad Using the following parameterization:
        \[ p(x | \theta, r) = \binom{x - 1}{r - 1} \theta ^{r} (1 - \theta) ^{x - r} \]
+       with $ \theta = \beta / ( 1 + \beta) $ and $ r = \alpha $.
        
        \begin{align*}
         \E[x] &= \sum_{x \in \Theta} x \cdot p(x) \\
@@ -207,7 +227,7 @@
        \end{equation}
        so, we obtain first of all $ \E[X^2] $.
        \begin{align*}
-        E[X^2] &= \sum_{x = r}^{\infty} x^2 \cdot \binom{x - 1}{r - 1} \cdot \theta ^r (1 - \theta) ^{x - r} \\
+        \E[X^2] &= \sum_{x = r}^{\infty} x^2 \cdot \binom{x - 1}{r - 1} \cdot \theta ^r (1 - \theta) ^{x - r} \\
                &= \sum_{x = r}^{\infty} [x(x + 1) - x] \binom{x - 1}{r - 1} \cdot \theta ^r (1 - \theta) ^{x - r} \\
                &= \sum_{x = r}^{\infty} [x(x + 1)] \binom{x - 1}{r - 1} \cdot \theta ^r (1 - \theta) ^{x - r} -
                   \sum_{x = r}^{\infty} x \cdot \binom{x - 1}{r - 1} \cdot \theta ^r (1 - \theta) ^{x - r} \\
@@ -222,7 +242,7 @@
          \implies \Var[X] &= \frac{r^2}{\theta^2} + \frac{(1 - \theta) r}{\theta^2} - \left( \frac{r}{\theta} \right)^2 \\
                           &= \frac{(1 - \theta)r}{\theta ^ 2}
        \end{align*}
- \item \textbf{Premise} \quad The PDF of Student's t distribution
+ \item The PDF of Student's t distribution
        \[ p(x | n) = c \cdot \left( 1 + \frac{x^2}{n} \right)^{-\frac{n + 1}{2}} \]
        where the c is a constant
        \[ c = \frac{1}{\sqrt{n}} \frac{1}{\Beta\left( \frac{n}{2}, \frac{1}{2} \right)} \]
@@ -231,27 +251,32 @@
        It's immediate to see that the function is even, because $ x $ is present only as 
        $ x^2 $, hence $ f(-x) = f(x) $.
        \begin{align*}
-        \E[X] 
-         &= \int_{x \in \Theta} x \cdot f(x) dx \\
-         &= \int_{-\infty}^{\infty} x \cdot f(x) dx \\
-         &= \int_{-\infty}^{0} x \cdot f(x) dx + \int_{0}^{\infty} x \cdot f(x) dx
-         \intertext{\raggedleft Change of variable in the first integral \\$ t = -x $}
-         &= -\int_{\infty}^{0} (-t) \cdot f(-t) dt + \int_{0}^{\infty} x \cdot f(x) dx \\
-         &= \int_{\infty}^{0} t \cdot f(-t) dt + \int_{0}^{\infty} x \cdot f(x) dx \\
-         &= -\int_{0}^{\infty} t \cdot f(-t) dt + \int_{0}^{\infty} x \cdot f(x) dx
-         \intertext{\raggedleft Since $ f(x) = f(-x) $}
-         &= -\int_{0}^{\infty} t \cdot f(t) dt + \int_{0}^{\infty} x \cdot f(x) dx \\
-         &= 0
+       	\E[X] & = \int_{x \in \Theta} x \cdot f(x)  \dd x \\
+       	      & = \int_{-\infty}^{\infty} x \cdot f(x) \dd x \\
+       	      & = \int_{-\infty}^{0} x \cdot f(x) \dd x + 
+                  \int_{0}^{\infty} x \cdot f(x) \dd x \\
+       	\intertext{\raggedleft Change of variable in the first 
+                   integral \\$ t = -x $}
+       	      & = -\int_{\infty}^{0} (-t) \cdot f(-t) \dd t + 
+                  \int_{0}^{\infty} x \cdot f(x) \dd x \\
+       	      & = \phantom{-} \int_{\infty}^{0} \phantom{-} t \cdot f(-t) \dd t + 
+                  \int_{0}^{\infty} x \cdot f(x) \dd x   \\
+       	      & = -\int_{0}^{\infty} t \cdot f(-t) \dd t + 
+                  \int_{0}^{\infty} x \cdot f(x) \dd x      \\
+       	\intertext{\raggedleft Since $ f(x) = f(-x) $}
+       	      & = -\int_{0}^{\infty} t \cdot f(t) \dd t + \int_{0}^{\infty} x 
+       	      \cdot f(x) \dd x = 0
        \end{align*}
        The equality to 0 is granted by the finiteness of the two integrals, that is
        true only if the parameter $ n $ of the distribution is strictly greater then 1.
        In fact
        \begin{align*}
-        \int_{0}^{\infty} x f(x) dx
-         &= \lim\limits_{u \to \infty} \int_{0}^{u} x \cdot c \cdot \left( 1 + \frac{x^2}{n} \right)^{-\frac{1}{2}(n + 1)} dx \\
-         &= c \cdot \lim\limits_{u \to \infty} \left[ 
+        \int_{0}^{\infty} x f(x) \dd x
+         &= \lim\limits_{u \to \infty} \int_{0}^{u} x \cdot c \cdot 
+            \left( 1 + \frac{x^2}{n} \right)^{-\frac{1}{2}(n + 1)} \dd x \\
+         &= c \cdot \lim\limits_{u \to \infty} \left. 
             -\frac{n}{n - 1} \left( 1 + \frac{x^2}{n} \right)^{-\frac{1}{2}(n - 1)} 
-            \right] _{0} ^{u} \\
+            \right| _{0} ^{u} \\
          &= -\frac{c \cdot n}{n - 1} \left( \lim\limits_{u \to \infty} 
              \left( 1 + \frac{u^2}{n} \right)^{-\frac{1}{2}(n - 1)} - 1 \right)
        \end{align*}
@@ -259,25 +284,25 @@
        
        \begin{align*}
         \E[X^2]
-         &= \int_{x \in \Theta} x^2 \cdot f(x) dx \\
-         &= \int_{-\infty}^{\infty} x^2 \cdot c \cdot \left( 1 + \frac{x^2}{n} \right)^{-\frac{n + 1}{2}}
+         &= \int_{x \in \Theta} x^2 \cdot f(x) \dd x \\
+         &= \int_{-\infty}^{\infty} x^2 \cdot c \cdot \left( 1 + \frac{x^2}{n} \right)^{-\frac{n + 1}{2}} \dd x
          \intertext{\raggedleft Change of variable $ t = \left( 1 + \frac{x^2}{n} \right)^{-1} $}
-         &= n \cdot c \cdot \int_{0}^{1} t ^{\frac{n}{2} - 2} (1 - t) ^{\frac{1}{2}} dt \\
+         &= n ^{\frac{3}{2}} \cdot c \cdot \int_{0}^{1} t ^{\frac{n}{2} - 2} (1 - t) ^{\frac{1}{2}} \dd t \\
          \intertext{\raggedleft Note that the integrand function is the kernel of a Beta distribution,\\
           thus its result is known.}
          &= n ^{\frac{3}{2}} \cdot c \cdot \Beta\left( \frac{n}{2} - 1, \frac{3}{2} \right) \\
-         &= n ^{\frac{3}{2}} \cdot \frac{1}{n ^{\frac{1}{2}} \Beta\left( \frac{n}{2}, \frac{1}{2} \right)} \cdot 
+         &= n ^{\frac{3}{2}} \cdot \frac{1}{\sqrt{n} \Beta\left( \frac{n}{2}, \frac{1}{2} \right)} \cdot 
             \Beta\left( \frac{n}{2} - 1, \frac{3}{2} \right) \\
          &= n \cdot \frac{\Gamma\left( \frac{n}{2} + \frac{1}{2} \right)}
                          {\Gamma\left( \frac{n}{2} \right) \Gamma\left( \frac{1}{2} \right)}
                     \frac{\Gamma\left( \frac{n}{2} - 1 \right) \Gamma\left( \frac{3}{2} \right)}
-                         {\Gamma\left( \frac{n}{2} + \frac{1}{2} \right)}
+                         {\Gamma\left( \frac{n}{2} + \frac{1}{2} \right)} \\
          \intertext{\raggedleft By the property of the Gamma function that \\
           $ \Gamma(x) = (x - 1) \Gamma(x - 1) $}
          &= n \cdot \frac{\Gamma\left( \frac{n}{2} - 1 \right) \frac{1}{2} \Gamma\left( \frac{1}{2} \right)}
                          {\left(\frac{n}{2} - 1\right) \Gamma\left( \frac{n}{2} - 1 \right) \Gamma\left( \frac{1}{2} \right)} \\
          &= \frac{n}{n - 2}
        \end{align*}
-       In this case the condition is $ n > 2 $, in fact we can note that otherwise the integral of 
+       In this case the condition is $ n > 2 $, otherwise the integral of 
        the Beta distribution does not converge.
 \end{enumerate}

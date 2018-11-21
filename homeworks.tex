@@ -48,8 +48,16 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Cov}
 
-\newcommand{\Beta}{\text B}
-\newcommand{\parm}{\mathord{\color{black!33}\bullet}}%
+\newcommand{\iid}{\mathrm{iid}}
+
+\newcommand{\dd}{\mathop{}\,\mathrm{d}} % differential
+
+\newcommand{\Beta}{\mathrm B} % greek uppercase Beta = `B'
+
+\newcommand{\parm}{\mathord{\color{black!33}\bullet}} % empty space for a parameter in function
+
+\newcommand{\indep}{\protect\mathpalette{\protect\independenT}{\perp}} % independence (double line \perp)
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}} 
 
 % Useful commands
 \DeclareMathOperator{\blanket}{bl} % Markov blanket
@@ -57,7 +65,6 @@
 \DeclareMathOperator*{\argmax}{arg \; max \;}
 \DeclareMathOperator*{\argmin}{arg \; min \;}
 
-\DeclareMathOperator{\iid}{i.i.d.}
 
 % Hide subsection numeration
 \renewcommand{\thesubsection}{}
