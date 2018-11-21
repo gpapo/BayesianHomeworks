@@ -18,36 +18,48 @@
 \subsection{Solutions}
 \begin{enumerate}
  \item \begin{align*}
-  l(\theta, \psi | \mathbf y) 
-   &= \sum_{i = 1}^{n} \log \left( \frac{\psi}{2\pi} \right) ^ {\frac{1}{2}} \exp \left(\frac{\psi(y_i - \theta)^2}{2} \right) \\
-   &= \frac{n}{2} \log \left( \frac{\psi}{2\pi} \right) + \frac{\psi}{2} \sum_{i=1}^n (y_i - \theta)^2 \\
-   &= \frac{n}{2} \log \left( \frac{\psi}{2\pi} \right) + \frac{\psi}{2} \sum_{i=1}^n (y_i - \bar y)^2 + 
-    \frac{\psi}{2} \sum_{i=1}^n (\bar y - \theta)^2
- \end{align*}
+        p(y | \theta, \psi) &= \frac{\sqrt{\psi}}{\sqrt{2\pi}} \exp\left( -\frac{\psi}{2} (y - \theta)^2 \right)
+                               \cdot \left| \frac{\partial \psi^{-\frac{1}{2}}}{\partial \psi} \right| \\
+                            &= \frac{3}{2} \psi^{-\frac{3}{2}} \frac{\sqrt{\psi}}{\sqrt{2\pi}}
+                               \exp\left( -\frac{\psi}{2} (y - \theta) ^2 \right) \\
+                            &= \frac{3}{2} \frac{1}{\psi \sqrt{2\pi}} \exp\left( -\frac{\psi}{2} (y - \theta)^2 \right)
+       \end{align*}
+       \begin{align*}
+        l(\theta, \psi | \mathbf y) 
+         &= \sum_{i = 1}^{n} \log\left\{ \frac{3}{2} \left( \frac{\psi}{\sqrt{2\pi}} \right)
+            \exp \left(\frac{\psi(y_i - \theta)^2}{2} \right) \right\} \\
+         &= n \log\left( \frac{\psi}{\sqrt{2\pi}} \right) + \frac{\psi}{2} \sum_{i=1}^n (y_i - \theta)^2 \\
+         &= n \log\left( \frac{\psi}{\sqrt{2\pi}} \right) + \frac{\psi}{2} \sum_{i=1}^n (y_i - \bar y)^2 + 
+          \frac{\psi}{2} \sum_{i=1}^n (\bar y - \theta)^2
+       \end{align*}
  \item \begin{align*}
   l_U(\theta, \psi) 
    &= \frac{l(\theta, \psi | \mathbf y)}{n} + c \\
-   &= \frac{1}{n} \left[ \frac{n}{2} \log\left( \frac{\psi}{2\pi} \right) - \frac{\psi}{2} \sum_i (y_i - \theta)^2 \right] + c \\
-   &= \frac{1}{2} \log\left( \frac{\psi}{2\pi} \right) - 
+   &= \frac{1}{n} \left[ n \log\left( \frac{\psi}{2\pi} \right) - \frac{\psi}{2} \sum_i (y_i - \theta)^2 \right] + c \\
+   &= \log\left( \frac{\psi}{\sqrt{2\pi}} \right) - 
     \frac{\psi}{2n} \sum_i (y_i - \bar y)^2 - \frac{\psi}{2} (\bar y - \theta)^2 + c \\
   \implies p_U(\theta, \psi)
-   &\propto \exp( l_U(\theta, \psi) ) \\
-   &\propto 
-    \underbrace{ \psi^\frac{1}{2} \cdot \exp\left( -\frac{\psi}{2n} \sum_i (y_i - \bar y)^2 \right) }_
-     {\text{kernel of a Gamma($ 3 / 2 $, $ \sum_i (y_i - \bar y)^2 / 2n $)}}
-    \overbrace{ \exp\left( -\frac{\psi}{2} (\bar y - \theta)^2 \right) }^
-     {\text{kernel of a Normal($\theta$, $\psi$)}}
+            &\propto \exp( l_U(\theta, \psi) ) \\
+            &\propto 
+             \underbrace{ \psi^2 \cdot \exp\left( -\frac{\sum_i (y_i - \bar y)^2}{2n} \cdot \psi \right) }_
+              {\text{kernel of a Gamma($ 2 $, $ \sum_i (y_i - \bar y)^2 / 2n $)}}
+             \underbrace{ \psi^{-1} \exp\left( -\frac{\psi}{2} (\theta - \bar y)^2 \right) }_
+              {\text{kernel of a Normal($\bar y$, $\psi$)}}
  \end{align*}
  \item \begin{align*}
   p_U(\theta, \psi | \mathbf y) 
    &\propto p_U(\theta, \psi) \cdot p(\mathbf y | \theta, \psi) \\
-   &\propto \psi^\frac{1}{2} \exp\left( -\frac{\psi}{2n} \sum_i (y_i - \bar y)^2 \right)
-    \exp\left( -\frac{\psi}{2} (\bar y - \theta)^2 \right)
-    \left( \frac{\psi}{2\pi} \right)^\frac{n}{2} \exp\left( -\frac{\psi}{2} \sum_i (y_i - \theta)^2 \right) \\
-   &\propto \underbrace{ \psi^\frac{n + 1}{2}  \exp\left( -\frac{\psi}{2n} \sum_i (y_i - \bar y)^2 \right) }_
-    {\text{kernel of a Gamma}}
-    \overbrace{ \exp\left( -\frac{\psi}{2} (\bar y - \theta)^2 -\frac{\psi}{2}\sum_i (y_i - \theta)^2 \right) }^
-    {\text{kernel of a Normal}}
+   &\propto \psi^{-1} \exp\left( -\frac{\sum_i (y_i - \bar y)^2}{2n} \psi \right) 
+    \exp\left( -\frac{\psi}{2} (\theta - \bar y)^2 \right) \cdot
+    \psi^{n} \exp\left( -\frac{\psi}{2} \sum_i (y_i - \theta)^2 \right) \\
+   &\propto \psi^{n - 1}  \exp\left( -\frac{\sum_i (y_i - \bar y)^2}{2n} \psi \right)
+            \exp\left( -\frac{\psi}{2} (\theta - \bar y)^2 -\frac{\psi}{2}\sum_i (y_i - \theta)^2 \right) \\
+   &= \psi^{n - 1}  \exp\left( -\frac{\sum_i (y_i - \bar y)^2}{2n} \psi \right) \cdot
+      \exp\left( -\frac{\psi}{2} (\theta - \bar y)^2 - \frac{\psi}{2} \sum_i (y_i - \bar y)^2 
+                 - \frac{\psi}{2} \sum_i (\bar y - \theta)^2 \right) \\
+   &\propto \underbrace{ \psi^{n}  \exp\left( -\frac{\sum_i (y_i - \bar y)^2 }{2n} \psi \right) }_
+                       { \text{kernel of a Gamma} } \cdot
+            \underbrace{ \psi^{-1} \exp\left( -\frac{(n + 1) \psi}{2} (\theta - \bar y)^2 \right) }_
+                       { \text{kernel of a Normal} }
  \end{align*}
- \texttt{DA RIGUARDARE.}
 \end{enumerate}

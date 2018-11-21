@@ -71,11 +71,11 @@
 \subsection{Solutions}
 \begin{enumerate}
  \item \begin{align*}
-       \hat{\theta}_{MLE} & = \argmin_\theta l(\theta | \mathbf{y}) \\
-       & = \argmin_\theta \log \left( \prod_i \theta ^ {y_i} (1 - \theta)^{1 - y_i} \right) \\
-       & = \argmin_\theta \sum_i \log \left( \theta ^ {y_i} (1 - \theta) ^ {1 - y_i} \right) \\
-       & = \argmin_\theta \log(\theta) \sum_i y_i + \log(1 - \theta) \sum_i (1 - y_i) \\
-       & = \argmin_\theta \log(\theta) \sum_i y_i + n \log(1 - \theta) - \log(1 - \theta) \sum_i (y_i)
+ 	\hat{\theta}_{MLE} & = \argmin_\theta l(\theta | \mathbf{y})                                                     \\
+ 	                   & = \argmin_\theta \log \left\{ \prod_i \theta ^ {y_i} (1 - \theta)^{1 - y_i} \right\}        \\
+ 	                   & = \argmin_\theta \sum_i \log \left( \theta ^ {y_i} (1 - \theta) ^ {1 - y_i} \right)         \\
+ 	                   & = \argmin_\theta \log(\theta) \sum_i y_i + \log(1 - \theta) \sum_i (1 - y_i)                \\
+ 	                   & = \argmin_\theta \log(\theta) \sum_i y_i + n \log(1 - \theta) - \log(1 - \theta) \sum_i y_i
  \end{align*}
  To find the minimum we compute the zeros of $ \partial l(\theta | \mathbf{y}) / \partial \theta $
  \begin{align*}
@@ -95,10 +95,9 @@
  \end{align*}
  \item The constrains on $ p_U(\theta) $ imply that
        \begin{align*}
-        p_U(\theta) & = c \sqrt[n]{\prod_i \theta ^ {y_i} (1 - \theta) ^ {1 - y_i}}          \\
-                    & = c \prod_i \theta ^ {y_i / n} (1 - \theta) ^ {(1 - y_i) / n}          \\
-                    & = c \; \theta ^ {\sum_i y_i / n} (1 - \theta) ^ {\sum_i (1 - y_i) / n} \\
-                    & = c \; \theta ^ {\sum_i y_i / n} (1 - \theta) ^ {1 - \sum_i y_i / n}
+       	p_U(\theta) & = c \prod_i \theta ^ {y_i / n} (1 - \theta) ^ {(1 - y_i) / n}          \\
+       	            & = c \; \theta ^ {\sum_i y_i / n} (1 - \theta) ^ {\sum_i (1 - y_i) / n} \\
+       	            & = c \; \theta ^ {\sum_i y_i / n} (1 - \theta) ^ {1 - \sum_i y_i / n}
        \end{align*}
        where $ c $ is the normalization constant.
        \begin{align*}
@@ -128,8 +127,8 @@
                           & = \argmin_\theta -n \theta + \log \theta \sum y_i - \sum \log y_i !
        \end{align*}
        \begin{align*}
-        0 & = \frac{\partial l(\theta | \mathbf{y})}{\partial \theta} \\
-          & = -n + \frac{\sum_i y_i}{\theta}
+       	0 & = \frac{\partial l(\theta | \mathbf{y})}{\partial \theta} \\
+       	  & = -n + \frac{\sum_i y_i}{\theta}
        \end{align*}
        Thus $ \hat \theta_{MLE} = \sum_i y_i / n $.
        \begin{align*}
