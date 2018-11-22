@@ -1,4 +1,4 @@
-\chapter{Hierarchical models}
+\chapter{Hierarchical models, part 1}
 
 \section{Exercise 8.1, Hoff}
 
@@ -18,7 +18,7 @@
        Answer the same for $ \Cov[y_{i_1, j}, y_{i_2, j} | \mu, \tau^2] $.
  \item Compute the quantities and compare with the intuitive results.
  \item Assuming that we had a prior $ p(\mu) $ for $\mu$. Using the Bayes' rule, show that
-       \[ p(\mu | \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m) =
+       \[ p(\mu | \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \vect y_1, \ldots, \vect y_m) =
           p(\mu | \theta_1, \ldots, \theta_m, \tau^2) \]
        Interpret in words what this means.
 \end{enumerate}
@@ -113,10 +113,10 @@
         \node [param,left of=theta2, xshift=-1cm] (theta1) {$\theta_1$};
         \node [param,right of=thetadots, xshift=1cm] (thetam) {$\theta_m$};
         
-        \node [yobs,below of=theta1,yshift=-1cm] (y1) {$\mathbf y_1$};
-        \node [yobs,below of=theta2,yshift=-1cm] (y2) {$\mathbf y_2$};
+        \node [yobs,below of=theta1,yshift=-1cm] (y1) {$\vect y_1$};
+        \node [yobs,below of=theta2,yshift=-1cm] (y2) {$\vect y_2$};
         \node [yobs,draw=white,below of=thetadots,yshift=-1cm] (ydots) {$\ldots$};
-        \node [yobs,below of=thetam,yshift=-1cm] (ym) {$\mathbf y_m$};
+        \node [yobs,below of=thetam,yshift=-1cm] (ym) {$\vect y_m$};
         
         % edges %
 
@@ -131,18 +131,18 @@
        \end{figure}
        Using this graph and its factorization one can calculate the conditioned probability as
        \begin{align*}
-        p(\mu | \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m)
-         &= \frac{p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m)}
-                 {p(\theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m)} \\
-         &= \frac{p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m)}
-                 {\int p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \mathbf y_1, \ldots, \mathbf y_m) \dd \mu} \\
-         &= \frac{p(\mathbf y_1, \ldots, \mathbf y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
+        p(\mu | \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \vect y_1, \ldots, \vect y_m)
+         &= \frac{p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \vect y_1, \ldots, \vect y_m)}
+                 {p(\theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \vect y_1, \ldots, \vect y_m)} \\
+         &= \frac{p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \vect y_1, \ldots, \vect y_m)}
+                 {\int p(\mu, \theta_1, \ldots, \theta_m, \tau^2, \sigma^2, \vect y_1, \ldots, \vect y_m) \dd \mu} \\
+         &= \frac{p(\vect y_1, \ldots, \vect y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
                   p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu)}
-                 {\int p(\mathbf y_1, \ldots, \mathbf y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
+                 {\int p(\vect y_1, \ldots, \vect y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
                   p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu) \dd \mu} \\
-         &= \frac{p(\mathbf y_1, \ldots, \mathbf y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
+         &= \frac{p(\vect y_1, \ldots, \vect y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
                   p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu)}
-                 {p(\mathbf y_1, \ldots, \mathbf y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
+                 {p(\vect y_1, \ldots, \vect y_m | \theta_1, \ldots, \theta_m, \sigma^2) \cdot
                   \int p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu) \dd \mu} \\
          &= \frac{p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu)}
                  {\int p(\theta_1, \ldots, \theta_m | \mu, \tau^2) \cdot p(\mu) \dd \mu} \\

@@ -8,10 +8,10 @@
        $ \psi = 1 / \sigma^2 $. Write the log-likelihood in terms of
        $\theta$ and $\psi$.
  \item Find a probability density $ p_U(\theta, \psi) $ so that $ \log(\theta, \psi) =
-       l(\theta, \psi | \mathbf y) / n + c $ where $ c $ is a constant and does not
+       l(\theta, \psi | \vect y) / n + c $ where $ c $ is a constant and does not
        depend on $\theta$ and $\psi$.
- \item Find a PDF $ p_U(\theta, \psi | \mathbf y) $, proportional to 
-       $ p_U(\theta, \psi) \cdot p(\mathbf y | \theta, \psi) $. Can this joint density considered
+ \item Find a PDF $ p_U(\theta, \psi | \vect y) $, proportional to 
+       $ p_U(\theta, \psi) \cdot p(\vect y | \theta, \psi) $. Can this joint density considered
        a posterior PDF?
 \end{enumerate}
 
@@ -25,7 +25,7 @@
                             &= \frac{3}{2} \frac{1}{\psi \sqrt{2\pi}} \exp\left( -\frac{\psi}{2} (y - \theta)^2 \right)
        \end{align*}
        \begin{align*}
-        l(\theta, \psi | \mathbf y) 
+        l(\theta, \psi | \vect y) 
          &= \sum_{i = 1}^{n} \log\left\{ \frac{3}{2} \left( \frac{\psi}{\sqrt{2\pi}} \right)
             \exp \left(\frac{\psi(y_i - \theta)^2}{2} \right) \right\} \\
          &= n \log\left( \frac{\psi}{\sqrt{2\pi}} \right) + \frac{\psi}{2} \sum_{i=1}^n (y_i - \theta)^2 \\
@@ -34,7 +34,7 @@
        \end{align*}
  \item \begin{align*}
   l_U(\theta, \psi) 
-   &= \frac{l(\theta, \psi | \mathbf y)}{n} + c \\
+   &= \frac{l(\theta, \psi | \vect y)}{n} + c \\
    &= \frac{1}{n} \left[ n \log\left( \frac{\psi}{2\pi} \right) - \frac{\psi}{2} \sum_i (y_i - \theta)^2 \right] + c \\
    &= \log\left( \frac{\psi}{\sqrt{2\pi}} \right) - 
     \frac{\psi}{2n} \sum_i (y_i - \bar y)^2 - \frac{\psi}{2} (\bar y - \theta)^2 + c \\
@@ -47,8 +47,8 @@
               {\text{kernel of a Normal($\bar y$, $\psi$)}}
  \end{align*}
  \item \begin{align*}
-  p_U(\theta, \psi | \mathbf y) 
-   &\propto p_U(\theta, \psi) \cdot p(\mathbf y | \theta, \psi) \\
+  p_U(\theta, \psi | \vect y) 
+   &\propto p_U(\theta, \psi) \cdot p(\vect y | \theta, \psi) \\
    &\propto \psi^{-1} \exp\left( -\frac{\sum_i (y_i - \bar y)^2}{2n} \psi \right) 
     \exp\left( -\frac{\psi}{2} (\theta - \bar y)^2 \right) \cdot
     \psi^{n} \exp\left( -\frac{\psi}{2} \sum_i (y_i - \theta)^2 \right) \\

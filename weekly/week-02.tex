@@ -92,7 +92,7 @@ To show that $ X \indep Y $ given $ Z $ we have to prove that $ p(y | z, x) = p(
        \end{itemize}
        So we can rewrite the posterior of the first part as
        \begin{align*}
-       p(\theta | \mathbf{y}) 
+       p(\theta | \vect{y}) 
        &\propto \exp(-\theta) ^{n} \cdot \exp(\log(\theta) \sum_i y_i) \cdot \sum_k w_k p_k(\theta) \\
        &= \exp(-n \theta) \cdot \theta ^{\sum_i y_i} \cdot \sum_k w_k c_k \theta ^{\alpha_k - 1} \exp(\beta_k \theta) \\
        &= \sum_k w_k c_k \theta ^{\alpha_k + \sum_i y_i - 1} \exp(-(\beta_k + n) \theta)
