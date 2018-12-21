@@ -6,8 +6,8 @@
 \begin{itemize}
  \item Consider the hierarchical model where
        \begin{align*}
-        \theta_1, \ldots, \theta_m | \mu, \tau^2           &\sim \iid \text{normal}(\mu, \tau^2) \\
-        y_{1, j}, \ldots, y_{n_j, j} | \theta_j, \sigma^2 &\sim \iid \text{normal}(\theta_j, \sigma^2)
+       	\theta_1, \ldots, \theta_m   | \mu, \tau^2        & \sim \iid \Normal(\mu, \tau^2)        \\
+       	y_{1, j}, \ldots, y_{n_j, j} | \theta_j, \sigma^2 & \sim \iid \Normal(\theta_j, \sigma^2)
        \end{align*}
 \end{itemize}
 
@@ -32,7 +32,7 @@
        if I observe a high value of $ y_{i_1, j} $ I expect to see a similar value for $ y_{i_2, j} $ and vice versa.
  \item \begin{align*}
         \intertext{\raggedleft By definition, we know that $ y_{i, j} | \theta_j, \sigma^2 
-         \sim \text{normal}(\theta_j, \sigma^2) $}
+         \sim \Normal(\theta_j, \sigma^2) $}
         \Var[y_{i, j} | \theta_j, \sigma^2] 
          &= \sigma^2 \\
         \intertext{\raggedleft We can apply the property of variance of independent variables, \\
@@ -160,8 +160,8 @@
 
 \subsection{Data}
 \begin{itemize}
- \item If $ y|\theta \sim \text{Poisson}(\theta) $ and $ \theta \sim
-       \text{Gamma}(\alpha, \beta) $, then the marginal (prior predictive)
+ \item If $ y|\theta \sim \Poisson(\theta) $ and $ \theta \sim
+       \Gammadist(\alpha, \beta) $, then the marginal (prior predictive)
        distribution of $ y $ is a negative binomial with parameters $\alpha$ and
        $\beta$ (or $ p = \beta / (1 + \beta) $).
  \item In the Normal model with unknown location and scale ($\mu$, $\sigma^2$),

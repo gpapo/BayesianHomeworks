@@ -9,8 +9,8 @@
  \item Assume Poisson sampling models for the two groups as before, but
        parameterize $ \theta_A $ and $ \theta_B $ as $ \theta_A = \theta $
        and $ \theta_B = \theta_\gamma $, where $ \gamma $ is the relative
-       rate $ \theta_B / \theta_A $. Let $ \theta \sim \text{Gamma}
-       (a_\theta, b_\theta) $ and $ \gamma \sim \text{Gamma}(a_\gamma, b_\gamma) $.
+       rate $ \theta_B / \theta_A $. Let $ \theta \sim \Gammadist
+       (a_\theta, b_\theta) $ and $ \gamma \sim \Gammadist(a_\gamma, b_\gamma) $.
 \end{itemize}
 
 \subsection{Questions}
@@ -44,18 +44,18 @@
        \end{align*}
       Thus the two variables are not independent.
       
-      This kind of prior joint distribution could be useful in situations where 
-      we are modeling the number of events in two different contests $ A $ and 
-      $ B $ in a certain time interval and the mean number of events is respectively
-      $ \theta_A $ and $ \theta_B $. The parameter $ \gamma $ can be interpreted as
-      an acceleration factor caused by a phenomenon that change in the contest 
-      $ B $, but that remains constant in the ``rest of the world'' $ A $.
-      In this way of thinking $ \theta $ represents the \textit{standard} and 
-      $ \gamma $ represents the element that, ceteris paribus, deviates from it.
-      So, this parameterization of the prior joint is justified when we want to
-      measure the intensity of the change caused to a starting population $ A $.
-      As a consequence it lends itself well in experimental rather than observational 
-      scopes.
+      This kind of prior joint distribution could be useful in situations where
+      we are modeling the number of events in two different contests $ A $ and $
+      B $ in a certain time interval and the mean number of events is
+      respectively $ \theta_A $ and $ \theta_B $. The parameter $ \gamma $ can
+      be interpreted as an acceleration factor caused by a phenomenon that
+      change in the contest $ B $, but that remains constant in the ``rest of
+      the world'' $ A $. In this way of thinking $ \theta $ represents the
+      \textit{standard} and $ \gamma $ represents the element that, ceteris
+      paribus, deviates from it. So, this parameterization of the prior joint is
+      justified when we want to measure the intensity of the change caused to a
+      starting population $ A $. As a consequence it lends itself well in
+      experimental rather than observational scopes.
 \item First of all we observe the DAG that represents the relational model of variables.
       \begin{figure}[H]
        \centering
@@ -124,7 +124,7 @@
         &= \theta ^ {a_\theta + \sum_i y_{iA} + \sum_j y_{jB} - 1} \exp(-(b_\theta + n_A + n_B)\theta)
       \end{align*}
       We can note the kernel of a Gamma distribution, so
-      \[ \theta\, |\, \blanket(\theta) \sim \text{Gamma}(a_\theta + 
+      \[ \theta\, |\, \blanket(\theta) \sim \Gammadist(a_\theta + 
        \textstyle \sum_i y_{iA} + \textstyle \sum_j y_{jB},\, b_\theta + n_A + n_B) \]
 \item \textbf{Full conditional of $\gamma$} \quad The \textit{Markov blanket} of 
       this random variable is
@@ -139,7 +139,7 @@
         &\propto \gamma ^ {a_\gamma + \sum_j y_{jB} - 1} \exp(-(b_\gamma + n_B\theta)\gamma)
       \end{align*}
       We can note the kernel of a Gamma distribution, so
-      \[ \gamma\, |\, \blanket(\gamma) \sim \text{Gamma}(a_\gamma + \textstyle \sum_j y_{jB},\, 
+      \[ \gamma\, |\, \blanket(\gamma) \sim \Gammadist(a_\gamma + \textstyle \sum_j y_{jB},\, 
        b_\gamma + n_B\theta) \]
 \item At this point we can proceed with a simulation through the Gibbs algorithm following the MCMC
       approach.

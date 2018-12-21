@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{report}
+\documentclass[9pt,a4paper]{report}
 \usepackage[utf8]{inputenc}
 
 %\usepackage{fontspec}
@@ -18,6 +18,8 @@
 \pgfsetlayers{background,main}
 
 \usepackage{minted}
+\setminted[R]{fontsize=\small}
+
 \usepackage{enumitem}
 
 \title{
@@ -48,6 +50,8 @@
 \DeclareMathOperator{\Var}{Var}
 \DeclareMathOperator{\Cov}{Cov}
 
+\DeclareMathOperator{\tr}{tr} % trace operator
+
 \newcommand{\iid}{\mathrm{iid}}
 
 \newcommand{\dd}{\mathop{}\,\mathrm{d}} % differential
@@ -61,12 +65,26 @@
 \newcommand{\indep}{\protect\mathpalette{\protect\independenT}{\perp}} % independence (double line \perp)
 \def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}} 
 
+\newcommand{\Imat}{\mathbb I} % identity matrix
+
+% Common probability distributions
+\DeclareMathOperator{\Unif}{Unif}
+\DeclareMathOperator{\Bernoulli}{Bernoulli}
+\DeclareMathOperator{\Binomial}{Binomial}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Normal}{Normal}
+\DeclareMathOperator{\Geom}{Geom}
+\DeclareMathOperator{\Gammadist}{Gamma}
+\DeclareMathOperator{\invGamma}{inverse-Gamma}
+\DeclareMathOperator{\invWishart}{inverse-Wishart}
+
 % Useful commands
 \DeclareMathOperator{\blanket}{bl} % Markov blanket
 \DeclareMathOperator{\logit}{logit}
+\DeclareMathOperator{\expit}{expit}
 \DeclareMathOperator*{\argmax}{arg \; max \;}
 \DeclareMathOperator*{\argmin}{arg \; min \;}
-
+\DeclareMathOperator{\likelihood}{\mathcal L}
 
 % Hide subsection numeration
 \renewcommand{\thesubsection}{}
@@ -85,4 +103,6 @@
 \part{}
 \include{weekly/week-07}
 \include{weekly/week-08}
+\include{weekly/week-09}
+\include{weekly/week-10}
 \end{document}

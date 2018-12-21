@@ -38,8 +38,11 @@
         \frac{\exp(\psi)}{(1 + \exp(\psi))^2} \\
           & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a}}{(1 + \exp(\psi))^{a + b}}
        \end{align*}
-       And in the case that $ a = b = 1 $ the plot is: \\
-       \includegraphics[width=\textwidth]{julia-scripts/week-03_plot1.png}
+       \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{julia-scripts/week-03_plot1.png}
+        \caption{Case for $ a = b = 1 $.}
+       \end{figure}
        % Note: it seems very similar to a Normal distribution.
  \item The inverse function of $ \log(\theta) $ is known to be $ h(\psi) = \exp(\psi) $,
        and the derivative w.r.t. $\psi$ of $ h(\psi) $ is
@@ -49,8 +52,11 @@
         p_\psi(\psi) & = \frac{b ^ a}{\Gamma(a)} \exp(\psi)^{a - 1} \exp(-b\exp(\psi)) \exp(\psi) \\
                      & = \frac{b ^ a}{\Gamma(a)} \exp(a\psi - b\exp(\psi))
        \end{align*}
-       And in the case that $ a = b = 1 $ the plot is: \\
-       \includegraphics[width=\textwidth]{julia-scripts/week-03_plot2.png}
+       \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\linewidth]{julia-scripts/week-03_plot2.png}
+        \caption{Case for $ a = b = 1 $.}
+       \end{figure}
 \end{enumerate}
 
 \section{Exercise 3.14, Hoff}
@@ -59,13 +65,13 @@
 
 \subsection{Questions}
 \begin{enumerate}
- \item Given $ Y_1 \ldots Y_n \sim \text{Bernoulli}(\theta) $ find the MLE of $\theta$ and
+ \item Given $ Y_1 \ldots Y_n \sim \Bernoulli(\theta) $ find the MLE of $\theta$ and
        $ \frac{J(\theta)}{n} $.
  \item Find a PDF $ p_U(\theta) $ such that $ \log p_U(\theta) = l(\theta | \vect{y}) / n + c $
        where $ c $ is a constant that does not depend on $\theta$. Compute $ -\partial^2 \log p_U(\theta) / \partial^2 \theta $.
  \item Obtain a PDF for $\theta$ that is proportional to $ p_U(\theta) p(\vect{y} | \theta) $.
        Can this be considered a posterior for $ \theta $?
- \item Repeat previous points with $ Y_1 \ldots Y_n \sim \text{Poisson}(\theta) $.
+ \item Repeat previous points with $ Y_1 \ldots Y_n \sim \Poisson(\theta) $.
 \end{enumerate}
 
 \subsection{Solutions}
