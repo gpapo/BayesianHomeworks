@@ -5,8 +5,8 @@
 \subsection{Data}
 
 \begin{itemize}
- \item Data sequence: \\
-       \texttt{c(1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0)}
+  \item Data sequence: \\
+        \texttt{c(1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0)}
 \end{itemize}
 
 \subsection{Questions}
@@ -49,10 +49,10 @@ We want a sample from a distribution $ f(x) $ using another distribution $ g(x)
 $ through an AR algorithm. Being assumed the value of $ M $, proof that this
 algorithm is equivalent to a \textit{standard} AR.
 \begin{enumerate}[label=\alph*)]
- \item Generate $ x \sim \text{G}(\parm) $ \label{AR:step1}
- \item Generate $ u \sim \Unif(0, M g(x)) $ \label{AR:step2}
- \item Accept $ y \overset{!}{=} x $ if $ u < f(x) $ \label{AR:step3}
- \item Otherwise go back to \ref{AR:step1}.
+  \item Generate $ x \sim \text{G}(\parm) $ \label{AR:step1}
+  \item Generate $ u \sim \Unif(0, M g(x)) $ \label{AR:step2}
+  \item Accept $ y \overset{!}{=} x $ if $ u < f(x) $ \label{AR:step3}
+  \item Otherwise go back to \ref{AR:step1}.
 \end{enumerate}
 
 \subsection{Solutions}
@@ -61,10 +61,10 @@ We can see that the two algorithms differ only for steps \ref{AR:step2} and
 \ref{AR:step3}, where the difference is the Uniform distribution from which we
 sample $ u $. To verify that they are equivalent we have to see if:
 \begin{enumerate}
- \item The proportion of values accepted near a generic $ x $ is the same, that
-       is equal to $ \frac{f(x)}{M g(x)} $, \label{AR:cond1}
- \item The efficiency is the same: the mean number of replications before
-       rejecting a point is the same and it's equal to $ M $. \label{AR:cond2}
+  \item The proportion of values accepted near a generic $ x $ is the same, that
+        is equal to $ \frac{f(x)}{M g(x)} $, \label{AR:cond1}
+  \item The efficiency is the same: the mean number of replications before
+        rejecting a point is the same and it's equal to $ M $. \label{AR:cond2}
 \end{enumerate}
 In a generic $ u $ in the support of $ \Unif(0, M g(x)) $ the proportion of
 values below $ u $ is
@@ -75,7 +75,7 @@ $ x $ is $ \frac{f(x)}{M g(x)} $, so \ref{AR:cond1} is verified.
 Let $ K $ be the number of replications before accepting a value. So
 \[ K \sim \Geom(p) \text{ with $ p $ probability of accepting at each replication} \]
 We can compute the expected value of acceptance probability:
-\[ p = \prob(U \le f(x)) = \int_{S_X} g(x) \int_{0}^{f(x)} \frac{1}{M g(x)} \partial u \partial x = 
-   \int_{S_X} g(x) \frac{f(x)}{M g(x)} \partial x = \frac{1}{M} \int_{S_X} f(x) \partial x = \frac{1}{M} \]
+\[ p = \prob(U \le f(x)) = \int_{S_X} g(x) \int_{0}^{f(x)} \frac{1}{M g(x)} \partial u \partial x =
+  \int_{S_X} g(x) \frac{f(x)}{M g(x)} \partial x = \frac{1}{M} \int_{S_X} f(x) \partial x = \frac{1}{M} \]
 So the expected value $ \E[K] = \frac{1}{p} = M $ and even \ref{AR:cond2} is
 verified, and we can affirm that the two procedures are equivalent.

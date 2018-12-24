@@ -5,16 +5,16 @@
 \subsection{Questions}
 Demonstrate that $ \text{SSR}_g $ (defined like at page 158 of Hoff's book)
 converge to
-\[ \text{SSR}_{\text{OLS}} = \sum (y_i  - \vect{\hat \beta}_\text{OLS} \vect x_i)^2 \]
+\[ \text{SSR}_{\text{OLS}} = \sum (y_i	- \vect{\hat \beta}_\text{OLS} \vect x_i)^2 \]
 when $ g \to \infty $.
 
 \subsection{Solutions}
-\[ \text{SSR}_g = \vect y' \vect y - \vect m' \vect V ^{-1} \vect y = 
-   \vect y' \left( I - \frac{g}{g + 1} X (X'X)^{-1} X' \right) \vect y \]
+\[ \text{SSR}_g = \vect y' \vect y - \vect m' \vect V ^{-1} \vect y =
+ \vect y' \left( I - \frac{g}{g + 1} X (X'X)^{-1} X' \right) \vect y \]
 By definition $ \text{SSR}_\text{OLS} $ can be written as
 \begin{align*}
-	\text{SSR}_\text{OLS} & = \sum (y_i  - \vect{\hat \beta}_\text{OLS} \vect x_i)^2 \\
-	                      & = \vect y' \left( I - X(X'X)^{-1}X' \right) \vect y
+ \text{SSR}_\text{OLS} & = \sum (y_i  - \vect{\hat \beta}_\text{OLS} \vect x_i)^2 \\
+                       & = \vect y' \left( I - X(X'X)^{-1}X' \right) \vect y
 \end{align*}
 So, it is apparent that when I take the limit
 \[ \lim\limits_{g \to \infty} \text{SSR}_g = \text{SSR}_\text{OLS} \]
@@ -31,19 +31,19 @@ other variables, excluding the variable diabetes.
 
 \subsection{Questions}
 \begin{enumerate}[label=\alph*) ]
-  \item Fit a regression model using a \textit{g}-prior with $ g = n $,
-        $ \nu_0 = 2 $ and $ \sigma^2_0 = 1 $. Obtain a posterior confidence 
-        intervals for all the parameters.
-  \item Perform a model selection and averaging procedure described in 
-        Section 9.3. Obtain $ \Pr(\beta_j \ne 0 | \vect y) $, as well as 
-        posterior confidence intervals for all the parameters. Compare
-        to the results in part a).
+ \item Fit a regression model using a \textit{g}-prior with $ g = n $,
+       $ \nu_0 = 2 $ and $ \sigma^2_0 = 1 $. Obtain a posterior confidence
+       intervals for all the parameters.
+ \item Perform a model selection and averaging procedure described in
+       Section 9.3. Obtain $ \Pr(\beta_j \ne 0 | \vect y) $, as well as
+       posterior confidence intervals for all the parameters. Compare
+       to the results in part a).
 \end{enumerate}
 
 \subsection{Solutions}
 \begin{enumerate}[label=\alph*) ]
  \item \textbf{Code}
-\begin{minted}{R}
+       \begin{minted}{R}
 library(tidyverse)
 library(compiler)
 set.seed(1)
@@ -95,23 +95,27 @@ beta_gprior <- apply(lmgpriorfit$beta, 2,
                      function(x) quantile(x, c(0.025, 0.975)))
 \end{minted}
 
-      \textbf{Coefficients}
-      % latex table generated in R 3.5.1 by xtable 1.8-3 package
-      % Sun Nov 25 15:39:43 2018
-      \begin{table}[ht]
-       \centering
-       \begin{tabular}{rrrrrrrrr}
-       	\hline
-       	       & (Intercept) & npreg &    bp &  skin &   bmi &   ped &  age & diabetesYes \\
-       	\hline
-       	 2.5\% &       -0.39 & -0.21 & -0.00 & -0.05 & -0.05 & -0.04 & 0.08 &        0.74 \\
-       	97.5\% &       -0.21 & -0.02 &  0.16 &  0.15 &  0.15 &  0.11 & 0.28 &        1.07 \\
-       	\hline
-       \end{tabular}
-      \end{table}
+       \textbf{Coefficients}
+       % latex table generated in R 3.5.1 by xtable 1.8-3 package
+       % Sun Nov 25 15:39:43 2018
+       \begin{table}[ht]
+        \centering
+        \begin{tabular}{rrrrrrrrr}
+         \hline
+                & (Intercept) & npreg & bp    & skin  & bmi   & ped   & age  &
+         diabetesYes
+         \\
+         \hline
+         2.5\%  & -0.39       & -0.21 & -0.00 & -0.05 & -0.05 & -0.04 & 0.08 & 0.74
+         \\
+         97.5\% & -0.21       & -0.02 & 0.16  & 0.15  & 0.15  & 0.11  & 0.28 & 1.07
+         \\
+         \hline
+        \end{tabular}
+       \end{table}
 
  \item \textbf{Code}
-\begin{minted}{R}
+       \begin{minted}{R}
 set.seed(1)
 
 backselect_tcrit <- function(y, X, tcrit = qnorm(0.975)) {
@@ -200,26 +204,32 @@ prob_include <- apply(Z, 2, mean)
        \begin{table}[ht]
         \centering
         \begin{tabular}{rrrrrrrrr}
-        	\hline
-        	       & (Intercept) & npreg &   bp &  skin &   bmi &   ped &  age & diabetesYes \\
-        	\hline
-        	 2.5\% &       -0.40 & -0.21 & 0.00 & -0.03 & -0.05 & -0.03 & 0.06 &        0.72 \\
-        	97.5\% &       -0.22 &  0.00 & 0.16 &  0.14 &  0.14 &  0.12 & 0.28 &        1.09 \\
-        	\hline
+         \hline
+                & (Intercept) & npreg & bp   & skin  & bmi   & ped   & age  & diabetesYes
+         \\
+         \hline
+         2.5\%  & -0.40       & -0.21 & 0.00 & -0.03 & -0.05 & -0.03 & 0.06 & 0.72
+         \\
+         97.5\% & -0.22       & 0.00  & 0.16 & 0.14  & 0.14  & 0.12  & 0.28 &
+         1.09
+         \\
+         \hline
         \end{tabular}
        \end{table}
-       
+
        \textbf{Inclusion probability}
        % latex table generated in R 3.5.1 by xtable 1.8-3 package
        % Sun Nov 25 15:50:44 2018
        \begin{table}[ht]
         \centering
         \begin{tabular}{rrrrrrrrr}
-        	\hline
-        	(Intercept) & npreg &   bp & skin &  bmi &  ped &  age & diabetesYes &  \\
-        	\hline
-        	       1.00 &  0.95 & 0.86 & 0.72 & 0.70 & 0.72 & 0.99 &        1.00 &  \\
-        	\hline
+         \hline
+         (Intercept) & npreg & bp   & skin & bmi  & ped  & age  & diabetesYes &
+         \\
+         \hline
+         1.00        & 0.95  & 0.86 & 0.72 & 0.70 & 0.72 & 0.99 & 1.00        &
+         \\
+         \hline
         \end{tabular}
        \end{table}
 \end{enumerate}

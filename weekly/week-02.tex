@@ -4,15 +4,15 @@
 
 \subsection{Data}
 \begin{itemize}
- \item $ p(x, y, z) \propto f(x, z) \; g(y, z) \; h(z) $
+  \item $ p(x, y, z) \propto f(x, z) \; g(y, z) \; h(z) $
 \end{itemize}
 
 \subsection{Questions}
 Prove that:
 \begin{enumerate}
- \item $ p(x | y, z) \propto f(x, z) $
- \item $ p(y | x, z) \propto g(y, z) $
- \item $ X $ and $ Y $ conditionally independent, given $ Z $.
+  \item $ p(x | y, z) \propto f(x, z) $
+  \item $ p(y | x, z) \propto g(y, z) $
+  \item $ X $ and $ Y $ conditionally independent, given $ Z $.
 \end{enumerate}
 
 \subsection{Solutions}
@@ -20,83 +20,83 @@ We know by definition that
 \[ p(x | y, z) = \dfrac{p(x, y, z)}{p(y, z)} \]
 and also that
 \[
- p(y, z) = \int_{S_X} p(x, y, z) \dd x \propto
- \int_{S_X} f(x, z) g(y, z) h(z) \dd x =
- g(y, z) h(z) \int_{S_X} f(x, z) \dd x
+  p(y, z) = \int_{S_X} p(x, y, z) \dd x \propto
+  \int_{S_X} f(x, z) g(y, z) h(z) \dd x =
+  g(y, z) h(z) \int_{S_X} f(x, z) \dd x
 \]
 Where $ S_X $ is the support of the r.v. $ X $. Then we can write
 \begin{align*}
- p(x | y, z) & = \frac{f(x, z) g(y, z) h(z)}{g(y, z) h(z) \int_{S_X} f(x, z) \dd x} \\
-             & = \frac{f(x, z)}{\int_{S_X} f(x, z) \dd x}
+  p(x | y, z) & = \frac{f(x, z) g(y, z) h(z)}{g(y, z) h(z) \int_{S_X} f(x, z) \dd x} \\
+              & = \frac{f(x, z)}{\int_{S_X} f(x, z) \dd x}
 \end{align*}
 But $ \int_{S_X} f(x, z) \dd x $ is constant given $ z $, so we can say
 \[ p(x | y, z) \propto f(x, z) \]
 as we wanted to show. \\
 Similarly, we can write
 \begin{align*}
- p(y | x, z) & = \frac{p(x, y, z)}{p(x, z)}                                              \\
-             & = \frac{f(x, z) g(y, z) h(z)}{f(x, z) h(z) \int_{S_Y} g(y, z) \dd y} \\
-             & = \frac{g(y, z)}{\int_{S_Y} g(y, z) \dd y}                           \\
-             & \propto g(y, z)
+  p(y | x, z) & = \frac{p(x, y, z)}{p(x, z)}                                         \\
+              & = \frac{f(x, z) g(y, z) h(z)}{f(x, z) h(z) \int_{S_Y} g(y, z) \dd y} \\
+              & = \frac{g(y, z)}{\int_{S_Y} g(y, z) \dd y}                           \\
+              & \propto g(y, z)
 \end{align*}
 To show that $ X \indep Y $ given $ Z $ we have to prove that $ p(y | z, x) = p(y | z) $, so:
 \begin{align*}
- p(y|z) & = \frac{p(y, z)}{p(z)}                              \\
-        & = \frac{\int_{S_X} f(x, z) g(y, z) h(z) \dd x}
- {\int_{S_X}\int_{S_Y} f(x, z) g(y, z) h(z) \dd y \dd x} \\
-        & = \frac{g(y, z) h(z)\int_{S_X} f(x, z) \dd x}
- {h(z) \int_{S_X} f(x, z) \partial x \int_{S_Y} g(y, z) \dd y} \\
-        & = \frac{g(y, z)}{\int_{S_Y} g(y, z) \dd y}     \\
-        & = p(y | x, z)
+  p(y|z) & = \frac{p(y, z)}{p(z)}                               \\
+         & = \frac{\int_{S_X} f(x, z) g(y, z) h(z) \dd x}
+  {\int_{S_X}\int_{S_Y} f(x, z) g(y, z) h(z) \dd y \dd x}       \\
+         & = \frac{g(y, z) h(z)\int_{S_X} f(x, z) \dd x}
+  {h(z) \int_{S_X} f(x, z) \partial x \int_{S_Y} g(y, z) \dd y} \\
+         & = \frac{g(y, z)}{\int_{S_Y} g(y, z) \dd y}           \\
+         & = p(y | x, z)
 \end{align*}
 
 \section{Exercise 3.5, Hoff}
 
 \subsection{Data}
 \begin{itemize}
- \item $ p(y | \phi) = c(\phi) h(y) \exp(\phi t(y)) $
- \item $ p_1(\theta), \ldots, p_k(\theta) $ conjugate priors
- \item $ \tilde{p}(\theta) = \sum_{k = 1}^{K} \omega_k p_k(\theta) $ where
-       $ \omega_k > 0 $ and $ \sum_k \omega_k = 1 $
+  \item $ p(y | \phi) = c(\phi) h(y) \exp(\phi t(y)) $
+  \item $ p_1(\theta), \ldots, p_k(\theta) $ conjugate priors
+  \item $ \tilde{p}(\theta) = \sum_{k = 1}^{K} \omega_k p_k(\theta) $ where
+        $ \omega_k > 0 $ and $ \sum_k \omega_k = 1 $
 \end{itemize}
 
 \subsection{Questions}
 \begin{enumerate}
- \item $ p(\theta | y) $ as a function of $ p(y | \theta) $ and $ \tilde p(\theta) $
- \item Previous question but in the case that $ y \sim \Poisson(\theta) $ and
-       $ p_1, \ldots, p_k \sim \Gamma(\alpha_k, \beta_k) $
+  \item $ p(\theta | y) $ as a function of $ p(y | \theta) $ and $ \tilde p(\theta) $
+  \item Previous question but in the case that $ y \sim \Poisson(\theta) $ and
+        $ p_1, \ldots, p_k \sim \Gamma(\alpha_k, \beta_k) $
 \end{enumerate}
 
 \subsection{Solution}
 \begin{enumerate}
- \item For the Bayes rule:
-       \begin{align*}
-       p(\theta | y) & = \frac{p(y | \theta) \cdot p(\theta)}{p(y)}                                            \\
-       & = \frac{p(y | \theta) \cdot \tilde{p}(\theta)}{p(y)}                                    \\
-       & = \frac{\prod_i p(y_i | \theta) \tilde{p}(\theta)}{p(y)}                                \\
-       & = \frac{\prod_i c(\phi) h(y_i) \exp(\phi t(y_i)) \cdot \tilde{p}(\theta)}{p(y)}     \\
-       & = \frac{\prod_i h(y_i) c(\phi)^n \exp(\phi \sum_i t(y_i)) \cdot \sum_k w_k p_k(\theta)}
-       {\int_{S_\theta} \prod_i h(y_i) c(\phi)^n \exp(\phi \sum_i t(y_i)) \sum_k w_k p_k(\theta) \dd \theta} \\
-       & = \frac{c(\phi)^n \exp(\phi \sum_i t(y_i)) \cdot \sum_k w_k p_k(\theta)}
-       {\int_{S_\theta} c(\phi)^n \exp(\phi \sum_i t(y_i)) \sum_k w_k p_k(\theta) \dd \theta}
-       \end{align*}
- \item In the particular case that $ p(y | \theta) $ is a Poisson distribution and $ p_k(\theta) $ 
-       are Gamma distributions, we have that
-       \begin{itemize}
-        \item $ t(y) = y $
-        \item $ \phi = \log(\theta) $
-        \item $ c(\phi) = \exp(e ^ {-\phi}) = \exp(-\theta) $
-        \item $ p_k(\theta) = \frac{\beta_k ^ {\alpha_k}}{\Gamma(\alpha_k)}
-        \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta) =
-        c_k \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta) $
-       \end{itemize}
-       So we can rewrite the posterior of the first part as
-       \begin{align*}
-       p(\theta | \vect{y}) 
-       &\propto \exp(-\theta) ^{n} \cdot \exp(\log(\theta) \sum_i y_i) \cdot \sum_k w_k p_k(\theta) \\
-       &= \exp(-n \theta) \cdot \theta ^{\sum_i y_i} \cdot \sum_k w_k c_k \theta ^{\alpha_k - 1} \exp(\beta_k \theta) \\
-       &= \sum_k w_k c_k \theta ^{\alpha_k + \sum_i y_i - 1} \exp(-(\beta_k + n) \theta)
-       \end{align*}
-       We can note the kernel function of a new Gamma with updated parameters 
-       $ (\alpha_k + \sum_i y_i, \beta_k + n) $. 
+  \item For the Bayes rule:
+        \begin{align*}
+          p(\theta | y) & = \frac{p(y | \theta) \cdot p(\theta)}{p(y)}                                            \\
+                        & = \frac{p(y | \theta) \cdot \tilde{p}(\theta)}{p(y)}                                    \\
+                        & = \frac{\prod_i p(y_i | \theta) \tilde{p}(\theta)}{p(y)}                                \\
+                        & = \frac{\prod_i c(\phi) h(y_i) \exp(\phi t(y_i)) \cdot \tilde{p}(\theta)}{p(y)}         \\
+                        & = \frac{\prod_i h(y_i) c(\phi)^n \exp(\phi \sum_i t(y_i)) \cdot \sum_k w_k p_k(\theta)}
+          {\int_{S_\theta} \prod_i h(y_i) c(\phi)^n \exp(\phi \sum_i t(y_i)) \sum_k w_k p_k(\theta) \dd \theta}   \\
+                        & = \frac{c(\phi)^n \exp(\phi \sum_i t(y_i)) \cdot \sum_k w_k p_k(\theta)}
+          {\int_{S_\theta} c(\phi)^n \exp(\phi \sum_i t(y_i)) \sum_k w_k p_k(\theta) \dd \theta}
+        \end{align*}
+  \item In the particular case that $ p(y | \theta) $ is a Poisson distribution and $ p_k(\theta) $
+        are Gamma distributions, we have that
+        \begin{itemize}
+          \item $ t(y) = y $
+          \item $ \phi = \log(\theta) $
+          \item $ c(\phi) = \exp(e ^ {-\phi}) = \exp(-\theta) $
+          \item $ p_k(\theta) = \frac{\beta_k ^ {\alpha_k}}{\Gamma(\alpha_k)}
+                  \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta) =
+                  c_k \theta ^ {\alpha_k - 1} \exp(-\beta_k \theta) $
+        \end{itemize}
+        So we can rewrite the posterior of the first part as
+        \begin{align*}
+          p(\theta | \vect{y})
+           & \propto \exp(-\theta) ^{n} \cdot \exp(\log(\theta) \sum_i y_i) \cdot \sum_k w_k p_k(\theta)                   \\
+           & = \exp(-n \theta) \cdot \theta ^{\sum_i y_i} \cdot \sum_k w_k c_k \theta ^{\alpha_k - 1} \exp(\beta_k \theta) \\
+           & = \sum_k w_k c_k \theta ^{\alpha_k + \sum_i y_i - 1} \exp(-(\beta_k + n) \theta)
+        \end{align*}
+        We can note the kernel function of a new Gamma with updated parameters
+        $ (\alpha_k + \sum_i y_i, \beta_k + n) $.
 \end{enumerate}

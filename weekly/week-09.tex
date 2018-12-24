@@ -10,8 +10,10 @@ distribution $ J(\theta_1 | \theta_0) $ to have support on positive $ \theta $
 values. Consider the following algorithm:
 \begin{enumerate}
  \item sample $ \tilde \theta \sim \Unif(\theta_0 - \delta, \theta_0 + \delta) $;
- \item $ \theta_1 \overset{!}{=} \begin{cases} -\tilde \theta & \text{if $ \tilde \theta < 0 $} \\
-                                 \phantom- \tilde \theta & \text{if $ \tilde \theta \ge 0 $} \end{cases} $
+ \item $ \theta_1 \overset{!}{=} \begin{cases} -\tilde \theta          & \text{if }
+         \tilde \theta < 0                                        \\
+         \phantom- \tilde \theta & \text{if $ \tilde \theta \ge 0
+          $}\end{cases} $
 \end{enumerate}
 In other words $ \theta_1 = | \tilde \theta | $.
 
@@ -22,154 +24,187 @@ the associated proposal density $ J(\theta_1 | \theta_0) $ under the two conditi
 $ \theta_0 < \delta $ and $ \theta_0 \ge \delta $ separately.
 
 \subsection{Solutions}
-The support of $ \theta_1 $ is straightforward: in fact, since $\theta_1$ is the
-absolute value of $\tilde{\theta}$, is it always a positive number, in
-particular, the bounds will be $ \left[ \max(0, \theta_0 - \delta), \theta_0 +
-\delta \right] $. Now we have to show that the proposal distribution is symmetric.
-
-\textbf{Case $ \theta_0 < \delta $} \quad 
-\textbf{Case $ \theta_0 \ge \delta $} \quad
 
 \section{Exercise 10.2, Hoff}
 
 \subsection{Data}
 Nesting success: Younger male sparrows may or may not nest during a mating season,
-perhaps depending on their physical characteristics. Researchers have recorded the 
-nesting success of 43 young male sparrows of the same age, as well as their wingspan, 
+perhaps depending on their physical characteristics. Researchers have recorded the
+nesting success of 43 young male sparrows of the same age, as well as their wingspan,
 and the data appear in the file \texttt{msparrownest.dat}. Let $ Y_i $ be the binary
-indicator that sparrow $ i $ successfully nests, and let $ x_i $ denote their 
-wingspan. Our model for $ Y_i $ is 
+indicator that sparrow $ i $ successfully nests, and let $ x_i $ denote their
+wingspan. Our model for $ Y_i $ is
 \[ \logit \Pr(Y_i = 1 | \alpha, \beta, x_i) = \alpha + \beta x_i \]
 where the logit function is given by $ \logit \theta = \log[ \theta / (1 - \theta) ]  $.
 
 \subsection{Questions}
 \begin{enumerate}[label=\alph*) ]
- \item Write out the joint sampling distribution $ \prod_{i = 1}^{n} p(y_i | \alpha, \beta, x_i) $
+ \item Write out the joint sampling distribution $ \prod_{i = 1}^{n} p(y_i | \alpha,
+        \beta, x_i) $
        and simplify as much as possible.
- \item Formulate a prior probability distribution over $\alpha$ and $\beta$ by considering the
-       range of $ \Pr(Y = 1 | \alpha, \beta, x) $ as $ x $ ranges over 10 to 15, the approximate
+ \item Formulate a prior probability distribution over $\alpha$ and $\beta$ by
+       considering the
+       range of $ \Pr(Y = 1 | \alpha, \beta, x) $ as $ x $ ranges over 10 to 15, the
+       approximate
        range of the observed wingspan.
- \item Implement a Metropolis algorithm that approximates $ p(\alpha, \beta | \vect y, \vect x) $.
-       Adjust the proposal distribution to achieve a reasonable acceptance rate, and run the 
-       algorithm long enough so that the effective sample size is at least 1,000 for each parameter.
+ \item Implement a Metropolis algorithm that approximates $ p(\alpha, \beta | \vect y,
+        \vect x) $.
+       Adjust the proposal distribution to achieve a reasonable acceptance rate, and run
+       the
+       algorithm long enough so that the effective sample size is at least 1,000 for each
+       parameter.
  \item Compare the posterior densities of $\alpha$ and $\beta$ to their prior densities.
- \item Using output from the Metropolis algorithm, come up with a way to make a confidence band for
+ \item Using output from the Metropolis algorithm, come up with a way to make a
+       confidence band for
        the following \textit{function} $ f_{\alpha \beta} (x) $ of wingspan:
-       \[ f_{\alpha \beta} (x) = \frac{e ^{\alpha + \beta x}}{1 + e ^{\alpha + \beta x}} \]
-       where $\alpha$ and $\beta$ are the parameters in your sampling model. Make a plot of such 
+       \[ f_{\alpha \beta} (x) = \frac{e ^{\alpha + \beta x}}{1 + e ^{\alpha + \beta x}}
+       \]
+       where $\alpha$ and $\beta$ are the parameters in your sampling model. Make a plot
+       of such
        a band.
 \end{enumerate}
 
 \subsection{Solutions}
 \begin{enumerate}[label=\alph*) ]
- \item 
+ \item
        \begin{align*}
         \likelihood(\alpha, \beta; \vect y, \vect X)
-         &= p(\vect y | \alpha, \beta, \vect X)  \\
-         &= \prod_{i = 1}^{n} p(y_i | \alpha, \beta, x_i) \\
-         &= \prod_{i = 1}^{n} \left( \frac{e ^{\eta_i}}{1 + e ^{\eta_i}} \right) ^{y_i}
-                              \left( \frac{1}{1 + e ^{\eta_i}} \right) ^{1 - y_i} \\
-         &= \prod_{i = 1}^{n} \frac{e ^{y_i \eta_i}}{1 + e ^{\eta_i}} \\
-         &= \prod_{i = 1}^{n} e ^{y_i \eta_i} \cdot e ^{-\log(1 + e ^{\eta_i})} \\
-         &= e ^{\sum_{i = 1}^{n} y_i \eta_i - \log(1 + e ^{\eta_i})} \\
-         &= \exp\left( \sum_{i = 1}^{n} y_i (\alpha + \beta x_i) - \log(1 + \exp(\alpha + \beta x_i)) \right)
+         & = p(\vect y | \alpha, \beta, \vect X)
+        \\
+         & = \prod_{i = 1}^{n} p(y_i | \alpha, \beta, x_i)
+        \\
+         & = \prod_{i = 1}^{n} \left( \frac{e ^{\eta_i}}{1 + e ^{\eta_i}} \right) ^{y_i}
+        \left( \frac{1}{1 + e ^{\eta_i}} \right) ^{1 - y_i}
+        \\
+         & = \prod_{i = 1}^{n} \frac{e ^{y_i \eta_i}}{1 + e ^{\eta_i}}
+        \\
+         & = \prod_{i = 1}^{n} e ^{y_i \eta_i} \cdot e ^{-\log(1 + e ^{\eta_i})}
+        \\
+         & = e ^{\sum_{i = 1}^{n} y_i \eta_i - \log(1 + e ^{\eta_i})}
+        \\
+         & = \exp\left( \sum_{i = 1}^{n} y_i (\alpha + \beta x_i) - \log(1 + \exp(\alpha
+         +
+         \beta x_i)) \right)
        \end{align*}
- \item We could formulate the priors for $\alpha$ and $\beta$ in many ways, two of them are the following:
-   \begin{enumerate}[label=\arabic*. ]
-    \item \textbf{In a subjective way}: we think that the prior probability of nesting is high, for example that it
-          lies in $ [0.5, 0.9] $; knowing also that the range of variation of the covariate is $ [10, 15] $,
-          we can find the range of $\alpha$ and $\beta$ that is consistent with them and we obtain the prior 
-          on the parameters on the base of this informations. Numerically:
-          \begin{align*}
-           &p = \Pr(Y = 1 | \alpha, \beta, x_i) \in \left[0.5, 0.9\right] \\
-           \implies& \logit p = \log \frac{p}{1 - p} \in \left[0, 2.2\right] \\
-           \implies& \begin{cases}
-            \alpha + \beta x \ge 0 \\
-            \alpha + \beta x \le 2.2
-           \end{cases}
-          \end{align*}
-          
-          We obtain the bounds of $\alpha$ and $\beta$ supposing, first that the
-          wingspan and the nesting logit-probability are positively correlated --
-          that is the lowest value of one corresponds to the lowest value of the
-          other and vice versa, and then that they are negatively correlated --
-          that is the lowest value of one corresponds to the highest value of the
-          other and vice versa. We solve the two linear system.
-          \begin{align*}
-          \intertext{\centering \textbf{Positive correlation}}
-           &\begin{cases}
-            \alpha + 10 \beta = 0 \\
-            \alpha + 15 \beta = 2.2
-           \end{cases} \\
-           \implies &\begin{cases}
-            \alpha = -4.4 \\
-            \beta = 0.44
-           \end{cases} \\
-           \intertext{\centering \textbf{Negative correlation}}
-           &\begin{cases}
-            \alpha + 15 \beta = 0 \\
-            \alpha + 10 \beta = 2.2
-           \end{cases} \\
-           \implies &\begin{cases}
-            \alpha = 6.6 \\         
-            \beta = -0.44
-           \end{cases}
-          \end{align*}
-          
-          Thus the parameters move in the intervals $ [-4.4, 6.6] $ for $\alpha$ and 
-          $ [-0.44, 0.44] $ for $\beta$.
-          
-          Assuming $\alpha$ and $\beta$ normal-distributed (the most natural solution 
-          since in any case it is not possible to do inference neither in closed form 
-          nor through Gibbs sampler but with a Metropolis-Hastings algorithm), we
-          specify the centroid as the mean vector
-          \[ \begin{pmatrix} \alpha_0 \\ \beta_0 \end{pmatrix} = 
-             \begin{pmatrix} 1.1 \\ 0 \end{pmatrix} \]
-          The variance and covariance matrix remains to be specified. First of all,
-          since extreme values of both $\alpha$ and $\beta$ lead to logit values
-          that are out of our prior range, we set the covariance to 0 to minimize
-          this occurrence. 
-          \[ \sigma_{\alpha\beta} = 0 \]
-          For the variances we follow the principle of the confidence intervals:
-          \[ \begin{matrix}
-              \Pr( \alpha_0 - 2 \sigma_\alpha \le X \le \alpha_0 + 2 \sigma_\alpha ) \approx 0.95, &
-              \Pr( \beta_0 - 2 \sigma_\beta \le X \le \beta_0 + 2 \sigma_\beta ) \approx 0.95
-             \end{matrix} \]
-          Thus we can find the $\sigma$s so that they are consistent with the 
-          intervals defined above:
-          \begin{align*}
-          	         & 2 \sigma_\alpha = \frac{6.6 - (-4.4)}{2} = 5.5 & & 2 \sigma_\beta = \frac{0.44 - (-0.44)}{2} = 0.44 \\
-          	\implies & \sigma_\alpha   = 2.75                         & \implies & \sigma_\beta = 0.22
-          \end{align*}
-          
-          For all that said, the prior formulated considering the range of 
-          $ \Pr(Y = 1 | \alpha, \beta, x) $ when you change x in $ [10, 15] $ is
-          \[ \begin{pmatrix} \alpha \\ \beta \end{pmatrix} \sim
-          \Normal_2 \left( \vect \mu = \begin{pmatrix} \alpha_0 \\ \beta_0 \end{pmatrix}, \;
-                            \Sigma = \begin{pmatrix} \sigma^2_\alpha & \sigma_{\alpha\beta} \\ 
-                                                     \parm & \sigma^2_\beta \end{pmatrix} \right) \overset{!}{=}
-          \Normal_2 \left( \vect \mu = \begin{pmatrix} 1.1 \\ 0 \end{pmatrix}, \;
-                            \Sigma = \begin{pmatrix} 2.75 ^2 & 0 \\
-                                                     \parm & 0.22 ^2 \end{pmatrix} \right) \]
-    \item \textbf{In a non-informative way}: we obtain the range of $ p $ on the base
-          of the observed proportion and the normal approximation of the sampling
-          distribution. In this case $ \hat p = 0.55 $, knowing that 
-          $ \hat p \overset{n \to \infty}{\sim} N(p, p (1 - p) / n) $, following (again)
-          the principle of confidence intervals, we assume that the variation field of
-          $ p $ is $ [\hat p - 2 \hat \sigma_{\hat p}, \hat p + 2 \hat \sigma_{\hat p}] $ where
-          \[ \hat \sigma_{\hat p} = \sqrt{\frac{\hat p (1 - \hat p)}{n}} = \sqrt{\frac{0.55 \cdot 0.45}{43}} \approx 0.076 \]
-          and then
-          \[ p \in [0.55 - 2 \cdot 0.076, 0.55 + 2 \cdot 0.076] = [0.47, 0.62] \]
-          
-          Then, with the same procedure used in point 1. we obtain the parameters' priors:
-          \[ \begin{pmatrix} \alpha \\ \beta \end{pmatrix} \sim
-          \Normal_2 \left( \vect \mu = \begin{pmatrix} 0.63 \\ 0 \end{pmatrix}, \;
-                            \Sigma = \begin{pmatrix} 0.93 ^2 & 0 \\ \parm & 0.07 ^2 \end{pmatrix} \right) \]
-   \end{enumerate}
+ \item We could formulate the priors for $\alpha$ and $\beta$ in many ways, two of them
+       are the following:
+       \begin{enumerate}[label=\arabic*. ]
+        \item \textbf{In a subjective way}: we think that the prior probability of
+              nesting is
+              high, for example that it
+              lies in $ [0.5, 0.9] $; knowing also that the range of variation of the
+              covariate is $ [10, 15] $,
+              we can find the range of $\alpha$ and $\beta$ that is consistent with them
+              and
+              we obtain the prior
+              on the parameters on the base of this informations. Numerically:
+              \begin{align*}
+                        & p = \Pr(Y = 1 | \alpha, \beta, x_i) \in \left[0.5, 0.9\right] \\
+               \implies & \logit p = \log \frac{p}{1 - p} \in \left[0, 2.2\right]       \\
+               \implies & \begin{cases}
+                \alpha + \beta x \ge 0 \\
+                \alpha + \beta x \le 2.2
+               \end{cases}
+              \end{align*}
 
-      We have chosen to work with the prior obtained with the point 1.
-\item \textbf{Code}:
-      \begin{minted}{R}
+              We obtain the bounds of $\alpha$ and $\beta$ supposing, first that the
+              wingspan and the nesting logit-probability are positively correlated --
+              that is the lowest value of one corresponds to the lowest value of the
+              other and vice versa, and then that they are negatively correlated --
+              that is the lowest value of one corresponds to the highest value of the
+              other and vice versa. We solve the two linear system.
+              \begin{align*}
+               \intertext{\centering \textbf{Positive correlation}}
+                        & \begin{cases}
+                \alpha + 10 \beta = 0 \\
+                \alpha + 15 \beta = 2.2
+               \end{cases} \\
+               \implies & \begin{cases}
+                \alpha = -4.4 \\
+                \beta = 0.44
+               \end{cases} \\
+               \intertext{\centering \textbf{Negative correlation}}
+                        & \begin{cases}
+                \alpha + 15 \beta = 0 \\
+                \alpha + 10 \beta = 2.2
+               \end{cases} \\
+               \implies & \begin{cases}
+                \alpha = 6.6 \\
+                \beta = -0.44
+               \end{cases}
+              \end{align*}
+
+              Thus the parameters move in the intervals $ [-4.4, 6.6] $ for $\alpha$ and
+              $ [-0.44, 0.44] $ for $\beta$.
+
+              Assuming $\alpha$ and $\beta$ normal-distributed (the most natural solution
+              since in any case it is not possible to do inference neither in closed form
+              nor through Gibbs sampler but with a Metropolis-Hastings algorithm), we
+              specify the centroid as the mean vector
+              \[ \begin{pmatrix} \alpha_0 \\ \beta_0 \end{pmatrix} =
+               \begin{pmatrix} 1.1 \\ 0 \end{pmatrix} \]
+              The variance and covariance matrix remains to be specified. First of all,
+              since extreme values of both $\alpha$ and $\beta$ lead to logit values
+              that are out of our prior range, we set the covariance to 0 to minimize
+              this occurrence.
+              \[ \sigma_{\alpha\beta} = 0 \]
+              For the variances we follow the principle of the confidence intervals:
+              \[ \begin{matrix}
+                \Pr( \alpha_0 - 2 \sigma_\alpha \le X \le \alpha_0 + 2 \sigma_\alpha )
+                \approx 0.95, &
+                \Pr( \beta_0 - 2 \sigma_\beta \le X \le \beta_0 + 2 \sigma_\beta )
+                \approx
+                0.95
+               \end{matrix} \]
+              Thus we can find the $\sigma$s so that they are consistent with the
+              intervals defined above:
+              \begin{align*}
+                        & 2 \sigma_\alpha = \frac{6.6 - (-4.4)}{2} = 5.5 &          & 2
+               \sigma_\beta = \frac{0.44 - (-0.44)}{2} = 0.44                           \\
+               \implies & \sigma_\alpha   = 2.75                         & \implies &
+               \sigma_\beta = 0.22
+              \end{align*}
+
+              For all that said, the prior formulated considering the range of
+              $ \Pr(Y = 1 | \alpha, \beta, x) $ when you change x in $ [10, 15] $ is
+              \[ \begin{pmatrix} \alpha \\ \beta \end{pmatrix} \sim
+               \Normal_2 \left( \vect \mu = \begin{pmatrix} \alpha_0 \\ \beta_0
+                \end{pmatrix},
+               \;
+               \Sigma = \begin{pmatrix} \sigma^2_\alpha &
+                 \sigma_{\alpha\beta}             \\
+                 \parm           & \sigma^2_\beta\end{pmatrix}
+               \right) \overset{!}{=}
+               \Normal_2 \left( \vect \mu = \begin{pmatrix} 1.1 \\ 0 \end{pmatrix}, \;
+               \Sigma = \begin{pmatrix} 2.75 ^2 & 0       \\
+                 \parm   & 0.22 ^2\end{pmatrix}
+               \right) \]
+        \item \textbf{In a non-informative way}: we obtain the range of $ p $ on the base
+              of the observed proportion and the normal approximation of the sampling
+              distribution. In this case $ \hat p = 0.55 $, knowing that
+              $ \hat p \overset{n \to \infty}{\sim} N(p, p (1 - p) / n) $, following
+              (again)
+              the principle of confidence intervals, we assume that the variation field
+              of
+              $ p $ is $ [\hat p - 2 \hat \sigma_{\hat p}, \hat p + 2 \hat \sigma_{\hat
+                  p}] $
+              where
+              \[ \hat \sigma_{\hat p} = \sqrt{\frac{\hat p (1 - \hat p)}{n}} =
+               \sqrt{\frac{0.55 \cdot 0.45}{43}} \approx 0.076 \]
+              and then
+              \[ p \in [0.55 - 2 \cdot 0.076, 0.55 + 2 \cdot 0.076] = [0.47, 0.62] \]
+
+              Then, with the same procedure used in point 1. we obtain the parameters'
+              priors:
+              \[ \begin{pmatrix} \alpha \\ \beta \end{pmatrix} \sim
+               \Normal_2 \left( \vect \mu = \begin{pmatrix} 0.63 \\ 0 \end{pmatrix}, \;
+               \Sigma = \begin{pmatrix} 0.93 ^2 & 0 \\ \parm & 0.07 ^2
+                \end{pmatrix} \right) \]
+       \end{enumerate}
+
+       We have chosen to work with the prior obtained with the point 1.
+ \item \textbf{Code}:
+       \begin{minted}{R}
 library(tidyverse)
 library(compiler)
 library(coda)
@@ -187,33 +222,33 @@ p <- NCOL(X)
 pmn_beta <- c(1.1, 0)
 psd_beta <- c(2.75, 0.22)
 \end{minted}
-      We create a function that approximates the posterior distribution of the
-      coefficients through the algorithm MH. The request is to adjust the
-      purposed distribution to obtain a reasonable acceptance rate and to
-      consider a number of iterations that gives an effective sample size of
-      about 1000. So, use these two elements as input to the function.
+       We create a function that approximates the posterior distribution of the
+       coefficients through the algorithm MH. The request is to adjust the
+       purposed distribution to obtain a reasonable acceptance rate and to
+       consider a number of iterations that gives an effective sample size of
+       about 1000. So, use these two elements as input to the function.
 
-      \textbf{Note} \quad We have said that the variance-covariance matrix of
-      the proposed prior is fixed as an input of the algorithm, to observe how
-      the results change when we change the proposal, so that we can choose the
-      most adequate prior for our needs. However, keep in mind that the matrix
-      is constant for each chain. In some cases it is possible to fix it during
-      the algorithm, provided that certain conditions are met: in theory, thus
-      it is possible to extract the variance each time, as long as the
-      distribution from which it is sampled does not depend on parameters
-      extracted from the chain (apart from those sampled from the latest
-      iteration). This usually happens in more complex situations where
-      sometimes we would like to do small steps and some others longer steps:
-      then it is possible to do a number of steps with lower variance and
-      another with greater variance, always under the condition that these two
-      matrices are prespecified -- or otherwise randomly generated independently
-      of the chain. In this way, the proposed distribution is more flexible and
-      accomplishes to explore better the posterior. As a practical case, we can
-      consider a bimodal posterior distribution: to better approximate it with a
-      Metropolis algorithm we need big steps to jump from one maximum to the
-      other, and small steps to guarantee a sufficient acceptance rate. Doing
-      this we increase the so-called "mixing capability".
-\begin{minted}{R}
+       \textbf{Note} \quad We have said that the variance-covariance matrix of
+       the proposed prior is fixed as an input of the algorithm, to observe how
+       the results change when we change the proposal, so that we can choose the
+       most adequate prior for our needs. However, keep in mind that the matrix
+       is constant for each chain. In some cases it is possible to fix it during
+       the algorithm, provided that certain conditions are met: in theory, thus
+       it is possible to extract the variance each time, as long as the
+       distribution from which it is sampled does not depend on parameters
+       extracted from the chain (apart from those sampled from the latest
+       iteration). This usually happens in more complex situations where
+       sometimes we would like to do small steps and some others longer steps:
+       then it is possible to do a number of steps with lower variance and
+       another with greater variance, always under the condition that these two
+       matrices are prespecified -- or otherwise randomly generated independently
+       of the chain. In this way, the proposed distribution is more flexible and
+       accomplishes to explore better the posterior. As a practical case, we can
+       consider a bimodal posterior distribution: to better approximate it with a
+       Metropolis algorithm we need big steps to jump from one maximum to the
+       other, and small steps to guarantee a sufficient acceptance rate. Doing
+       this we increase the so-called "mixing capability".
+       \begin{minted}{R}
 invlogit <- function(x) exp(x) / (1 + exp(x))
 
 MHsim <- function(tuning, nsim = 1E4, seed = 2018, verbose = FALSE) {
@@ -229,34 +264,34 @@ MHsim <- function(tuning, nsim = 1E4, seed = 2018, verbose = FALSE) {
    for (iter in 1:nsim) {
       betaprop <- MASS::mvrnorm(1, beta, varprop)
 \end{minted}
-      \textit{Metropolis ratio}: It can be computed in
-      many ways, including the functional form of the likelihood found at the
-      point a) or using the function \texttt{dbinom} of R. Some considerations:
-      \begin{itemize}
-       \item The function \texttt{dbinom} takes as input 3 (+1) elements: the
-       vector \texttt{x} of observations, the parameters \texttt{size} and
-       \texttt{prob} of the binomial (and a boolean \texttt{log} that indicates
-       whether we want the density or the log-density). In this case, we have
-       \texttt{size = 1} because the observations come from a Bernoulli (or a
-       binomial of size 1), thus the function returns a vector with the same
-       size as the input \texttt{x}, that contains in the i-th position the
-       log-probability of observing the i-th element of \texttt{x} with
-       parameter $p$ equal to the i-th element of \texttt{prob}. We then take
-       the sum to obtain the log-likelihood.
-       \item The vector of probabilities given in input to the \texttt{dbinom}
-       function in \texttt{prob} is computed following the logit model
-       specification, thus calculating the \textit{inverse} logit (or
-       \textit{expit}) of the linear predictor.
-       \item The Metropolis ratio does not contain only the ratio between
-       likelihoods, but also the ratio between the specified prior densities, in
-       this case, the marginal density of the regression parameters at the
-       current step and the density of the regression parameters at the previous
-       step.
-       \item We work with log-likelihood instead of likelihoods only for a
-       matter of numerical stability, the same procedure could be followed
-       working directly on likelihoods.
-      \end{itemize}
-\begin{minted}{R}
+       \textit{Metropolis ratio}: It can be computed in
+       many ways, including the functional form of the likelihood found at the
+       point a) or using the function \texttt{dbinom} of R. Some considerations:
+       \begin{itemize}
+        \item The function \texttt{dbinom} takes as input 3 (+1) elements: the
+              vector \texttt{x} of observations, the parameters \texttt{size} and
+              \texttt{prob} of the binomial (and a boolean \texttt{log} that indicates
+              whether we want the density or the log-density). In this case, we have
+              \texttt{size = 1} because the observations come from a Bernoulli (or a
+              binomial of size 1), thus the function returns a vector with the same
+              size as the input \texttt{x}, that contains in the i-th position the
+              log-probability of observing the i-th element of \texttt{x} with
+              parameter $p$ equal to the i-th element of \texttt{prob}. We then take
+              the sum to obtain the log-likelihood.
+        \item The vector of probabilities given in input to the \texttt{dbinom}
+              function in \texttt{prob} is computed following the logit model
+              specification, thus calculating the \textit{inverse} logit (or
+              \textit{expit}) of the linear predictor.
+        \item The Metropolis ratio does not contain only the ratio between
+              likelihoods, but also the ratio between the specified prior densities, in
+              this case, the marginal density of the regression parameters at the
+              current step and the density of the regression parameters at the previous
+              step.
+        \item We work with log-likelihood instead of likelihoods only for a
+              matter of numerical stability, the same procedure could be followed
+              working directly on likelihoods.
+       \end{itemize}
+       \begin{minted}{R}
       lhr <- sum(log(dbinom(y, 1, invlogit(X %*% betaprop)))) +
          sum(dnorm(betaprop, pmn_beta, psd_beta, log = TRUE)) -
          sum(log(dbinom(y, 1, invlogit(X %*% beta)))) -
@@ -282,19 +317,19 @@ MHsim <- function(tuning, nsim = 1E4, seed = 2018, verbose = FALSE) {
    list(beta = BETA, accept.rate = acc / nsim, eff_samplesize = ESS)
 }
 \end{minted}
-      Now we can launch a series of trial runs to find the optimal
-      variance-covariance matrix for the proposal distribution such that we have
-      a good acceptance rate with an effective sample size of at least 1000.
+       Now we can launch a series of trial runs to find the optimal
+       variance-covariance matrix for the proposal distribution such that we have
+       a good acceptance rate with an effective sample size of at least 1000.
 
-      We can start by setting 1000 iterations (an optimistically low number) and
-      a variance-covariance matrix similar to the one of the g-prior.
-\begin{minted}{R}
+       We can start by setting 1000 iterations (an optimistically low number) and
+       a variance-covariance matrix similar to the one of the g-prior.
+       \begin{minted}{R}
 nsim <- 1000
 varprop <- var(log(y + 1 / 2)) * solve(crossprod(X))
 simulation1 <- MHsim(varprop, nsim = nsim, verbose = TRUE)
 \end{minted}
-      \textbf{Results, 1st chain}:
-\begin{verbatim}
+       \textbf{Results, 1st chain}:
+       \begin{verbatim}
 # nsimulations = 1000
 # prop. variance:
             (Intercept)   wspan
@@ -302,24 +337,24 @@ simulation1 <- MHsim(varprop, nsim = nsim, verbose = TRUE)
 wspan            -0.085  0.0066
 
 # acceptance rate: 0.779
-# effective sample size: 
-(Intercept)       wspan 
-      40.77       38.75 
+# effective sample size:
+(Intercept)       wspan
+      40.77       38.75
 \end{verbatim}
-      The acceptance rate is very high and the effective sample size is too low,
-      as a consequence, we accept many times the purposed values, but we are
-      doing too short steps through the posterior distribution. To reach our
-      objective we have to increase the number of iterations and to increase the
-      values of the variance-covariance matrix: to achieve this we try to take 3
-      times the current dispersion matrix and 5 times the current number of
-      iterations.
-\begin{minted}{R}
+       The acceptance rate is very high and the effective sample size is too low,
+       as a consequence, we accept many times the purposed values, but we are
+       doing too short steps through the posterior distribution. To reach our
+       objective we have to increase the number of iterations and to increase the
+       values of the variance-covariance matrix: to achieve this we try to take 3
+       times the current dispersion matrix and 5 times the current number of
+       iterations.
+       \begin{minted}{R}
 nsim <- 5 * nsim
 varprop <- varprop * 3
 simulation2 <- MHsim(varprop, nsim = nsim, verbose = TRUE)
 \end{minted}
-      \textbf{Results, 2nd chain}:
-\begin{verbatim}
+       \textbf{Results, 2nd chain}:
+       \begin{verbatim}
 # nsimulations = 5000
 # prop. variance:
             (Intercept) wspan
@@ -327,19 +362,19 @@ simulation2 <- MHsim(varprop, nsim = nsim, verbose = TRUE)
 wspan             -0.26  0.02
 
 # acceptance rate: 0.6316
-# effective sample size: 
-(Intercept)       wspan 
-      658.1       653.2 
+# effective sample size:
+(Intercept)       wspan
+      658.1       653.2
 \end{verbatim}
-      The effective sample size has increased, but not enough. Concurrently the
-      acceptance rate is decreased but it is still quite high. Thus, we can keep
-      the current number of iterations and increase the proposed variance.
-\begin{minted}{R}
+       The effective sample size has increased, but not enough. Concurrently the
+       acceptance rate is decreased but it is still quite high. Thus, we can keep
+       the current number of iterations and increase the proposed variance.
+       \begin{minted}{R}
 varprop <- varprop * 3
 simulation3 <- MHsim(varprop, nsim = nsim, verbose = TRUE)
 \end{minted}
-      \textbf{Results, 3rd chain}:
-\begin{verbatim}
+       \textbf{Results, 3rd chain}:
+       \begin{verbatim}
 # nsimulations = 5000
 # prop. variance:
             (Intercept)  wspan
@@ -347,23 +382,23 @@ simulation3 <- MHsim(varprop, nsim = nsim, verbose = TRUE)
 wspan             -0.77  0.059
 
 # acceptance rate: 0.4448
-# effective sample size: 
-(Intercept)       wspan 
-      963.5       979.1 
+# effective sample size:
+(Intercept)       wspan
+      963.5       979.1
 \end{verbatim}
-      We must stop since the acceptance rate has decreased under 0.5, and the
-      effective sample size is almost 1000.
+       We must stop since the acceptance rate has decreased under 0.5, and the
+       effective sample size is almost 1000.
 
-      \textbf{Note} \quad The choice of the variance-covariance matrix is and of
-      the effective sample size is a quite heuristic question: in this case, we
-      have changed the tuning parameter more than the number of simulations, but
-      there is no rule against the opposite scheme.
+       \textbf{Note} \quad The choice of the variance-covariance matrix is and of
+       the effective sample size is a quite heuristic question: in this case, we
+       have changed the tuning parameter more than the number of simulations, but
+       there is no rule against the opposite scheme.
 
-      To be complete, since we have chosen a number of simulations that is 5
-      times the e.s.s., we arrange an process of thinning -- that is we select 1
-      value every 5. In this way, with a lower number of observations, we reach
-      to give the same amount of information.
-\begin{minted}{R}
+       To be complete, since we have chosen a number of simulations that is 5
+       times the e.s.s., we arrange an process of thinning -- that is we select 1
+       value every 5. In this way, with a lower number of observations, we reach
+       to give the same amount of information.
+       \begin{minted}{R}
 thin <- seq(5, nsim, 10)
 
 pdf("week-09_iterations.pdf")
@@ -375,12 +410,12 @@ plot(thin, simulation3$beta[thin, 2],
 par(opar)
 graphics.off()
 \end{minted}
-      \begin{figure}[H]
-       \centering
-       \includegraphics[width=0.9\linewidth]{r-scripts/week-09_iterations.pdf}
-      \end{figure}
-\item Comparing the prior distributions with the posteriors:
-\begin{minted}{R}
+       \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{r-scripts/week-09_iterations.pdf}
+       \end{figure}
+ \item Comparing the prior distributions with the posteriors:
+       \begin{minted}{R}
 alpha <- seq(-10, 10, by = 0.1)
 beta  <- seq(-2, 2, by = 0.1)
 
@@ -404,27 +439,27 @@ legend("topright", legend = c("prior", "posterior"), cex = 1,
 par(opar)
 graphics.off()
 \end{minted}
-      \begin{figure}[H]
-       \centering
-       \includegraphics[width=\linewidth]{r-scripts/week-09_priors_posteriors.pdf}
-       \caption{The range assumed for the probability of nesting (that we
-       remember was $ [0.5, 0.9] $) was too optimistic compared to the data,
-       therefore we can see that the posterior has a higher density for lower
-       values of $\alpha$ and higher values of $\beta$.}
-      \end{figure}
-      \item From the output of the Metropolis algorithm, we have a sample of
-      couples of regression coefficients, that approximates the posterior
-      distribution. It's furthermore possible to approximate any function of
-      those parameters, including the $f$ function under examination, that
-      corresponds to the probability of nesting (indeed that's the inverse logit
-      function of the linear predictor). For each couple of parameters, we
-      obtain the predicted values for the observed data and estimate the
-      95-percent quantiles of each vector of predictions.
-      \begin{figure}[H]
-       \centering
-       \includegraphics[width=\linewidth]{r-scripts/week-09_predictions.pdf}
-       \caption{We can infer that there is no significant effect of the
-       wingspan on the nesting probability. In fact, the CI band moves almost
-       parallel along the horizontal axis.}
-      \end{figure}
+       \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{r-scripts/week-09_priors_posteriors.pdf}
+        \caption{The range assumed for the probability of nesting (that we
+         remember was $ [0.5, 0.9] $) was too optimistic compared to the data,
+         therefore we can see that the posterior has a higher density for lower
+         values of $\alpha$ and higher values of $\beta$.}
+       \end{figure}
+ \item From the output of the Metropolis algorithm, we have a sample of
+       couples of regression coefficients, that approximates the posterior
+       distribution. It's furthermore possible to approximate any function of
+       those parameters, including the $f$ function under examination, that
+       corresponds to the probability of nesting (indeed that's the inverse logit
+       function of the linear predictor). For each couple of parameters, we
+       obtain the predicted values for the observed data and estimate the
+       95-percent quantiles of each vector of predictions.
+       \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{r-scripts/week-09_predictions.pdf}
+        \caption{We can infer that there is no significant effect of the
+         wingspan on the nesting probability. In fact, the CI band moves almost
+         parallel along the horizontal axis.}
+       \end{figure}
 \end{enumerate}
