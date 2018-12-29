@@ -25,7 +25,7 @@
                               & = \frac{3}{2} \frac{1}{\psi \sqrt{2\pi}} \exp\left( -\frac{\psi}{2} (y - \theta)^2 \right)
         \end{align*}
         \begin{align*}
-          l(\theta, \psi | \vect y)
+          \loglik(\theta, \psi | \vect y)
            & = \sum_{i = 1}^{n} \log\left\{ \frac{3}{2} \left( \frac{\psi}{\sqrt{2\pi}} \right)
           \exp \left(\frac{\psi(y_i - \theta)^2}{2} \right) \right\}                                          \\
            & = n \log\left( \frac{\psi}{\sqrt{2\pi}} \right) + \frac{\psi}{2} \sum_{i=1}^n (y_i - \theta)^2   \\
@@ -33,13 +33,13 @@
           \frac{\psi}{2} \sum_{i=1}^n (\bar y - \theta)^2
         \end{align*}
   \item \begin{align*}
-          l_U(\theta, \psi)
-           & = \frac{l(\theta, \psi | \vect y)}{n} + c                                                                        \\
+          \loglik_U(\theta, \psi)
+           & = \frac{\loglik(\theta, \psi | \vect y)}{n} + c                                                                        \\
            & = \frac{1}{n} \left[ n \log\left( \frac{\psi}{2\pi} \right) - \frac{\psi}{2} \sum_i (y_i - \theta)^2 \right] + c \\
            & = \log\left( \frac{\psi}{\sqrt{2\pi}} \right) -
           \frac{\psi}{2n} \sum_i (y_i - \bar y)^2 - \frac{\psi}{2} (\bar y - \theta)^2 + c                                    \\
           \implies p_U(\theta, \psi)
-           & \propto \exp( l_U(\theta, \psi) )                                                                                \\
+           & \propto \exp\left(\loglik_U(\theta, \psi) \right)                                                                \\
            & \propto
           \underbrace{ \psi^2 \cdot \exp\left( -\frac{\sum_i (y_i - \bar y)^2}{2n} \cdot \psi \right) }_
           {\text{kernel of a Gamma($ 2 $, $ \sum_i (y_i - \bar y)^2 / 2n $)}}

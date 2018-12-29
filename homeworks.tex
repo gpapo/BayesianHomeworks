@@ -12,6 +12,7 @@
 
 % Graphic stuff
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{pgf, tikz}
 \usetikzlibrary{automata, arrows}
 \pgfdeclarelayer{background}
@@ -44,7 +45,6 @@
 \rhead{\chaptername \space \thechapter}
 
 % Probability commands: Expectation, Variance, Covariance, Bias
-\DeclareMathOperator{\prob}{\mathbb P}
 \DeclareMathOperator{\E}{E}
 \DeclareMathOperator{\V}{V}
 \DeclareMathOperator{\Var}{Var}
@@ -85,6 +85,7 @@
 \DeclareMathOperator*{\argmax}{arg \; max \;}
 \DeclareMathOperator*{\argmin}{arg \; min \;}
 \DeclareMathOperator{\likelihood}{\mathcal L}
+\DeclareMathOperator{\loglik}{\ell}
 
 % Hide subsection numeration
 \renewcommand{\thesubsection}{}

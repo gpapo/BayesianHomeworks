@@ -17,8 +17,9 @@ p-value and the number of switch as statistic test.
 \subsection{Solutions}
 
 Solution: $ 0.016 $ \\
-Code:
-\begin{minted}[fontsize=\small]{R}
+
+\noindent\textbf{Code}:
+\begin{minted}{R}
 set.seed(10)
 
 count_switch <- function(x) x %>% diff() %>% abs() %>% sum()
@@ -68,14 +69,14 @@ sample $ u $. To verify that they are equivalent we have to see if:
 \end{enumerate}
 In a generic $ u $ in the support of $ \Unif(0, M g(x)) $ the proportion of
 values below $ u $ is
-\[ \prob(U < u) = \frac{u}{M g(x)} \]
+\[ \Pr(U < u) = \frac{u}{M g(x)} \]
 therefor if $ u \overset{def}{=} f(x) $ the proportion of accepted values given
 $ x $ is $ \frac{f(x)}{M g(x)} $, so \ref{AR:cond1} is verified.
 
 Let $ K $ be the number of replications before accepting a value. So
 \[ K \sim \Geom(p) \text{ with $ p $ probability of accepting at each replication} \]
 We can compute the expected value of acceptance probability:
-\[ p = \prob(U \le f(x)) = \int_{S_X} g(x) \int_{0}^{f(x)} \frac{1}{M g(x)} \partial u \partial x =
+\[ p = \Pr(U \le f(x)) = \int_{S_X} g(x) \int_{0}^{f(x)} \frac{1}{M g(x)} \partial u \partial x =
   \int_{S_X} g(x) \frac{f(x)}{M g(x)} \partial x = \frac{1}{M} \int_{S_X} f(x) \partial x = \frac{1}{M} \]
 So the expected value $ \E[K] = \frac{1}{p} = M $ and even \ref{AR:cond2} is
 verified, and we can affirm that the two procedures are equivalent.

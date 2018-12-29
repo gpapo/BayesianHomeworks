@@ -3,18 +3,10 @@
 \section{Exercise 11.1, Hoff}
 
 \subsection{Questions}
-Full conditionals: derive formally the full conditional distributions of $\theta$,
-$\Sigma$, $\sigma^2$ and $\beta_j$ as given in Section 11.2.
+Full conditionals: derive formally the full conditional distributions of $\theta$, $\Sigma$, $\sigma^2$ and $\beta_j$ as given in Section 11.2.
 
 \subsection{Solutions}
-In Section 11.2 we are studying the relation between the score in a math test and the
-socio-economical status of students coming from 100 schools, keeping in mind that the
-relation can vary from school to school. We are thus in the case of a hierarchical linear
-mixed-effect model: there is a regression model for each school and a hierarchical model
-to explain the variability of the average score among schools. Assuming that the
-regression coefficients come from the same distribution (and consequently the expected
-value of scores do not differ much among schools), it is possible to make inference for
-each school obtaining information from all the others (shrinkage effect).
+In Section 11.2 we are studying the relation between the score in a math test and the socio-economical status of students coming from 100 schools, keeping in mind that the relation can vary from school to school. We are thus in the case of a hierarchical linear mixed-effect model: there is a regression model for each school and a hierarchical model to explain the variability of the average score among schools. Assuming that the regression coefficients come from the same distribution (and consequently the expected value of scores do not differ much among schools), it is possible to make inference for each school obtaining information from all the others (shrinkage effect).
 
 \subsubsection{Model setting}
 \begin{figure}[H]
@@ -22,8 +14,7 @@ each school obtaining information from all the others (shrinkage effect).
   \begin{tikzpicture}[node distance=2cm,->,>=stealth]
     % styles
     \tikzstyle{param} = [circle,thick,draw=black,fill=white,dashed,minimum
-    size=1cm];
-    \tikzstyle{yobs} = [circle,draw=black,fill=white,minimum size=1cm];
+    size=1cm]; \tikzstyle{yobs} = [circle,draw=black,fill=white,minimum size=1cm];
 
     % nodes
     \node[param,draw=blue] (theta) {$ \vect \theta $};
@@ -42,19 +33,13 @@ each school obtaining information from all the others (shrinkage effect).
     \begin{pgfonlayer}{background}
       % edges
       \path [blue] (theta)
-      edge [bend right] node {} (beta1)
-      edge node {} (beta2)
-      edge [bend left]	node {} (betam);
+      edge [bend right] node {} (beta1) edge node {} (beta2) edge [bend left]	node {} (betam);
 
       \path [red] (Sigma)
-      edge [bend right] node {} (beta1)
-      edge [bend right] node {} (beta2)
-      edge [bend left]	node {} (betam);
+      edge [bend right] node {} (beta1) edge [bend right] node {} (beta2) edge	 [bend left] node   {} (betam);
 
       \path [green] (sigma2)
-      edge [bend left]	node {} (y1)
-      edge [bend left]	node {} (y2)
-      edge [bend right] node {} (ym);
+      edge [bend left]	node {} (y1) edge [bend left]	node {} (y2) edge [bend right] node {} (ym);
 
       \path (beta1) edge node {} (y1);
       \path (beta2) edge node {} (y2);
@@ -72,17 +57,10 @@ each school obtaining information from all the others (shrinkage effect).
   \\
   \vect \beta_j | \vect \theta, \Sigma & \sim \Normal_{p}(\vect \theta, \Sigma)
   \\
-  \vect y_j | \beta_j, \sigma^2        & \sim \Normal_{n_j}(X_j \vect \beta_j,
-  \sigma
-  ^2 \cdot \Imat)
+  \vect y_j | \beta_j, \sigma^2        & \sim \Normal_{n_j}(X_j \vect \beta_j, \sigma ^2 \cdot \Imat)
 \end{align*}
-\[ p(\vect \theta, \Sigma, \sigma ^2, \vect \beta_1, \ldots, \vect \beta_m,
-  \vect y_1, \ldots, \vect y_m) =
-  p(\vect \theta) \cdot p(\vect \Sigma) \cdot p(\sigma ^2) \cdot
-  \prod_j p(\vect \beta_j | \vect \theta, \Sigma) \cdot
-  \prod_j p(\vect y_j | \beta_j, \sigma ^2) \]
-Now we can derive the full conditional distributions of the stochastic system
-parameters as required:
+\[ p(\vect \theta, \Sigma, \sigma ^2, \vect \beta_1, \ldots, \vect \beta_m, \vect y_1, \ldots, \vect y_m) = p(\vect \theta) \cdot p(\vect \Sigma) \cdot p(\sigma ^2) \cdot \prod_j p(\vect \beta_j | \vect \theta, \Sigma) \cdot \prod_j p(\vect y_j | \beta_j, \sigma ^2) \]
+Now we can derive the full conditional distributions of the stochastic system parameters as required:
 
 \subsubsection{Full conditional of $ \vect \beta_j $}
 \begin{align*}
@@ -106,23 +84,19 @@ parameters as required:
   \beta_j' \Sigma ^{-1} \vect \theta +
   \vect \theta' \Sigma ^{-1} \vect \theta + \frac{\vect y_j'
     \vect y_j}{\sigma ^2} -
-  2 \vect \beta_j' \frac{X_j' \vect y_j}{\sigma ^2} + \vect
-  \beta_j' \frac{X_j' X_j}{\sigma ^2} \vect \beta_j
-  \right) \right\}
+  2 \vect \beta_j' \frac{X_j' \vect y_j}{\sigma ^2} + \vect \beta_j' \frac{X_j' X_j}{\sigma ^2} \vect \beta_j \right) \right\}
   \\
    & \propto \exp\left\{ -\frac{1}{2} \left[
-    \vect \beta_j' \left(\Sigma ^{-1} + \frac{X_j'
-      X_j}{\sigma ^2}\right) \vect \beta_j -
+    \vect \beta_j' \left(\Sigma ^{-1} + \frac{X_j' X_j}{\sigma ^2}\right) \vect
+    \beta_j -
     2 \vect \beta_j' \left( \Sigma ^{-1} \vect \theta +
-    \frac{X_j' \vect y_j}{\sigma ^2} \right)
-    \right] \right\}
+    \frac{X_j' \vect y_j}{\sigma ^2} \right) \right] \right\}
 \end{align*}
-We can extrapolate the kernel of a multivariate normal distribution, thus:
-\[ \vect \beta_j | \vect \theta, \Sigma, \sigma ^2, \vect y_j \sim
+We can extrapolate the kernel of a multivariate normal distribution, thus: \[
+  \vect \beta_j | \vect \theta, \Sigma, \sigma ^2, \vect y_j \sim
   \Normal_p\left( \left( \Sigma ^{-1} + \frac{X_j' X_j}{\sigma ^2} \right)
     ^{-1}
-  \left( \Sigma ^{-1} \vect \theta + \frac{X_j' \vect
-      y_j}{\sigma ^2} \right),
+  \left( \Sigma ^{-1} \vect \theta + \frac{X_j' \vect y_j}{\sigma ^2} \right),
   \left( \Sigma ^{-1} + \frac{X_j' X_j}{\sigma ^2} \right)
     ^{-1} \right) \]
 
@@ -153,11 +127,10 @@ We can extrapolate the kernel of a multivariate normal distribution, thus:
     \vect \theta' \left( \Lambda_0 ^{-1} + m \Sigma ^{-1}
     \right) \vect \theta -
     2 \vect \theta' \left( \Lambda_0 ^{-1} \vect \mu_0 + m
-    \Sigma ^{-1} \vect{\bar \beta} \right)
-    \right] \right\}
+    \Sigma ^{-1} \vect{\bar \beta} \right) \right] \right\}
 \end{align*}
-We can note the kernel of a multivariate normal distribution:
-\[ \vect \theta | \vect \beta_1, \ldots, \vect \beta_j, \Sigma \sim
+We can note the kernel of a multivariate normal distribution: \[ \vect \theta |
+  \vect \beta_1, \ldots, \vect \beta_j, \Sigma \sim
   \Normal_p\left( \left( \Lambda_0 ^{-1} + m \Sigma ^{-1} \right) ^{-1}
   \left( \Lambda_0 ^{-1} \vect \mu_0 + m \Sigma ^{-1}
     \vect{\bar \beta} \right),
@@ -175,58 +148,53 @@ We can note the kernel of a multivariate normal distribution:
   \\
    & \propto \left( 2 ^{\frac{\eta_0 p}{2}} \pi ^{\binom{p}{2} / 2} \cdot
   \left|
-  S_0 \right| ^{-\frac{\eta_0}{2}}
-  \prod_{k = 1}^{p} \frac{\eta_0 + 1 - k}{2} \right) ^{-1} \cdot
-  \left| \Sigma \right| ^{-\frac{\eta_0 + p + 1}{2}} e ^{\frac{1}{2}
-      \tr(S_0 \Sigma ^{-1})} \cdot
+  S_0 \right| ^{-\frac{\eta_0}{2}} \prod_{k = 1}^{p} \frac{\eta_0 + 1 - k}{2} \right) ^{-1} \cdot
+  \left| \Sigma \right| ^{-\frac{\eta_0 + p + 1}{2}} \exp \left[ \frac{1}{2}
+    \tr(S_0 \Sigma ^{-1}) \right] \cdot
   \\
    & \prod_j \frac{1}{\sqrt{(2 \pi) ^p \left| \Sigma \right|}} \cdot
-  \exp\left( -\frac{1}{2} (\vect \beta_j - \vect \theta)' \Sigma
-    ^{-1} (\vect \beta_j - \vect \theta) \right)
+  \exp\left[ -\frac{1}{2} (\vect \beta_j - \vect \theta)' \Sigma
+    ^{-1} (\vect \beta_j - \vect \theta) \right]
   \\
-   & \propto \left| \Sigma \right| ^{-\frac{\eta_0 + p + 1}{2}} \exp \left(
-  -\frac{1}{2} \tr\left( S_0 \Sigma ^{-1} \right) \right)
-  \left| \Sigma \right| ^{-\frac{m}{2}} \exp\left( -\frac{1}{2} \sum_j
+   & \propto \left| \Sigma \right| ^{-\frac{\eta_0 + p + 1}{2}} \exp \left[
+    -\frac{1}{2} \tr\left( S_0 \Sigma ^{-1} \right) \right]
+  \left| \Sigma \right| ^{-\frac{m}{2}} \exp\left[ -\frac{1}{2} \sum_j
     (\vect \beta_j - \vect \theta)' \Sigma ^{-1}
-    (\vect \beta_j - \vect \theta) \right)
+    (\vect \beta_j - \vect \theta) \right]
   \\
   \intertext{\centering \fbox{\parbox{0.5\textwidth}{
         Considering that \begin{align*}
           \sum_j (\vect \beta_j - \vect \theta)' \Sigma ^{-1} (\vect
           \beta_j - \vect \theta)
-           & = \sum_j \tr((\vect \beta_j - \vect \theta)' \Sigma ^{-1}
-          (\vect \beta_j - \vect \theta))                                 \\
-           & = \sum_j \tr((\vect \beta_j - \vect \theta) (\vect \beta_j -
-          \vect \theta)' \Sigma ^{-1})                                    \\
-           & = \tr\left( \sum_j (\vect \beta_j - \vect \theta) (\vect
-            \beta_j - \vect \theta)' \Sigma ^{-1} \right)                 \\
+           & = \sum_j \tr[(\vect \beta_j - \vect \theta)' \Sigma ^{-1}
+            (\vect \beta_j - \vect \theta)]                               \\
+           & = \sum_j \tr[(\vect \beta_j - \vect \theta) (\vect \beta_j -
+            \vect \theta)' \Sigma ^{-1}]                                  \\
+           & = \tr\left[ \sum_j (\vect \beta_j - \vect \theta) (\vect
+            \beta_j - \vect \theta)' \Sigma ^{-1} \right]                 \\
            & = \tr(S_{\beta} \Sigma ^{-1})
-        \end{align*}}}}                        \\
+        \end{align*}
+      }}}                                                                    \\
    & = \left| \Sigma \right| ^{-\frac{\eta_0 + p + m + 1}{2}} \cdot
   \exp\left( -\frac{1}{2} \tr\left((S_0 + S_\beta) \Sigma ^{-1}\right)
   \right)
 \end{align*}
-We recognize the kernel of an inverse-Wishart:
-\[ \Sigma | \vect \beta_1, \ldots, \vect \beta_m, \vect \theta \sim
+We recognize the kernel of an inverse-Wishart: \[ \Sigma | \vect \beta_1,
+  \ldots, \vect \beta_m, \vect \theta \sim
   \invWishart\left( \eta_0 + m, (S_0 + S_\beta) ^{-1} \right) \]
 
 \subsubsection{Full conditional of $ \sigma ^2 $}
 \begin{align*}
   p(\sigma ^2 | \vect \theta, \Sigma, \vect \beta_1, \ldots, \vect \beta_m,
   \vect y_1, \ldots, \vect y_m)
-   & = p(\sigma ^2 | \vect \beta_1, \ldots, \vect \beta_j, \vect y_1, \ldots, \vect y_m)
-  \\
-   & \propto p(\sigma ^2) \cdot \prod_j p(\vect y_j | \sigma ^2, \vect \beta_j)
-  \\
-   & = \frac{\left( \frac{\nu_0 \sigma_0 ^2}{2} \right)
-  ^{\frac{\nu_0}{2}}}{\Gamma\left( \frac{\nu_0}{2} \right)} \cdot
-  (\sigma ^2) ^{- \left(\frac{\nu_0}{2} + 1\right)} \exp\left( -\frac{\nu_0
-    \sigma_0 ^2}{2 \sigma ^2} \right) \cdot
-  \\
+   & = p(\sigma ^2 | \vect \beta_1, \ldots, \vect \beta_j, \vect y_1, \ldots, \vect y_m) \\
+   & \propto p(\sigma ^2) \cdot \prod_j p(\vect y_j | \sigma ^2, \vect \beta_j)          \\
+   & = \frac{\left( \frac{\nu_0 \sigma_0 ^2}{2} \right) ^{\frac{\nu_0}{2}}}{\Gamma\left(
+  \frac{\nu_0}{2} \right)} \cdot (\sigma ^2) ^{- \left(\frac{\nu_0}{2} + 1\right)}
+  \exp\left( -\frac{\nu_0 \sigma_0 ^2}{2 \sigma ^2} \right) \cdot                        \\
    & \prod_j \frac{1}{\sqrt{(2 \pi \sigma ^2) ^{n_j}}} \cdot
   \exp\left( -\frac{1}{2 \sigma ^2} (\vect y_j - X_j \vect \beta_j)' (\vect
-  y_j - X_j \vect \beta_j) \right)
-  \\
+  y_j - X_j \vect \beta_j) \right)                                                       \\
    & \propto (\sigma ^2) ^{- \left[ \frac{1}{2} \left( \nu_0 + \sum_j n_j
     \right)
     + 1 \right]} \cdot
@@ -234,100 +202,37 @@ We recognize the kernel of an inverse-Wishart:
     \textstyle \sum_j (\vect y_j - X_j \vect \beta_j)' (\vect y_j - X_j
     \vect \beta_j) \right]\right\}
 \end{align*}
-We recognize the kernel of an inverse-Gamma distribution:
-\[ \sigma ^2 | \vect \beta_1, \ldots, \vect \beta_m, \vect y_1, \ldots, \vect
-  y_m \sim
-  \invGamma\left( \frac{1}{2} \left( \nu_0 + \textstyle \sum_j n_j \right),
-  \frac{1}{2} \left( \nu_0 \sigma_0 ^2 +
-  \textstyle \sum_j (\vect y_j - X_j \vect \beta_j)' (\vect
-  y_j - X_j \vect \beta_j) \right) \right) \]
+We recognize the kernel of an inverse-Gamma distribution: \[ \sigma ^2 | \vect
+  \beta_1, \ldots, \vect \beta_m, \vect y_1, \ldots, \vect
+  y_m \sim \invGamma\left( \frac{1}{2} \left( \nu_0 + \textstyle \sum_j n_j
+  \right), \frac{1}{2} \left( \nu_0 \sigma_0 ^2 + \textstyle \sum_j (\vect y_j -
+  X_j \vect \beta_j)' (\vect y_j - X_j \vect \beta_j) \right) \right) \]
 
 \section{Exercise 11.4, Hoff}
 
 \subsection{Data}
-Hierarchical logistic regression: The Washington Assessment of Student Learning (WASL) is
-a standardized test given to students in the state of Washington. Letting j index the
-counties within the state of Washington and i index schools within counties, the file
-\texttt{mathstandard.dat} includes data on the following variables:
+Hierarchical logistic regression: The Washington Assessment of Student Learning (WASL) is a standardized test given to students in the state of Washington. Letting j index the counties within the state of Washington and i index schools within counties, the file \texttt{mathstandard.dat} includes data on the following variables:
 \begin{itemize}
   \item $ y_{i, j} = $ the indicator that more than half the 10th graders in
         school i, j passed the WASL math exam;
   \item $ x_{i, j} = $ the percentage of teachers in school i, j who have a
         masters degree.
 \end{itemize}
-In this exercise we will construct an algorithm to approximate the posterior
-distribution of the parameters in a generalized linear mixed-effects model for
-these data. The model is a mixed effects version of logistic regression:
+In this exercise we will construct an algorithm to approximate the posterior distribution of the parameters in a generalized linear mixed-effects model for these data. The model is a mixed effects version of logistic regression:
 \begin{align*}
-  y_{i, j}                             & \sim \Binomial(e ^{\eta_{i, j} / (1 +
-        \eta_{i, j})})
-                                       & \text{ where }
-                                       & \quad \eta_{i, j} = \beta_{0, j} +
-  \beta_{1, j} x_{i, j}
-  \\
-  \vect \beta_1, \ldots, \vect \beta_m & \sim \Normal_{p}(\vect \theta, \Sigma)
-                                       & \text{ where }
-                                       & \quad \vect \beta_j = \begin{pmatrix}
-    \beta_{0, j} \\
-    \beta_{1, j}\end{pmatrix}
+  y_{i, j}       & \sim \Binomial(e ^{\eta_{i, j} / (1 +
+  \eta_{i, j})}) & \text{ where }                        & \quad \eta_{i, j} = \beta_{0, j} + \beta_{1, j} x_{i, j} \\ \vect \beta_1, \ldots, \vect \beta_m & \sim \Normal_{p}(\vect \theta, \Sigma) & \text{ where } & \quad \vect \beta_j = \begin{pmatrix}
+    \beta_{0, j} \\ \beta_{1, j}\end{pmatrix}
 \end{align*}
 
 \subsection{Questions}
 \begin{enumerate}[label=\alph*) ]
-  \item The unknown parameters in the model include population-level parameters
-        $
-          \{\vect \theta, \Sigma\} $ and the group level parameters $ \{\vect
-          \beta_1,
-          \ldots, \vect \beta_m\} $. Draw a diagram that describes the
-        relationships
-        between these parameters, the data $ \{ y_{i, j}, x_{i, j} \} $ and
-        prior
-        distributions.
-  \item Before we do a Bayesian analysis, we will get some ad hoc estimates of
-        these parameters via maximum likelihood: fit a separate logistic
-        regression
-        model for each group, possibly using the \texttt{glm} command in R via
-        \texttt{beta.j <- glm(y.j $\sim$ X.j, family = binomial())\$coef}.
-        Explain any
-        problems you have with obtaining estimates for each county. Plot $
-          \expit(-\hat
-          \beta_{0, j} - \hat \beta_{1, j} x) $ as a function of $ x $ for each
-        county
-        and describe what you see. Using maximum likelihood estimates only from
-        those
-        counties with 10 or more schools, obtain ad hoc estimates $ \hat{\vect
-            \theta}
-        $ and $ \hat{\Sigma} $ of $ \vect \theta $ and $ \Sigma $. Note that
-        these
-        estimates may not be representative of patterns from schools with small
-        sample
-        sizes.
-  \item Formulate a unit information prior distribution for $ \vect \theta $
-        and
-        $ \Sigma $ based on the observed data. Specifically, let $ \vect \theta
-          \sim
-          \Normal_p(\hat{\vect{\theta}}, \Sigma) $ and let $ \Sigma ^{-1} \sim
-          \invWishart(4, \hat{\Sigma} ^{-1}) $. Use a Metropolis-Hastings
-        algorithm to
-        approximate the joint posterior distribution of all parameters.
-  \item Make plots of the samples of $ \vect \theta $ and $ \Sigma $ (5
-        parameters) versus MCMC iteration number. Make sure you run the chain
-        long
-        enough so that your MCMC samples are likely to be a reasonable
-        approximation
-        to
-        the posterior distribution.
-  \item Obtain posterior expectations of $ \vect \beta_j $ for each group $ j
-        $,
-        plot $ \E[\beta_{0, j} | \vect y] + \E[\beta_{1, j} | \vect y] x $ as a
-        function of $ x $ for each county, compare to the plot in b) and
-        describe why
-        you see any differences between the two sets of regression lines.
-  \item From your posterior samples, plot marginal posterior and prior
-        densities
-        of $ \vect \theta $ and the elements of $ \Sigma $. Include your ad hoc
-        estimates from b) in the plots. Discuss the evidence that the slopes or
-        intercepts vary across groups.
+  \item The unknown parameters in the model include population-level parameters $ \{\vect \theta,   \Sigma\} $ and the group level parameters $ \{\vect \beta_1, \ldots, \vect \beta_m\} $. Draw a diagram that describes the relationships between these parameters, the data $ \{ y_{i, j}, x_{i, j}   \} $ and prior distributions.
+  \item Before we do a Bayesian analysis, we will get some ad hoc estimates of these parameters via maximum likelihood: fit a separate logistic regression model for each group, possibly using the \texttt{glm} command in R via \mintinline{R}{beta.j <- glm(y.j ~ X.j, family = binomial())  Explain any problems you have with obtaining estimates for each county. Plot $ \expit(-\hat   \beta_{0, j}   - \hat \beta_{1, j} x) $ as a function of $			    x $ for each county and describe what you see. Using maximum likelihood estimates only from those counties with 10 or more schools, obtain ad hoc estimates $ \hat{\vect				  \theta} $ and $   \hat{\Sigma} $ of $   \vect \theta $ and $ \Sigma $. Note that these estimates may not be representative of patterns from schools with small sample sizes.%>% coefficients}.
+  \item Formulate a unit information prior distribution for $ \vect \theta $ and $ \Sigma $ based on the observed data. Specifically, let $ \vect \theta   \sim	\Normal_p(\hat{\vect{\theta}},				 \Sigma) $ and let $ \Sigma ^{-1}   \sim  \invWishart(4,   \hat{\Sigma} ^{-1}) $. Use a Metropolis-Hastings algorithm to approximate the joint posterior distribution of all parameters.
+  \item Make plots of the samples of $ \vect \theta $ and $ \Sigma $ (5 parameters) versus MCMC iteration number. Make sure you run the chain long enough so that your MCMC samples are likely to be a reasonable approximation to the posterior distribution.
+  \item Obtain posterior expectations of $ \vect \beta_j $ for each group $ j $, plot $   \E[\beta_{0, j} | \vect y] + \E[\beta_{1, j} | \vect y] x $ as a function of $ x $ for each county, compare to the plot in b) and describe why you see any differences between the two sets of regression lines.
+  \item From your posterior samples, plot marginal posterior and prior densities of $ \vect \theta $ and the elements of $ \Sigma $. Include your ad hoc estimates from b) in the plots. Discuss the evidence that the slopes or intercepts vary across groups.
 \end{enumerate}
 
 \subsection{Solutions}
@@ -339,8 +244,7 @@ these data. The model is a mixed effects version of logistic regression:
             % styles
             \tikzstyle{param} =
             [circle,thick,draw=black,fill=white,dashed,minimum
-            size=1cm];
-            \tikzstyle{yobs} = [circle,draw=black,fill=white,minimum size=1cm];
+            size=1cm]; \tikzstyle{yobs} = [circle,draw=black,fill=white,minimum size=1cm];
 
             % nodes
             \node[param,draw=blue] (theta) {$ \vect \theta $};
@@ -357,14 +261,10 @@ these data. The model is a mixed effects version of logistic regression:
             \begin{pgfonlayer}{background}
               % edges
               \path [blue] (theta)
-              edge [bend right] node {} (beta1)
-              edge node {} (beta2)
-              edge [bend left]	node {} (betam);
+              edge [bend right] node {} (beta1) edge node {} (beta2) edge [bend left]	node {} (betam);
 
               \path [red] (Sigma)
-              edge [bend right] node {} (beta1)
-              edge [bend right] node {} (beta2)
-              edge [bend left]	node {} (betam);
+              edge [bend right] node {} (beta1) edge [bend right] node {} (beta2) edge [bend left] node {} (betam);
 
               \path (beta1) edge node {} (y1);
               \path (beta2) edge node {} (y2);
@@ -373,17 +273,12 @@ these data. The model is a mixed effects version of logistic regression:
           \end{tikzpicture}
         \end{figure}
         \begin{align*}
-          \vect \theta                         & \sim \Normal_p (\mu_0, \Lambda_0)
-          \\
-          \Sigma                               & \sim \invWishart (\eta_0, S_0 ^{-1})
-          \\
-          \vect \beta_j | \vect \theta, \Sigma & \sim \Normal_p (\vect \theta, \Sigma)
-          \\
-          \vect y_j | \vect \beta_j            & \sim \Bernoulli_{n_j} (\expit(X_j \vect
-          \beta_j))
+          \vect \theta                         & \sim \Normal_p (\mu_0, \Lambda_0)                 \\
+          \Sigma                               & \sim \invWishart (\eta_0, S_0 ^{-1})              \\
+          \vect \beta_j | \vect \theta, \Sigma & \sim \Normal_p (\vect \theta, \Sigma)             \\
+          \vect y_j | \vect \beta_j            & \sim \Bernoulli_{n_j} (\expit(X_j \vect \beta_j))
         \end{align*}
-  \item Code (results in figure \ref{week10:groupedglm}):
-        \begin{minted}{R}
+  \item Code (results in figure \ref{week10:groupedglm}): \begin{minted}{R}
 
 library(tidyverse)
 library(mvnfast)
@@ -431,43 +326,19 @@ graphics.off()
 
         \begin{figure}
           \centering
-
-
           \includegraphics[width=0.8\linewidth]{r-scripts/week-10_groupedglm.pdf}
-          \caption{Maximum likelihood estimation model by group in scales of
-            gray
-            (the
-            darker the line the more numerous group). Average coefficients for
-            groups
-            larger than 10 elements in red dashed line.}
+          \caption{Maximum likelihood estimation model by group in scales of gray (the darker the line the more numerous group). Average coefficients for groups larger than 10 elements in red dashed line.}
           \label{week10:groupedglm}
         \end{figure}
-        Using classical GLM estimation \textit{by group} gives rise to a number
-        of problems: first of all, we can see that many groups have a very low
-        number of observations, as we can see in figure
-        \ref{week10:frequencies}, and thus the maximum likelihood estimates have
-        a high variance and a high numerical instability. For the low number of
-        observations, there is another possible obstacle: if the observations
-        are perfectly separable the Fisher scoring algorithm does not converge
-        and we have a missing value in place of the coefficient. In figure
-        \ref{week10:groupedglm} we can observe that many curves have a very
-        irregular trend, some are in total contradiction with the others (some
-        show a direct relation, other an inverse), and it is very difficult to
-        understand which is the \textit{neat} relation. The maximum likelihood
-        estimation leads to the red dashed line, which seems to be influenced
-        mostly from the more regular curves, in fact, to calculate it we have
-        considered only larger groups.
+        Using classical GLM estimation \textit{by group} gives rise to a number of problems: first of all, we can see that many groups have a very low number of observations, as we can see in figure \ref{week10:frequencies}, and thus the maximum likelihood estimates have a high variance and a high numerical instability. For the low number of observations, there is another possible obstacle: if the observations are perfectly separable the Fisher scoring algorithm does not converge and we have a missing value in place of the coefficient. In figure \ref{week10:groupedglm} we can observe that many curves have a very irregular trend, some are in total contradiction with the others (some show a direct relation, other an inverse), and it is very difficult to understand which is the \textit{neat} relation. The maximum likelihood estimation leads to the red dashed line, which seems to be influenced mostly from the more regular curves, in fact, to calculate it we have considered only larger groups.
         \begin{figure}
           \centering
-
           \includegraphics[width=0.8\linewidth]{r-scripts/week-10_frequencies.pdf}
-          \caption{Frequencies of observations within counties. Red bars have
-            an absolute frequency below 5, blue bars above.}
+          \caption{Frequencies of observations within counties. Red bars have an absolute frequency below 5, blue bars above.}
           \label{week10:frequencies}
         \end{figure}
 
-  \item Code:
-        \begin{minted}{R}
+  \item Code: \begin{minted}{R}
 Y <- with(mathstandard, tapply(metstandard, county, identity))
 X <- with(mathstandard, split(mathstandard, county)) %>%
    map(~ model.matrix(metstandard ~ percentms, data = .))
@@ -512,7 +383,7 @@ simulateMH <- function(niter, init, seed = NULL) {
       lpBeta1    <- sapply(Beta1, dmvn, theta, Sigma, log = TRUE)
       pi.Beta0   <- mapply(tcrossprod, X, Beta0, SIMPLIFY = FALSE) %>% lapply(invlogit)
       pi.Beta1   <- mapply(tcrossprod, X, Beta1, SIMPLIFY = FALSE) %>% lapply(invlogit)
-      lpyi.Beta0 <- mapply(dbinom, Y, pi.Beta0, MoreArgs = list(size = 1, log = TRUE), 
+      lpyi.Beta0 <- mapply(dbinom, Y, pi.Beta0, MoreArgs = list(size = 1, log = TRUE),
                            SIMPLIFY = FALSE)
       lpyi.Beta1 <- mapply(dbinom, Y, pi.Beta1, MoreArgs = list(size = 1, log = TRUE),
                            SIMPLIFY = FALSE)
@@ -536,8 +407,7 @@ niter <- 10000
 mcmcsim <- simulateMH(niter, init)
 \end{minted}
 
-  \item Code (results in figure \ref{week10:mcmcplots}):
-        \begin{minted}{R}
+  \item Code (results in figure \ref{week10:mcmcplots}): \begin{minted}{R}
 B <- 500 # burn-in
 
 pdf("week-10_mcmcplot.pdf", height = 9)
@@ -562,14 +432,11 @@ graphics.off()
         \begin{figure}
           \centering
           \includegraphics[width=\linewidth]{r-scripts/week-10_mcmcplot.pdf}
-          \caption{Chains for the 5 parameters, divided in burn-in period and
-            warmed
-            period.}
+          \caption{Chains for the 5 parameters, divided in burn-in period and warmed period.}
           \label{week10:mcmcplots}
         \end{figure}
 
-  \item Code (results in \ref{week10:groupedposterior}):
-        \begin{minted}{R}
+  \item Code (results in \ref{week10:groupedposterior}): \begin{minted}{R}
 E_Beta  <- mcmcsim %$% apply(BETA[, , B:niter], 1:2, mean)
 E_Sigma <- mcmcsim %$% apply(SIGMA[, , B:niter], 1:2, mean)
 E_theta <- mcmcsim %$% colMeans(THETA[B:niter, ])
@@ -589,28 +456,23 @@ curve(1 / (1 + exp(-ML_theta[1] - ML_theta[2] * x)), add = TRUE,
       col = "brown", lty = 3, lwd = 3)
 
 graphics.off()
-\end{minted}
-
+\end{minted} The difference between the figures \ref{week10:groupedposterior} and \ref{week10:groupedglm} is evident: the estimated posterior in the second plot are all quite coherent and pulled to the $\beta$ population parameters ($ \vect   \theta $). We can note that the most relevant differences are in the groups with low number of observations, were the effect of shrinkage (that is the flow of information from the most numerous groups to the less numerous) is more noticeable. Moreover we can see that the posterior expected value of $ \vect   \theta $ is similar, but not equal, to the maximum likelihood statistic computed.
         \begin{figure}
           \centering
 
-
           \includegraphics[width=0.8\linewidth]{r-scripts/week-10_groupedposterior.pdf}
-          \caption{Expected parameters given the $ \vect y_j $ by group in
-            scales of
-            gray (the darker the line the more numerous the group). Expected
-            value for $
-              \vect \theta $ in dashed red and MLE of $ \vect \theta $ (same as
-            \ref{week10:groupedglm}) in dotted brown.}
+          \caption{Expected parameters given the $ \vect y_j $ by group in scales of gray (the darker the line the more numerous the group). Expected value for $   \vect \theta $ in dashed red and MLE of $ \vect \theta $ (same as \ref{week10:groupedglm}) in dotted brown.}
           \label{week10:groupedposterior}
         \end{figure}
 
   \item Code (results in figure \ref{week10:priorvsposterior}):
-        \begin{figure}[H]
+        \begin{figure}
           \centering
 
-
           \includegraphics[width=\linewidth]{r-scripts/week-10_prior_posterior-1.pdf}
+
+          \includegraphics[width=\linewidth]{r-scripts/week-10_prior_posterior-2.pdf}
+          \caption{Posterior (and some prior) marginal distributions of parameters: over $ \vect   \theta $ values and $\Sigma$ values.}
           \label{week10:priorvsposterior}
         \end{figure}
 \end{enumerate}

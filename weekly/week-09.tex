@@ -12,8 +12,7 @@ values. Consider the following algorithm:
  \item sample $ \tilde \theta \sim \Unif(\theta_0 - \delta, \theta_0 + \delta) $;
  \item $ \theta_1 \overset{!}{=} \begin{cases} -\tilde \theta          & \text{if }
          \tilde \theta < 0                                        \\
-         \phantom- \tilde \theta & \text{if $ \tilde \theta \ge 0
-          $}\end{cases} $
+         \phantom- \tilde \theta & \text{if } \tilde \theta \ge 0 \end{cases} $
 \end{enumerate}
 In other words $ \theta_1 = | \tilde \theta | $.
 
@@ -24,6 +23,64 @@ the associated proposal density $ J(\theta_1 | \theta_0) $ under the two conditi
 $ \theta_0 < \delta $ and $ \theta_0 \ge \delta $ separately.
 
 \subsection{Solutions}
+To demonstrate that the algorithm draws from a symmetric distribution we have to 
+show that \[ J(\theta_1 | \theta_0) = J(\theta_0 | \theta_1) \]
+
+\begin{equation*}
+ J(\theta_1 | \theta_0) = \begin{cases} 
+    \frac{1}{2 \delta} \mathbf{1}_{(\theta_0 - \delta, \theta_0 + \delta]}(\theta_1) & \text{if } \theta_0 \ge \delta 
+      \text{ \large \textcircled{\small 1}} \\
+    \frac{1}{\delta} \mathbf{1}_{(0, \delta - \theta_0]}(\theta_1) + 
+      \frac{1}{2 \delta} \mathbf{1}_{[\delta - \theta_1, \delta + \theta_1]}(\theta_0) & \text{if } \theta_0 < \delta
+      \text{ \large \textcircled{\small 2}}
+  \end{cases}
+\end{equation*}
+
+equivalently
+
+\begin{equation*}
+  J(\theta_0 | \theta_1) = \begin{cases}
+    \frac{1}{2 \delta} \mathbf{1}_{(\theta_1 - \delta, \theta_1 + \delta]}(\theta_0) & \text{if } \theta_1 \ge \delta 
+      \text{ \large \textcircled{\small 1}}\\
+    \frac{1}{\delta} \mathbf{1}_{(0, \delta - \theta_1]}(\theta_0) + 
+      \frac{1}{2 \delta} \mathbf{1}_{[\delta - \theta_0, \delta + \theta_0]}(\theta_1) & \text{if } \theta_1 < \delta
+      \text{ \large \textcircled{\small 2}}
+  \end{cases}
+\end{equation*}
+
+\subsubsection{Case 1: $ \theta_0 \ge \delta, \theta_1 \ge \delta $}
+For both $ J(\theta_1 | \theta_0) $ and $ J(\theta_0 | \theta_1) $ we are in the case
+{\large \textcircled{\small 1}}, thus they have same density $ \frac{1}{2 \delta} $.
+
+\subsubsection{Case 2: $ \theta_0 \ge \delta, \theta_1 < \delta $}
+$ J(\theta_1 | \theta_0) = \frac{1}{2 \delta} $ (since it falls in case 
+{\large \textcircled{\small 1}}), but when does it equals $ J(\theta_0 | \theta_1) $?
+Since $ \theta_1 < \delta $ we have to concentrate on the ``bottom'' to have 
+$ J(\theta_0 | \theta_1) = \frac{1}{\delta} $ (see case {\large \textcircled{\small 2}}):
+\begin{align*}
+  \max(\delta - \theta_1) &\le \theta_0 \\
+  \delta - \min(\theta_1) &\le \theta_0 \\
+  \intertext{\centering but since $ \theta_0 \in [\delta - \theta_1, \delta + \theta_1] $}
+  \delta - (\theta_0 - \delta) &\le \theta_0 \\
+  2 \delta &\le 2 \theta_0 \\
+  \delta &\le \theta_0 \tag*{$ \checkmark $}
+\end{align*}
+
+\subsubsection{Case 3: $ \theta_0 < \delta, \theta_1 \ge \delta $}
+For $ \theta_1 \ge \delta $ we are in the case {\large \textcircled{\small 1}},
+thus $ J(\theta_0 | \theta_1) = \frac{1}{2 \delta} $.
+For $ \theta_0 < \delta $ we have to care about the lower bound:
+\begin{align*}
+  \max(\delta - \theta_0) &\le \theta_1 \\
+  \delta - \min(\theta_0) &\le \theta_1 \\
+  \intertext{\centering but since $ \theta_1 \in [\delta - \theta_0, \delta + \theta_0] $}
+  \delta - (\theta_1 - \delta) &\le \theta_1 \\
+  2 \delta \le 2 \theta_1 \\
+  \delta \le \theta_1 \tag*{$ \checkmark $}
+\end{align*}
+
+\subsubsection{Case 4: $ \theta_0 < \delta, \theta_1 < \delta $}
+Both are in the case {\large \textcircled{\small 2}}, thus have density $ \frac{1}{\delta} $.
 
 \section{Exercise 10.2, Hoff}
 
@@ -410,7 +467,7 @@ plot(thin, simulation3$beta[thin, 2],
 par(opar)
 graphics.off()
 \end{minted}
-       \begin{figure}[H]
+       \begin{figure}
         \centering
         \includegraphics[width=0.9\linewidth]{r-scripts/week-09_iterations.pdf}
        \end{figure}
@@ -439,7 +496,7 @@ legend("topright", legend = c("prior", "posterior"), cex = 1,
 par(opar)
 graphics.off()
 \end{minted}
-       \begin{figure}[H]
+       \begin{figure}
         \centering
         \includegraphics[width=\linewidth]{r-scripts/week-09_priors_posteriors.pdf}
         \caption{The range assumed for the probability of nesting (that we
@@ -455,7 +512,7 @@ graphics.off()
        function of the linear predictor). For each couple of parameters, we
        obtain the predicted values for the observed data and estimate the
        95-percent quantiles of each vector of predictions.
-       \begin{figure}[H]
+       \begin{figure}
         \centering
         \includegraphics[width=\linewidth]{r-scripts/week-09_predictions.pdf}
         \caption{We can infer that there is no significant effect of the

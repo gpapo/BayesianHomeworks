@@ -5,7 +5,7 @@
 \subsection{Data}
 \begin{itemize}
   \item $ \psi = g(\theta) $ where $ g $ is a monotone function
-  \item $ h(\cdot) = g^{-1}(\cdot) $, that is $ \theta = h(\psi) $
+  \item $ h(\parm) = g^{-1}(\parm) $, that is $ \theta = h(\psi) $
   \item $ p_\theta(\theta) = \text{PDF of } \theta \implies
           p_\psi(\psi) = p_\theta(h(\psi)) \cdot \left|\frac{dh}{d\psi}\right|$
 \end{itemize}
@@ -30,13 +30,13 @@
         So we can write the PDF of $\psi$ as
         \begin{align*}
           p_\psi(\psi)
-           & = \frac{1}{B(a, b)} \left(\frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{a - 1}
+           & = \frac{1}{\Beta(a, b)} \left(\frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{a - 1}
           \left(1 - \frac{\exp(\psi)}{1 + \exp(\psi)}\right)^{b - 1}
           \frac{\exp(\psi)}{(1 + \exp(\psi))^2}                                         \\
-           & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a - 1}}{(1 - \exp(\psi))^{a - 1}}
+           & = \frac{1}{\Beta(a, b)} \frac{\exp(\psi)^{a - 1}}{(1 - \exp(\psi))^{a - 1}}
           \frac{1}{(1 + \exp(\psi))^{b - 1}}
           \frac{\exp(\psi)}{(1 + \exp(\psi))^2}                                         \\
-           & = \frac{1}{B(a, b)} \frac{\exp(\psi)^{a}}{(1 + \exp(\psi))^{a + b}}
+           & = \frac{1}{\Beta(a, b)} \frac{\exp(\psi)^{a}}{(1 + \exp(\psi))^{a + b}}
         \end{align*}
         \begin{figure}[H]
           \centering
@@ -67,7 +67,7 @@
 \begin{enumerate}
   \item Given $ Y_1 \ldots Y_n \sim \Bernoulli(\theta) $ find the MLE of $\theta$ and
         $ \frac{J(\theta)}{n} $.
-  \item Find a PDF $ p_U(\theta) $ such that $ \log p_U(\theta) = l(\theta | \vect{y}) / n + c $
+  \item Find a PDF $ p_U(\theta) $ such that $ \log p_U(\theta) = \loglik(\theta | \vect{y}) / n + c $
         where $ c $ is a constant that does not depend on $\theta$. Compute $ -\partial^2 \log p_U(\theta) / \partial^2 \theta $.
   \item Obtain a PDF for $\theta$ that is proportional to $ p_U(\theta) p(\vect{y} | \theta) $.
         Can this be considered a posterior for $ \theta $?
@@ -77,7 +77,7 @@
 \subsection{Solutions}
 \begin{enumerate}
   \item \begin{align*}
-          \hat{\theta}_{MLE} & = \argmin_\theta l(\theta | \vect{y})                                                       \\
+          \hat{\theta}_{MLE} & = \argmin_\theta \loglik(\theta | \vect{y})                                                       \\
                              & = \argmin_\theta \log \left\{ \prod_i \theta ^ {y_i} (1 - \theta)^{1 - y_i} \right\}        \\
                              & = \argmin_\theta \sum_i \log \left( \theta ^ {y_i} (1 - \theta) ^ {1 - y_i} \right)         \\
                              & = \argmin_\theta \log(\theta) \sum_i y_i + \log(1 - \theta) \sum_i (1 - y_i)                \\
@@ -85,14 +85,14 @@
         \end{align*}
         To find the minimum we compute the zeros of $ \partial l(\theta | \vect{y}) / \partial \theta $
         \begin{align*}
-          0 & = \frac{\partial l(\theta | \vect{y})}{\partial \theta}                                     \\
+          0 & = \frac{\partial \loglik(\theta | \vect{y})}{\partial \theta}                                     \\
             & = \frac{\sum_i y_i}{\theta} - \frac{n}{1 - \theta} + \frac{\sum_i y_i}{1 - \theta}          \\
             & = \frac{\sum_i y_i - \theta \sum_i y_i - \theta n + \theta \sum_i y_i}{\theta (1 - \theta)} \\
             & = \frac{\sum_i y_i - \theta n}{\theta (1 - \theta)}
         \end{align*}
         Thus, if $ \theta \notin \left\{0, 1\right\} $, $ \hat \theta_{MLE} = \frac{\sum_i y_i}{n} $.
         \begin{align*}
-          - \frac{\partial^2 l(\theta | \vect{y})}{n \partial^2 \theta}
+          - \frac{\partial^2 \loglik(\theta | \vect{y})}{n \partial^2 \theta}
            & = - \frac{-n \theta (1 - \theta) - (\sum_i y_i - n \theta)(1 - 2\theta)}{n \theta^2 (1 - \theta)^2} \\
            & = - \frac{n \theta^2 - n \theta - \sum_i y_i + 2\theta \sum_i y_i + n \theta - 2 n \theta^2}
           {n \theta^2 (1 - \theta^2)}                                                                            \\
@@ -108,8 +108,8 @@
         where $ c $ is the normalization constant.
         \begin{align*}
           - \frac{\partial^2 \log p_U(\theta)}{\partial^2 \theta}
-           & = - \frac{\partial^2 l(\theta | \vect{y}) / n + c}{\partial^2 \theta}                         \\
-           & = - \frac{\partial^2 l(\theta | \vect{y})}{\partial^2 \theta} / n                             \\
+           & = - \frac{\partial^2 \loglik(\theta | \vect{y}) / n + c}{\partial^2 \theta}                         \\
+           & = - \frac{\partial^2 \loglik(\theta | \vect{y})}{\partial^2 \theta} / n                             \\
            & = \frac{\theta ^ 2 - 2 \theta \hat \theta_{MLE} + \hat \theta_{MLE}}{\theta^2 (1 - \theta)^2}
         \end{align*}
   \item Such a PDF would have the form
@@ -127,18 +127,18 @@
         it is a case of conjugate prior.
   \item Same steps: simplify the log-likelihood, find the first derivative and constrain to zero.
         \begin{align*}
-          \hat \theta_{MLE} & = \argmin_\theta l_\text{Poisson}(\theta | \vect{y})                                 \\
+          \hat \theta_{MLE} & = \argmin_\theta \loglik_\text{Poisson}(\theta | \vect{y})                                 \\
                             & = \argmin_\theta \log \left( \prod_i \frac{\exp(-\theta) \theta^{y_i}}{y_i!} \right) \\
                             & = \argmin_\theta \sum_i \log \frac{\exp(-\theta) \theta^{y_i}}{y_i !}                \\
                             & = \argmin_\theta -n \theta + \log \theta \sum y_i - \sum \log y_i !
         \end{align*}
         \begin{align*}
-          0 & = \frac{\partial l(\theta | \vect{y})}{\partial \theta} \\
+          0 & = \frac{\partial \loglik(\theta | \vect{y})}{\partial \theta} \\
             & = -n + \frac{\sum_i y_i}{\theta}
         \end{align*}
         Thus $ \hat \theta_{MLE} = \sum_i y_i / n $.
         \begin{align*}
-          -\frac{\partial^2 l(\theta | \vect{y})}{n \partial^2 \theta}
+          -\frac{\partial^2 \loglik(\theta | \vect{y})}{n \partial^2 \theta}
            & = \frac{\sum_i y_i}{n \theta^2}      \\
            & = \frac{\hat \theta_{MLE}}{\theta^2}
         \end{align*}

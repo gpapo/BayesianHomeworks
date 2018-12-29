@@ -108,7 +108,7 @@ simulateMH <- function(niter, init, seed = NULL) {
 init  <- list(mu = ML_theta, S = ML_Sigma, eta = 4, Beta = replace_na(Beta, 0))
 niter <- 10000
 
-mcmcsim <- simulateMH(niter, init)
+mcmcsim <- simulateMH(niter, init, seed = 1)
 
 # d)
 
@@ -155,7 +155,7 @@ graphics.off()
 
 # f)
 
-pdf("week-10_prior_posterior-1.pdf", height = 5, width = 8)
+pdf("week-10_prior_posterior-1.pdf", height = 4, width = 8)
 par(mfrow = c(1, 2))
 
 curve(dnorm(x, ML_theta[1], sqrt(ML_Sigma[1, 1])), -10, 5,
@@ -170,5 +170,17 @@ curve(dnorm(x, ML_theta[2], sqrt(ML_Sigma[2, 2])), -0.1, 0.15,
       ylim = c(0, 50), bty = 'n',
       main = "", ylab = "", xlab = expression(theta[percentms]))
 mcmcsim %$% density(THETA[B:niter, 2]) %>% lines(col = c("#D60000"))
+
+graphics.off()
+
+pdf("week-10_prior_posterior-2.pdf", height = 4, width = 8)
+par(mfrow = c(1, 3))
+
+mcmcsim %$% plot(density(SIGMA[1, 1, B:niter]), col = "#D60000", bty = 'n',
+                 xlab = bquote(sigma[beta[0]]^2), main = "")
+mcmcsim %$% plot(density(SIGMA[1, 2, B:niter]), col = "#D60000", bty = 'n',
+                 xlab = bquote(sigma[beta[0] * beta[1]]), main = "")
+mcmcsim %$% plot(density(SIGMA[2, 2, B:niter]), col = "#D60000", bty = 'n',
+                 xlab = bquote(sigma[beta[1]]^2), main = "")
 
 graphics.off()

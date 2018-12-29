@@ -187,14 +187,16 @@ statistics <- map_dbl(simulations, ~ with(., mean(theta * gamma - theta)))
         We have evidence of the fact that the two means converge when the parameters
         of the prior distribution get higher. This imply that the difference gets lower
         and that the mean number of children in the two groups tends to be the same when
-        we take higher hyper-parameters.
+        we take higher hyper-parameters (see figure \ref{week06:hist}).
 
-        We can see it even graphically comparing the posterior distributions of $ \theta_A $
-        and $ \theta_B $ in the 5 configurations:
-        \begin{figure}[H]
+        \begin{figure}
           \centering
           \includegraphics[width=\linewidth]{r-scripts/week-06_hist.pdf}
+          \caption{Graphical comparison of the posterior distributions of $ \theta_A $
+          and $ \theta_B $ in the 5 configurations.}
+          \label{week06:hist}
         \end{figure}
+
         Code:
         \begin{minted}[fontsize=\small]{R}
 opar <- par(mfrow = n2mfrow(6))
@@ -222,11 +224,11 @@ par(opar)
         weight the information that we already have about the variable, and consequently
         the observed information gain less importance.
 
-        It's interesting even to observe how the Gamma distribution change when we set the
-        different $ a_\gamma $ and $ b_\gamma $.
-        \begin{figure}[H]
+        \begin{figure}
           \centering
           \includegraphics[width=0.65\linewidth]{r-scripts/week-06_prior.pdf}
+          \caption{It's interesting even to observe how the Gamma distribution change when we set the
+          different $ a_\gamma $ and $ b_\gamma $.}
         \end{figure}
         Code:
         \begin{minted}[fontsize=\small]{r}
